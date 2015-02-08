@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>SeniorApp</title>
+  <%= stylesheet_link_tag    'application', media: 'all', 'data-turbolinks-track' => true %>
+  <%= javascript_include_tag 'application', 'data-turbolinks-track' => true %>
+  <%= csrf_meta_tags %>
+</head>
+<body>
+
+<div class="container" id="content_wrapper">
+	<% if flash[:success] %>
+		<div class="alert alert-success" role="alert">
+			<%= flash[:success] %>
+		</div>
+	<% end %>
+	<% if flash[:error] %>
+		<div class="alert alert-danger" role="alert">
+			<%= flash[:error] %>
+		</div>
+	<% end %>
+	<%= yield %>
+</div>
+
+
+</body>
+</html>

@@ -1,0 +1,3 @@
+<p>User Name: <%= @user.name %></p>
+<p>User Email: <%= @user.email %></p>
+<%= link_to "sign out", destroy_user_session_path, method: :delete %>

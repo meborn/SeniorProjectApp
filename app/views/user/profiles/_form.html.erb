@@ -1,0 +1,31 @@
+<%= form_for [:user, @profile] do |f| %>
+	<% if @profile.errors[:title].present? %>
+		<div class="form-group has-error">
+			<%= f.label :title, :class => 'control-label' %>
+			<% @profile.errors[:title].each do |message|%>
+				<span><%= message %></span>
+			<% end %>
+			<%= f.text_field :title, :class => 'form-control' %>
+		</div>
+	<% else %>
+		<div class="form-group">
+			<%= f.label :title %>
+			<%= f.text_field :title, :class => 'form-control ' %>
+		</div>
+	<% end %>
+	<% if @profile.errors[:description].present? %>
+		<div class="form-group has-error">
+			<%= f.label :description, :class => 'control-label' %>
+			<% @profile.errors[:description].each do |message|%>
+				<span><%= message %></span>
+			<% end %>
+			<%= f.text_area :description, :size => "40x15", :class => 'form-control' %>
+		</div>
+	<% else %>
+		<div class="form-group">
+			<%= f.label :description %>
+			<%= f.text_area :description, :size => "40x15" , :class => 'form-control ' %>
+		</div>
+	<% end %>
+	<%= f.submit "Save Profile", :class => 'btn btn-default' %>
+<% end %>
