@@ -4,8 +4,48 @@
 
 body {
 	background-color: #FFFEFA;
+
 }
 
 #content_wrapper {
 	background-color: #DDE7E8;
+	padding:50px;
+}
+
+#log_in_form {
+	background-color: #FFFEFA;
+	border-radius: 5px;
+	padding:20px;
+}
+
+#log_in_form h2 {
+	margin-top: 0px;
+}
+
+.btn_large_orange {
+	width:100%;
+	background-color: #F25749;
+	color:#FFFEFA;
+}
+
+.btn_large_orange:hover {
+	background-color: transparent;
+	border:1px solid #F25749;
+}
+
+#forgot_password_wrapper {
+	margin-top: 20px;
+	text-align: center;
+}
+
+.wallpaper_img {
+	width:100%;
+}
+
+#avatar_wrapper {
+	background-color: red;
+}
+
+#title_wrapper {
+	text-align: center;
 }

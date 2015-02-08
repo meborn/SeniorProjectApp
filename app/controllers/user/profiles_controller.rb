@@ -43,6 +43,8 @@ class User::ProfilesController < ApplicationController
 		safe_attributes = [
 			:title,
 			:description,
+			:avatar,
+			:wallpaper,
 		]
 		params.require(:profile).permit(*safe_attributes)
 	end

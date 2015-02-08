@@ -1,4 +1,24 @@
-<h1><%= @profile.title %></h1>
+<div class="row">
+	<div class="col-xs-12">
+		<% if @profile.wallpaper.content_type %>
+			<%= image_tag @profile.wallpaper.url(:large), :class => "img-responsive img-rounded wallpaper_img" %>
+		<% end %>
+	</div>
+</div>
+<div class="row">
+	<div id="avatar_wrapper" class="col-xs-10 col-xs-offset-2 col-sm-4 col-sm-offset-0 col-md-2 col-md-offset-1">
+		<% if @profile.avatar.content_type %>
+			<%= image_tag @profile.avatar.url(:small), :class => "img-circle" %>
+		<% end %>
+	</div>
+	<div id="title_wrapper" class="col-xs-12 col-sm-8 col-md-9">
+		<h1><%= @profile.title %></h1>
+	</div>
+</div>
+
+
+
+
 <p>
 	<%= @profile.description %>
 </p>
