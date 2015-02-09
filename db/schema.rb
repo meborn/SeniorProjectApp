@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20150208052717) do
+ActiveRecord::Schema.define(version: 20150209014257) do
 
   create_table "profiles", force: true do |t|
     t.string   "title"
@@ -27,6 +27,9 @@ ActiveRecord::Schema.define(version: 20150208052717) do
     t.string   "wallpaper_content_type"
     t.integer  "wallpaper_file_size"
     t.datetime "wallpaper_updated_at"
+    t.string   "zip"
+    t.string   "city"
+    t.string   "state"
   end
 
   add_index "profiles", ["user_id"], name: "index_profiles_on_user_id"

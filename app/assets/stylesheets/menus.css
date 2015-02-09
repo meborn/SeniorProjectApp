@@ -1,0 +1,11 @@
+#user_menu {
+	height:60px;
+	background-color: #474844;
+}
+
+#user_menu_right {
+	height:60px;
+	padding-top: 20px;
+	float:right;
+	color:#f2f2f2;
+}

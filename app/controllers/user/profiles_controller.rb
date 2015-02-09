@@ -1,5 +1,7 @@
 class User::ProfilesController < ApplicationController
 	before_filter :authenticate_user!
+	require 'open-uri'
+	require 'json'
 
 	def index
 
@@ -17,8 +19,13 @@ class User::ProfilesController < ApplicationController
 		@profile = Profile.new(safe_params)
 		@profile.user = current_user
 		if @profile.save
-			flash[:success] = "Profile Saved"
-			redirect_to user_profile_path(@profile)
+			response = JSON.parse(open('http://ziptasticapi.com/' + @profile.zip).read)
+			@profile.city = response['city']
+			@profile.state = response['state']
+			if @profile.save 
+				flash[:success] = "Profile Saved"
+				redirect_to user_profile_path(@profile)
+			end
 		else
 			flash[:error] = "Unable to Save"
 			render 'new'
@@ -45,6 +52,7 @@ class User::ProfilesController < ApplicationController
 			:description,
 			:avatar,
 			:wallpaper,
+			:zip,
 		]
 		params.require(:profile).permit(*safe_attributes)
 	end

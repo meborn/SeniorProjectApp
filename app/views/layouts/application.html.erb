@@ -7,7 +7,9 @@
   <%= csrf_meta_tags %>
 </head>
 <body>
-
+<% if user_namespace? || controller_name == 'users' %>
+	<%= render partial: "shared/menus/user_menu.html.erb" %>
+<% end %>
 <div class="container" id="content_wrapper">
 	<% if flash[:success] %>
 		<div class="alert alert-success" role="alert">

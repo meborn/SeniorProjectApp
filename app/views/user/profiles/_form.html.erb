@@ -35,5 +35,9 @@
 		<%= f.label :wallpaper, :class => 'control-label'%>
 		<%= f.file_field :wallpaper, :class => 'form-control' %>
 	</div>
+	<div class="form-group">
+		<%= f.label :zip, "Zip Code ", :class => 'control-label' %>
+		<%= f.text_field :zip, :class => 'form-control' %>
+	</div>
 	<%= f.submit "Save Profile", :class => 'btn btn-default' %>
 <% end %>
