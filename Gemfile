@@ -30,6 +30,10 @@ gem 'devise'
 
 gem "paperclip", "~> 4.2"
 
+group :development, :test do
+	gem 'foreman'
+end
+
 # Use ActiveModel has_secure_password
 # gem 'bcrypt', '~> 3.1.7'
 

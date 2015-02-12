@@ -5,7 +5,29 @@
 
 #user_menu_right {
 	height:60px;
-	padding-top: 20px;
 	float:right;
 	color:#f2f2f2;
+	position: relative;
+	padding-top: 5px;
+}
+
+#user_menu_dropdown {
+	display: inline-block;
+	font-size: 22px;
+	padding:10px;
+}
+
+#user_menu_dropdown a {
+	color:#f2f2f2;
+	text-decoration: none;
+}
+
+#user_menu_dropdown_list a {
+	color:#474844;
+}
+
+#user_menu_name {
+	display: inline-block;
+	font-size: 22px;
+	margin-right: 20px;
 }
