@@ -1,27 +1,50 @@
-<div class="row">
+<div id="user_profile_show_content" class="row">
 	<div class="col-xs-12">
-		<% if @profile.wallpaper.content_type %>
-			<%= image_tag @profile.wallpaper.url(:large), :class => "img-responsive img-rounded wallpaper_img" %>
-		<% end %>
+		<div class="row">
+			<div id="user_profile_view_all" class="col-xs-12">
+				<%= link_to "&#171; View Profiles".html_safe, user_profiles_path %>
+			</div>
+		</div>
+		<div class="row">
+			<div class="col-xs-2">
+				<% if @profile.avatar.content_type %>
+					<%= image_tag @profile.avatar.url(:small) %>
+				<% end %>
+			</div>
+			<div class="col-xs-2">
+				<div class="row">
+					<div class="col-xs-12">
+						<%= @profile.title %>
+					</div>
+				</div>
+				<div class="row">
+					<div class="col-xs-12">
+						<% if @profile.city && @profile.state %>
+							<%= @profile.city %>,
+							<%= @profile.state %>
+						<% else %>
+							<p>Add valid zip code</p>
+						<% end %>
+					</div>
+				</div>
+				<div class="row">
+					<div class="col-xs-12">
+						<%= link_to "Edit Profile", edit_user_profile_path(@profile), :class => "btn btn-warning", :role => "button" %>
+					</div>
+				</div>
+				<div class="row">
+					<div class="col-xs-12">
+						<%= link_to "Delete Profile", user_profile_path(@profile), :class => "btn btn-danger", :role => "button", method: :delete %>
+					</div>
+				</div>
+			</div>
+			<div class="col-xs-8">
+				<p>
+					<%= @profile.description %>
+				</p>
+			</div>
+		</div>
 	</div>
+	
 </div>
-<div class="row">
-	<div id="avatar_wrapper" class="col-xs-10 col-xs-offset-2 col-sm-4 col-sm-offset-0 col-md-2 col-md-offset-1">
-		<% if @profile.avatar.content_type %>
-			<%= image_tag @profile.avatar.url(:small), :class => "img-circle" %>
-		<% end %>
-	</div>
-	<div id="title_wrapper" class="col-xs-12 col-sm-8 col-md-9">
-		<h1><%= @profile.title %></h1>
-	</div>
-</div>
 
-<%= @profile.zip %>
-<%= @profile.city %>
-<%= @profile.state %>
-
-
-
-<p>
-	<%= @profile.description %>
-</p>

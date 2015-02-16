@@ -1,0 +1,44 @@
+<div id="user_profiles_index_content" class="row">
+	<div class="col-xs-12">
+		<div class="row">
+			<div id="user_profiles_header" class="col-xs-8">
+				<h2>Profiles</h2>
+			</div>
+			<div id="user_profiles_new_link" class="col-xs-4">
+				<%= link_to "New Profile &#43;".html_safe, new_user_profile_path, :class => "btn btn-success", :role => "button" %>
+			</div>
+		</div>
+		<div class="row">
+			<div class="col-xs-12">
+				<table class="table">
+					<thead>
+						<tr>
+							<th></th>
+							<th></th>
+							<th></th>
+						</tr>
+					</thead>
+					<tbody>
+						<% if @profiles.length > 0 %>
+							<tr>
+								<% @profiles.each do |profile| %>
+									<tr>
+										<td>
+											<% if profile.avatar.content_type %>
+												<%= image_tag profile.avatar.url(:thuumb) %>
+											<% end %>
+										</td>
+										<td><%= profile.title %></td>
+										<td><%= link_to "Manage Profile", user_profile_path(profile) %></td>
+									</tr>
+								<% end %>
+						<% else %>
+							<p>You Currently have no profiles.</p>
+						<% end %>
+					</tbody>
+				</table>
+			</div>
+		</div>	
+	</div>
+	
+</div>

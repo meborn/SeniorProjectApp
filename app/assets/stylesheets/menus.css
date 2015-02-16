@@ -1,20 +1,20 @@
 #user_menu {
 	height:60px;
-	background-color: #474844;
+	background-color: rgba(51, 51, 51, 1);
 }
 
 #user_menu_right {
 	height:60px;
-	float:right;
 	color:#f2f2f2;
-	position: relative;
-	padding-top: 5px;
+	/*background-color: blue;*/
+	text-align: right;
 }
 
 #user_menu_dropdown {
-	display: inline-block;
+	height:60px;
+	line-height: 60px;
 	font-size: 22px;
-	padding:10px;
+	/*background-color: red;*/
 }
 
 #user_menu_dropdown a {
@@ -27,7 +27,8 @@
 }
 
 #user_menu_name {
-	display: inline-block;
-	font-size: 22px;
-	margin-right: 20px;
+	height:60px;
+	line-height: 60px;
+	/*background-color: green;*/
+	font-size: 18px;
 }

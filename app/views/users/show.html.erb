@@ -1,18 +1,15 @@
-
-<h2>Profiles</h2>
-<%= link_to "New Profile", new_user_profile_path %>
-<% if @profiles.length > 0 %>
-	<ul>
-		<% @profiles.each do |profile| %>
-			<li>
-				<% if profile.avatar.content_type %>
-					<%= image_tag profile.avatar.url(:thuumb) %>
-				<% end %>
-				<%= profile.title %>
-			</li>
-		<% end %>
-	</ul>
-<% else %>
-	<p>You Currently have no profiles.</p>
-<% end %>
+<div id="user_content" class="row">
+	<div class="col-xs-12">
+		<div class="row">
+			<div class="col-xs-12">
+				<%= link_to "View Profiles", user_profiles_path %>
+			</div>
+		</div>
+		<div class="row">
+			<div class="col-xs-12">
+				<%= link_to "View Opeinings", user_openings_path %>
+			</div>
+		</div>
+	</div>
+</div>
 

@@ -1,0 +1,39 @@
+<div id="user_opeings_index_content" class="row">
+	<div class="col-xs-12">
+		<div class="row">
+			<div id="user_profiles_header" class="col-xs-8">
+				<h2>Openings</h2>
+			</div>
+			<div id="user_profiles_new_link" class="col-xs-4">
+				<%= link_to "New Opening &#43;".html_safe, new_user_opening_path, :class => "btn btn-success", :role => "button" %>
+			</div>
+		</div>
+		<div class="row">
+			<div class="col-xs-12">
+				<table class="table">
+					<thead>
+						<tr>
+							<th>Date</th>
+							<th>Time</th>
+							<th></th>
+							<th></th>
+						</tr>
+					</thead>
+					<tbody>
+						<% @openings.each do |opening| %>
+							<% if opening.start.to_i > DateTime.now.to_i %>
+								<tr>
+									<td><%= opening.start.strftime('%B %d, %Y') %></td>
+									<td><%= opening.start.strftime('%I:%M %p') %> - <%= opening.end.strftime('%I:%M %p') %></td>
+									<td><%= link_to "Edit", edit_user_opening_path(opening), :class => "btn btn-warning" %></td>
+									<td><%= link_to "Delete", user_opening_path(opening), :class => "btn btn-danger", method: :delete %></td>
+								</tr>
+							<% end %>
+							
+						<% end %>
+					</tbody>
+				</table>
+			</div>
+		</div>
+	</div>
+</div>

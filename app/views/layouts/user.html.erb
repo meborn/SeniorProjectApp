@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>SeniorApp</title>
+  <%= stylesheet_link_tag    'application', media: 'all', 'data-turbolinks-track' => true %>
+  <%= javascript_include_tag 'application', 'data-turbolinks-track' => true %>
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <%= csrf_meta_tags %>
+</head>
+<body>
+	<div id="user_container" class="container">
+		<div id="user_menu_wrapper" class="row">
+			<div id="user_menu_container" class="col-xs-12">
+				<%= render :partial => 'shared/menus/user_menu.html' %>
+			</div>
+		</div>
+		<div id="alert_container" class="row">
+			<div class="col-xs-12">
+				<% if flash[:success] %>
+					<div class="alert alert-success" role="alert">
+						<%= flash[:success] %>
+					</div>
+				<% end %>
+				<% if flash[:error] %>
+					<div class="alert alert-danger" role="alert">
+						<%= flash[:error] %>
+					</div>
+				<% end %>
+			</div>
+		</div>
+		<div id="user_content_wrapper" class="row">
+			<div id="user_content_container" class="col-xs-12">
+				<%= yield %>
+			</div>
+		</div>
+	</div>
+</body>
+</html>

@@ -7,23 +7,31 @@
   <%= csrf_meta_tags %>
 </head>
 <body>
-<% if user_namespace? || controller_name == 'users' %>
-	<%= render partial: "shared/menus/user_menu.html.erb" %>
-<% end %>
-<div class="container" id="content_wrapper">
-	<% if flash[:success] %>
-		<div class="alert alert-success" role="alert">
-			<%= flash[:success] %>
+<div id="user_container" class="container">
+	<div id="public_menu_wrapper" class="row">
+		<div id="public_menu_container" class="col-xs-12">
+			
 		</div>
-	<% end %>
-	<% if flash[:error] %>
-		<div class="alert alert-danger" role="alert">
-			<%= flash[:error] %>
+	</div>
+	<div id="alert_container" class="row">
+		<div class="col-xs-12">
+			<% if flash[:success] %>
+				<div class="alert alert-success" role="alert">
+					<%= flash[:success] %>
+				</div>
+			<% end %>
+			<% if flash[:error] %>
+				<div class="alert alert-danger" role="alert">
+					<%= flash[:error] %>
+				</div>
+			<% end %>
 		</div>
-	<% end %>
-	<%= yield %>
+	</div>
+	<div id="user_content_wrapper" class="row">
+		<div id="user_content_container" class="col-xs-12">
+			<%= yield %>
+		</div>
+	</div>
 </div>
-
-
 </body>
 </html>

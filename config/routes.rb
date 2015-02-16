@@ -10,8 +10,14 @@ Rails.application.routes.draw do
     end
   end
 
+  resources :profiles, only: [:index, :show]
+  resources :profile do
+    resources :openings, only: [:index, :show]
+  end
+
   namespace :user do
     resources :profiles
+    resources :openings
   end
 
   

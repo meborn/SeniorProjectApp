@@ -1,0 +1,87 @@
+/*user profile index styles*/
+/*+++++++++ START ++++++++++++*/
+#user_profiles_header {
+	height:80px;
+}
+
+#user_profiles_header h2 {
+	margin-top: 0px;
+	line-height: 80px;
+}
+
+#user_profiles_new_link {
+	height: 80px;
+	line-height: 80px;
+	text-align: right;
+}
+
+/*+++++++++ END ++++++++++++*/
+
+/*user profile show styles*/
+/*+++++++++ START ++++++++++++*/
+
+#user_profile_view_all {
+	height:80px;
+	line-height: 80px;
+}
+/*+++++++++ END ++++++++++++*/
+
+/*user profile new styles*/
+/*+++++++++ START ++++++++++++*/
+
+
+
+/*+++++++++ END ++++++++++++*/
+
+/*#profile_header {
+	padding:0px;
+	position: relative;
+	box-shadow: 3px 0px 8px #888888, -3px 0px 8px #888888;
+}
+
+#wallpaper_container {
+	width:100%;
+}
+
+.wallpaper_img {
+	width:100%;
+}
+
+#avatar_container {
+	width:100%;
+	padding:10px;
+	background-color: rgba(51,51,51,1);
+	padding-left:20px;
+	padding-right: 20px;
+}
+
+.avatar_img {
+	display: block;
+	margin:0px auto;
+}
+
+#profile_content {
+	background-color: #FBFEF3;
+	box-shadow: 3px -1px 8px #888888, -3px -1px 8px #888888;
+}
+
+#profile_title {
+	color:#f2f2f2;
+}
+
+#profile_title h1 {
+	margin-top: 0px;
+}
+
+#profile_rating {
+	color: #F2E966;
+}
+
+#profile_edit {
+	padding-top: 10px;
+}
+
+#profile_description {
+	margin-top: 20px;
+}
+*/
