@@ -16,6 +16,8 @@
 							<th></th>
 							<th></th>
 							<th></th>
+							<th></th>
+							<th></th>
 						</tr>
 					</thead>
 					<tbody>
@@ -30,6 +32,8 @@
 										</td>
 										<td><%= profile.title %></td>
 										<td><%= link_to "Manage Profile", user_profile_path(profile) %></td>
+										<td><%= link_to "View Appointments", user_profile_appointments_path(profile) %></td>
+										<td><%= link_to "View Clients", user_profile_clients_path(profile) %></td>
 									</tr>
 								<% end %>
 						<% else %>

@@ -1,33 +1,63 @@
+<style>
+  #log_in_form {
+    border:1px solid #333333;
+    padding-bottom: 20px;
+    border-radius: 8px;
+  }
+  .orange_btn {
+    border-color: #EA7A58;
+    background-color: #EA7A58;
+  }
+  .orange_btn:hover {
+    border-color: #CD5A43;
+    background-color: #CD5A43;
+  }
+</style>
 <div class="row">
-  <div id="log_in_form" class="col-xs-12 col-md-4 col-md-offset-8">
-    <h2>Log in</h2>
-
-    <%- flash.each do |name, msg| -%>
-      <%= content_tag :div, msg, :class => "alert alert-danger" if msg.is_a?(String) %>
-    <%- end -%>  
-
-    <%= form_for(resource, as: resource_name, url: session_path(resource_name)) do |f| %>
-      <div class="form-group">
-        <%= f.label :email, :class => 'control-label'%>
-        <%= f.email_field :email, autofocus: true, :class => 'form-control' %>
-      </div>
-
-      <div class="form-group">
-        <%= f.label :password, :class => 'control-label' %>
-        <%= f.password_field :password, autocomplete: "off", :class => 'form-control' %>
-      </div>
-
-      <% if devise_mapping.rememberable? -%>
-        <div class="checkbox">
-          <label>
-            <%= f.check_box :remember_me %>Remeber Me
-          </label>
+  <div class="col-xs-12">
+    <div class="jumbotron">
+      <div class="row">
+        <div class="col-xs-8">
+            <h1>Header</h1>
+            <p>
+              Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. 
+            </p>
+            <p>
+              <%= link_to "Sign Up", new_user_registration_path, :class => "btn btn-primary btn-lg orange_btn" %>
+            </p>
         </div>
-      <% end -%>
-      <%= f.submit "Log in", :class => "btn btn-default btn-lg btn_large_orange" %>
-    <% end %> 
-    <div id="forgot_password_wrapper">
-      <%= link_to "Forgot your Password?", new_password_path(resource_name) %>
+        <div id="log_in_form" class="col-xs-4">
+            <h2>Log in</h2>
+
+            <%- flash.each do |name, msg| -%>
+              <%= content_tag :div, msg, :class => "alert alert-danger" if msg.is_a?(String) %>
+            <%- end -%>  
+
+            <%= form_for(resource, as: resource_name, url: session_path(resource_name)) do |f| %>
+                <div class="form-group">
+                  <%= f.label :email, :class => 'control-label'%>
+                  <%= f.email_field :email, autofocus: true, :class => 'form-control' %>
+                </div>
+
+                <div class="form-group">
+                  <%= f.label :password, :class => 'control-label' %>
+                  <%= f.password_field :password, autocomplete: "off", :class => 'form-control' %>
+                </div>
+
+                <% if devise_mapping.rememberable? -%>
+                  <div class="checkbox">
+                    <label>
+                      <%= f.check_box :remember_me %>Remeber Me
+                    </label>
+                  </div>
+                <% end -%>
+              <%= f.submit "Log in", :class => "btn btn-default btn-lg btn-block orange_btn" %>
+            <% end %> 
+          <div id="forgot_password_wrapper">
+            <%= link_to "Forgot your Password?", new_password_path(resource_name) %>
+          </div>
+        </div>
+      </div>
     </div>
   </div>
 </div>

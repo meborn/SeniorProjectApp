@@ -1,0 +1,9 @@
+<h2><%= @profile.title %> Client List</h2>
+<ul>
+	<% @clients.each do |client| %>
+		<li>
+			<p><%= client.name %></p>
+			<p><%= client.email %></p>
+		</li>
+	<% end %>
+</ul>

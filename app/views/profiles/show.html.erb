@@ -1,0 +1,144 @@
+<style>
+	.jumbotron {
+		position: relative;
+		height:387px;
+	}
+	.jumbotron_img {
+		position: absolute;
+		width:98%;
+		height:367px;
+		top:10px;
+		left:1%;
+		right:1%;
+		bottom:10px;
+		border:2px solid #333;
+		border-radius: 6px;
+	}
+	h2 {
+		display: inline-block;
+		background-color: #f2f2f2;
+		position: absolute;
+		bottom:50px;
+		left:0px;
+		color:#333333;
+		font-size: 72px;
+		padding:5px 10px;
+		padding-left:20px;
+		border-radius: 5px;
+	}
+	#avatar_row {
+		/*background-color: red;*/
+		background-color: #333333;
+		padding-top: 5px;
+		padding-bottom: 5px;
+	}
+	/*#avatar_col {
+		background-color: red;
+	}*/
+	.avatar_row_color {
+		color:#f2f2f2;
+	}
+
+	.profile_rating {
+		color: #D1B84F;
+		float:right;
+		text-align: right;
+	}
+
+	.profile_openings_link {
+		padding-top: 50px;
+		padding-right: 30px;
+	}
+	#profile_content {
+		padding-top: 30px;
+	}
+	#profile_description {
+		font-size: 18px;
+	}
+	.panel-title {
+		display: inline-block;
+	}
+</style>
+
+<div class="row">
+	<div class="col-xs-12">
+		<div class="jumbotron">
+			<% if @profile.wallpaper.content_type %>
+				<%= image_tag @profile.wallpaper.url(:large), :class => "jumbotron_img" %>
+			<% end %>
+			<h2><%= @profile.title %></h2>
+		</div>
+	</div>
+</div>
+<div id="avatar_row" class="row">
+	<div id="avatar_col" class="col-xs-2">
+		<% if @profile.avatar.content_type %>
+			<%= image_tag @profile.avatar.url(:small), :class => "img-responsive"%>
+		<% end %>
+	</div>
+	<div class="col-xs-7">
+		<div class="row">
+			<div class="col-xs-12">
+				<h3 class="avatar_row_color"><%= @profile.title %></h3>
+			</div>
+		</div>
+		<div class="row">
+			<div class="col-xs-12">
+				<% if @profile.city && @profile.state %>
+					<p class="avatar_row_color"><%= @profile.city %>, <%= @profile.state %></p>
+				<% else %>
+					<p class="avatar_row_color">No location data.</p>
+				<% end %>	
+			</div>
+		</div>
+		<div class="row">
+			<div class="col-xs-12">
+				<% if @user == @profile.user %>
+					<%= link_to "Edit Profile", edit_user_profile_path(@profile), :class => "btn btn-warning" %>
+				<% end %>
+			</div>
+		</div>
+	</div>
+	<div class="col-xs-3 profile_openings_link">
+		<%= link_to "View Openings", profile_openings_path(@profile), :class => "btn btn-success btn-lg btn-block" %>
+	</div>
+</div>
+<div id="profile_content" class="row">
+	<div class="col-xs-4">
+		<div class="panel panel-default">
+			<div class="panel-heading">
+				<h3 class="panel-title">Reviews</h3>
+				<div class="profile_rating">
+					<span class="glyphicon glyphicon-star" aria-hidden="true"></span>
+					<span class="glyphicon glyphicon-star" aria-hidden="true"></span>
+					<span class="glyphicon glyphicon-star" aria-hidden="true"></span>
+					<span class="glyphicon glyphicon-star" aria-hidden="true"></span>
+					<span class="glyphicon glyphicon-star-empty" aria-hidden="true"></span>
+				</div>
+			</div>
+			<ul class="list-group">
+				<li class="list-group-item">
+					Prosciutto shankle boudin rump pork. Beef ground round bacon kevin doner shankle andouille cow prosciutto turkey chicken sirloin. Pork chop ham bresaola tenderloin. Tail picanha bresaola, andouille rump pancetta tongue hamburger.
+				</li>
+				<li class="list-group-item">
+					Prosciutto shankle boudin rump pork. Beef ground round bacon kevin doner shankle andouille cow prosciutto turkey chicken sirloin. Pork chop ham bresaola tenderloin. Tail picanha bresaola, andouille rump pancetta tongue hamburger.
+				</li>
+				<li class="list-group-item">
+					Prosciutto shankle boudin rump pork. Beef ground round bacon kevin doner shankle andouille cow prosciutto turkey chicken sirloin. Pork chop ham bresaola tenderloin. Tail picanha bresaola, andouille rump pancetta tongue hamburger.
+				</li>
+			</ul>
+		</div>
+	</div>
+	<div class="col-xs-8">
+		<div class="panel panel-default">
+			<div class="panel-heading">
+				<h3 class="panel-title">Description</h3>
+			</div>
+			<div class="panel-body">
+				<p id="profile_description">
+					<%= @profile.description %>
+				</p>
+			</div>
+		</div>
+	</div>
+</div>

@@ -1,7 +1,20 @@
-
+/*e9573f*/
 body {
 	background-color: #F2F2F2;
 
+}
+
+tr.strikeout_table_row td {
+	position: relative;
+}
+
+tr.strikeout_table_row td:before {
+	content: " ";
+	position: absolute;
+	top:50%;
+	left:0;
+	border-bottom: 1px solid #000;
+	width:100%;
 }
 
 

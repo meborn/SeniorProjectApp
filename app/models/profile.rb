@@ -9,4 +9,7 @@ class Profile < ActiveRecord::Base
 
   has_attached_file :wallpaper, :styles => { :small => "150x1500#", :large => "1000x387#" }
   validates_attachment_content_type :wallpaper, :content_type => /\Aimage\/.*\Z/
+
+  has_many :clients, through: :appointments, source: :user
+  has_many :appointments
 end

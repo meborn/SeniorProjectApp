@@ -11,7 +11,19 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20150216000854) do
+ActiveRecord::Schema.define(version: 20150216192402) do
+
+  create_table "appointments", force: true do |t|
+    t.integer  "opening_id"
+    t.integer  "user_id"
+    t.integer  "profile_id"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
+
+  add_index "appointments", ["opening_id"], name: "index_appointments_on_opening_id"
+  add_index "appointments", ["profile_id"], name: "index_appointments_on_profile_id"
+  add_index "appointments", ["user_id"], name: "index_appointments_on_user_id"
 
   create_table "openings", force: true do |t|
     t.datetime "start"

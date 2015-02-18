@@ -1,0 +1,17 @@
+<h2>Appointments for <%= @profile.title %></h2>
+<ul>
+	
+	<% @appointments.each do |appointment| %>
+		<li>
+			<h3><%= appointment.opening.start.strftime('%B %d, %Y') %></h3>
+			<p><%= appointment.opening.start.strftime('%I:%M') %> - <%= appointment.opening.end.strftime('%I:%M %p') %></p>
+			<span>Client: <%= appointment.user.name %>, <%= appointment.user.email %></span>
+		</li>
+	<% end %>
+	
+</ul>
+<% if @appointments.count == 0%>
+		<div class="alert alert-danger">
+			<p>There are no appointments for this profile</p>
+		</div>
+	<% end %>

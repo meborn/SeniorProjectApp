@@ -10,14 +10,20 @@ Rails.application.routes.draw do
     end
   end
 
-  resources :profiles, only: [:index, :show]
-  resources :profile do
-    resources :openings, only: [:index, :show]
+  resources :profiles, only: [:index, :show] do
+    resources :openings, only: [:index] do
+      resources :appointments, only: [:new, :create]
+    end
+      
   end
 
   namespace :user do
-    resources :profiles
     resources :openings
+    resources :profiles
+    resources :profile do
+      resources :appointments
+      resources :clients, only: [:index, :show]
+    end
   end
 
   

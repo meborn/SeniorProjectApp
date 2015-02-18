@@ -22,13 +22,23 @@
 					<tbody>
 						<% @openings.each do |opening| %>
 							<% if opening.start.to_i > DateTime.now.to_i %>
-								<tr>
-									<td><%= opening.start.strftime('%B %d, %Y') %></td>
-									<td><%= opening.start.strftime('%I:%M %p') %> - <%= opening.end.strftime('%I:%M %p') %></td>
-									<td><%= link_to "Edit", edit_user_opening_path(opening), :class => "btn btn-warning" %></td>
-									<td><%= link_to "Delete", user_opening_path(opening), :class => "btn btn-danger", method: :delete %></td>
-								</tr>
+								<% if appointment = Appointment.where(:opening => opening).first %>
+									<% profile = Profile.where(:id => appointment.profile).first %>
+									<tr>
+										<td><%= opening.start.strftime('%B %d, %Y') %></td>
+										<td><%= opening.start.strftime('%I:%M %p') %> - <%= opening.end.strftime('%I:%M %p') %></td>
+										<td colspan="2"><%= link_to "View Appointment", user_profile_appointment_path(profile, appointment), :class => "btn btn-success" %></td>
+									</tr>
+								<% else %>
+									<tr>
+										<td><%= opening.start.strftime('%B %d, %Y') %></td>
+										<td><%= opening.start.strftime('%I:%M %p') %> - <%= opening.end.strftime('%I:%M %p') %></td>
+										<td><%= link_to "Edit", edit_user_opening_path(opening), :class => "btn btn-warning" %></td>
+										<td><%= link_to "Delete", user_opening_path(opening), :class => "btn btn-danger", method: :delete %></td>
+									</tr>
+								<% end %>
 							<% end %>
+							
 							
 						<% end %>
 					</tbody>

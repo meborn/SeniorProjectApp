@@ -12,6 +12,7 @@ class User::ProfilesController < ApplicationController
 	def show
 		@rating = 4
 		@profile = Profile.find(params[:id])
+		@clients = @profile.clients
 	end
 
 	def new

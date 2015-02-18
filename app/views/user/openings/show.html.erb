@@ -1,2 +1,8 @@
-<%= @opening.start %>
-<%= @opening.end %>
+<style>
+	#date {
+		margin-top: 20px;
+	}
+</style>
+<%= link_to "Back to Openings", user_openings_path %>
+<p id="date"><strong><%= @opening.start.strftime('%B %d, %Y') %></strong></p>
+<p><%= @opening.start.strftime('%I:%M') %> - <%= @opening.start.strftime('%I:%M %p') %></p>
