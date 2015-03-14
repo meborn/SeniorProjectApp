@@ -12,4 +12,5 @@ class Profile < ActiveRecord::Base
 
   has_many :clients, through: :appointments, source: :user
   has_many :appointments
+  has_many :openings
 end

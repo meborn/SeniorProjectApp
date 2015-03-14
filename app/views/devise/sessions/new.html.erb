@@ -1,18 +1,77 @@
 <style>
   #log_in_form {
-    border:1px solid #333333;
-    padding-bottom: 20px;
+    border:2px solid #333333;
+    padding:10px;
+    padding-bottom: 30px;
     border-radius: 8px;
+    font-family: 'Lato', sans-serif;
+    font-weight: 300;
+    color:#f2f2f2;
   }
-  .orange_btn {
+  /*.orange_btn {
     border-color: #EA7A58;
     background-color: #EA7A58;
   }
   .orange_btn:hover {
     border-color: #CD5A43;
     background-color: #CD5A43;
+  }*/
+  #sign_in_container {
+    width:100%;
+    height:600px;
+    background-color: #e9573f;
+    padding-top: 50px;
+  }
+
+  #forgot_password_wrapper{
+   padding-top: 10px;
+  }
+  #forgot_password_wrapper a{
+    color:#f2f2f2;
   }
 </style>
+<div id="sign_in_container">
+  <div class="container">
+    <div class="row">
+      <div class="col-xs-7">
+
+      </div>
+      <div class="col-xs-5">
+          <div id="log_in_form">
+              <h2>Log In</h2>
+
+              <%- flash.each do |name, msg| -%>
+                <%= content_tag :div, msg, :class => "alert alert-danger" if msg.is_a?(String) %>
+              <%- end -%>  
+
+              <%= form_for(resource, as: resource_name, url: session_path(resource_name)) do |f| %>
+                  <div class="form-group">
+                    <%= f.label :email, :class => 'control-label'%>
+                    <%= f.email_field :email, autofocus: true, :class => 'form-control' %>
+                  </div>
+
+                  <div class="form-group">
+                    <%= f.label :password, :class => 'control-label' %>
+                    <%= f.password_field :password, autocomplete: "off", :class => 'form-control' %>
+                  </div>
+
+                  <% if devise_mapping.rememberable? -%>
+                    <div class="checkbox">
+                      <label>
+                        <%= f.check_box :remember_me %>Remeber Me
+                      </label>
+                    </div>
+                  <% end -%>
+                <%= f.submit "Log in", :class => "btn btn-default btn-lg btn-block my_btn" %>
+              <% end %> 
+              <div id="forgot_password_wrapper">
+                <%= link_to "Forgot your Password?", new_password_path(resource_name) %>
+              </div>
+          </div>
+      </div>
+    </div>
+  </div>
+</div>
 <div class="row">
   <div class="col-xs-12">
     <div class="jumbotron">
@@ -26,37 +85,7 @@
               <%= link_to "Sign Up", new_user_registration_path, :class => "btn btn-primary btn-lg orange_btn" %>
             </p>
         </div>
-        <div id="log_in_form" class="col-xs-4">
-            <h2>Log in</h2>
-
-            <%- flash.each do |name, msg| -%>
-              <%= content_tag :div, msg, :class => "alert alert-danger" if msg.is_a?(String) %>
-            <%- end -%>  
-
-            <%= form_for(resource, as: resource_name, url: session_path(resource_name)) do |f| %>
-                <div class="form-group">
-                  <%= f.label :email, :class => 'control-label'%>
-                  <%= f.email_field :email, autofocus: true, :class => 'form-control' %>
-                </div>
-
-                <div class="form-group">
-                  <%= f.label :password, :class => 'control-label' %>
-                  <%= f.password_field :password, autocomplete: "off", :class => 'form-control' %>
-                </div>
-
-                <% if devise_mapping.rememberable? -%>
-                  <div class="checkbox">
-                    <label>
-                      <%= f.check_box :remember_me %>Remeber Me
-                    </label>
-                  </div>
-                <% end -%>
-              <%= f.submit "Log in", :class => "btn btn-default btn-lg btn-block orange_btn" %>
-            <% end %> 
-          <div id="forgot_password_wrapper">
-            <%= link_to "Forgot your Password?", new_password_path(resource_name) %>
-          </div>
-        </div>
+        
       </div>
     </div>
   </div>

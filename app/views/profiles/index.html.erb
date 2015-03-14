@@ -1,39 +1,104 @@
-<div class="row">
-	<div class="col-xs-12">
-		<h2>Profiles</h2>
+<style>
+	#profile_search_form {
+		text-align: right;
+		margin-top: 20px;
+	}
+	#profile_search_form .input-group {
+		margin-right: 10px;
+	}
+	#profile_where_header h2{
+		margin-top: 20px;
+		font-family: 'Lato', sans-serif;
+		font-weight: 300;
+		color:#333333;
+	}
+	#profile_container_panel {
+		background-color: transparent;
+		margin-top:20px;
+		border:1px solid #333;
+	}
+	/*#profile_container_panel a{
+		background-color: transparent;
+	}*/
+	.profile_info_container {
+		display: inline-block;
+		padding-left: 10px;
+	}
+	.list-group-item {
+		background-color: transparent;
+	}
+</style>
+<div class="container">
+	<div id="alert_container" class="row">
+		<div class="col-xs-12">
+			<% if flash[:success] %>
+				<div class="alert alert-success" role="alert">
+					<%= flash[:success] %>
+				</div>
+			<% end %>
+			<% if flash[:error] %>
+				<div class="alert alert-danger" role="alert">
+					<%= flash[:error] %>
+				</div>
+			<% end %>
+		</div>
 	</div>
-</div>
-<div class="row">
-	<div class="col-xs-12">
-		<table class="table">
-			<thead>
-				<tr>
-					<th></th>
-					<th></th>
-					<th></th>
-				</tr>
-			</thead>
-			<tbody>
-				<% @profiles.each do |profile| %>
-					<tr>
-						<td>
-							<% if profile.avatar.content_type %>
-								<%= image_tag profile.avatar.url(:thuumb) %>
+	<div class="row">
+		<div id="profile_where_header" class="col-xs-7">
+			<div class="row">
+				<div class="col-xs-12">
+					<% if @bad_zip %>
+						<h2>Invalid Zip Code</h2>
+					<% else %>
+						<% if !@no_zip %>
+							<h2><%= @city %>, <%= @state %></h2>
+						<% end %>
+					<% end %>
+				</div>
+			</div>
+			<div class="row">
+				<div class="col-xs-12">
+					<div id="profile_container_panel" class="panel default-panel">
+						<div class="list-group">
+							<% @profiles.each do |profile| %>
+								<%= link_to profile_path(profile), :class => "list-group-item" do %>
+									<% if profile.avatar.content_type %>
+										<%= image_tag profile.avatar.url(:thuumb) %>
+									<% else %>
+										<%= image_tag "default-profile-avatar.png" %>
+									<% end %>
+									<div class="profile_info_container">
+										<h5><%= profile.title %></h5>
+										<span class="glyphicon glyphicon-star" aria-hidden="true"></span>
+										<span class="glyphicon glyphicon-star" aria-hidden="true"></span>
+										<span class="glyphicon glyphicon-star" aria-hidden="true"></span>
+										<span class="glyphicon glyphicon-star" aria-hidden="true"></span>
+										<span class="glyphicon glyphicon-star-empty" aria-hidden="true"></span>
+									</div>
+									
+								<% end %>
 							<% end %>
-						</td>
-						<td>
-							<strong><%= profile.title %></strong>
-							</br>
-							<% if profile.city && profile.state %>
-								<span><%= profile.city %>, <%= profile.state %></span>
-							<% else %>
-								<span>City and State unavailable</span>
+							<% if @profiles.count == 0 %>
+								<div class="alert alert-danger">
+									<p>There are no profiles available in <%= @city %>, <%= @state %>.</p>
+								</div>
 							<% end %>
-						</td>
-						<td><%= link_to "View Profile", profile_path(profile), :class => "btn btn-info" %></td>
-					</tr>
-				<% end %>
-			</tbody>
-		</table>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+		<div id="profile_search_form" class="col-xs-5">
+			<form class="form-inline" method="get" action="/profiles">
+				<div class="input-group">
+					<input type="text" name="zip" class="form-control input-lg" placeholder="Enter Zip Code">
+					<div class="input-group-addon">
+						<span class="glyphicon glyphicon-search"></span>
+					</div>
+				</div>
+				
+				<button type="submit" class="btn btn-default btn-lg my_btn">Find Me!</button>				
+			</form>
+		</div>
 	</div>
 </div>

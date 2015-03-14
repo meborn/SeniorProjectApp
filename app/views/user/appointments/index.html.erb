@@ -6,6 +6,7 @@
 			<h3><%= appointment.opening.start.strftime('%B %d, %Y') %></h3>
 			<p><%= appointment.opening.start.strftime('%I:%M') %> - <%= appointment.opening.end.strftime('%I:%M %p') %></p>
 			<span>Client: <%= appointment.user.name %>, <%= appointment.user.email %></span>
+			<p><%= link_to "View", user_profile_appointment_path(@profile, appointment) %></p>
 		</li>
 	<% end %>
 	

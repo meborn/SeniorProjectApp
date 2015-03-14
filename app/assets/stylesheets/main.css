@@ -4,45 +4,31 @@ body {
 
 }
 
-tr.strikeout_table_row td {
-	position: relative;
-}
-
-tr.strikeout_table_row td:before {
-	content: " ";
-	position: absolute;
-	top:50%;
-	left:0;
-	border-bottom: 1px solid #000;
-	width:100%;
-}
-
-
-/*#log_in_form {
-	background-color: #FFFEFA;
-	border-radius: 5px;
-	padding:20px;
-}
-
-#log_in_form h2 {
-	margin-top: 0px;
-}
-
-.btn_large_orange {
-	width:100%;
-	background-color: #F25749;
-	color:#FFFEFA;
-}
-
-.btn_large_orange:hover {
+.my_btn {
 	background-color: transparent;
-	border:1px solid #F25749;
+	border:1px solid #333333;
+	color:#333333;
 }
 
-#forgot_password_wrapper {
-	margin-top: 20px;
-	text-align: center;
-}*/
+.my_btn:hover {
+	background-color: #FF5F45;
+	color:#333333;
+	border:1px solid #333333;
+}
+
+.my_btn_orange {
+	background-color: #e9573f;
+	border:1px solid #333333;
+	color:#333333;
+}
+
+.my_btn_orange:hover {
+	background-color: #FF5F45;
+	color:#333333;
+	border:1px solid #333333;
+}
+
+
 
 
 

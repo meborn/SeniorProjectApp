@@ -1,0 +1,22 @@
+<div id="static_main_container">
+		<div id="static_header_container">
+			<%= render :partial => "shared/menus/public_menu.html.erb" %>
+			<div class="container">
+				<div id="form_container" class="row">
+					<div class="col-xs-6 col-xs-offset-3">
+						<form method="get" action="/profiles">
+							<input type="text" name="zip" class="form-control input-lg" placeholder="Enter Zip Code">
+							<i class="form-control-feedback glyphicon glyphicon-search"></i>
+							<div class="col-xs-6 col-xs-offset-3">
+								<button type="submit" class="btn btn-default btn-lg btn-block my_btn">Find Me!</button>
+							</div>
+							
+						</form>
+					</div>
+				</div>
+			</div>
+		</div>
+		<div id="static_content_container">
+
+		</div>
+</div>

@@ -19,6 +19,10 @@
 		</div>
 		
 	</div>
+	<div class="form-group">
+		<%= f.label :profile %>
+		<%= f.collection_select(:profile, @profiles, :id, :title, {:prompt => 'Please select profile'}, {:class => "form-control"}) %>
+	</div>
 	<%= f.submit "Save Opening", :class => 'btn btn-default' %>
 <% end %>
 

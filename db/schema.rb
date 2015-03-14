@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20150216192402) do
+ActiveRecord::Schema.define(version: 20150314210348) do
 
   create_table "appointments", force: true do |t|
     t.integer  "opening_id"
@@ -31,8 +31,10 @@ ActiveRecord::Schema.define(version: 20150216192402) do
     t.integer  "user_id"
     t.datetime "created_at"
     t.datetime "updated_at"
+    t.integer  "profile_id"
   end
 
+  add_index "openings", ["profile_id"], name: "index_openings_on_profile_id"
   add_index "openings", ["user_id"], name: "index_openings_on_user_id"
 
   create_table "profiles", force: true do |t|
