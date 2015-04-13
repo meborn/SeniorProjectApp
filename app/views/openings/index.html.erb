@@ -91,7 +91,7 @@
 					<tbody>
 						<% counter = 0 %>
 						<% @openings.each do |opening| %>
-							<% if !appointment = Appointment.where(:opening => opening).first %>
+							
 								<tr>
 									<td><%= opening.start.strftime('%B %d, %Y') %></td>
 									<td>
@@ -107,7 +107,6 @@
 									</td>
 								</tr>
 								<% counter += 1 %>
-							<% end %>
 						<% end %>
 					</tbody>
 				</table>

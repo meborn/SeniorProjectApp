@@ -1,0 +1,95 @@
+.calendar_month_form {
+		display: inline-block;
+}
+
+.panel_heading_text {
+	display: inline-block;
+	margin: 0px;
+}
+
+.my-calendar .panel_heading_text {
+	display: block;
+	text-align: center;
+}
+
+.my-calendar .panel-heading {
+	position: relative;
+	padding-top: 0px;
+	padding-bottom: 0px;
+}
+
+table.table-bordered td.selected_day {
+	background-color: #f5f5f5;
+	
+}
+table.table-bordered td:hover {
+	background-color: #f5f5f5;
+}
+
+#prev_btn {
+	position: absolute;
+	left:5px;
+	top:15px;
+}
+
+#next_btn {
+	position: absolute;
+	right:5px;
+	top: 15px;
+}
+
+.profile_color {
+	display: inline-block;
+	vertical-align: middle;
+	border-radius: 5px;
+}
+
+.glyph_color {
+	display: inline-block;
+	vertical-align: middle;
+	font-size: 12px;
+}
+
+.a_profile_color {
+	display: block;
+	height:4px;
+	/*margin-bottom: 4px;*/
+}
+.b_profile_color {
+	display: block;
+	height:6px;
+	/*margin-bottom: 4px;*/
+}
+
+.spacer {
+	height:4px;
+}
+
+
+.small_profile_title {
+	display: inline-block;
+	padding-left: 10px;
+	vertical-align: middle;
+}
+
+.small_profile_title p {
+	margin: 0px;
+}
+
+li.list-group-item {
+	position: relative;
+}
+
+li.list-group-item:hover {
+	background-color: #f5f5f5;
+	color:#333;
+}
+
+li a {
+	 color:#333;
+	text-decoration: none;
+}
+
+.small_profile_title em {
+	font-size: 12px;
+}

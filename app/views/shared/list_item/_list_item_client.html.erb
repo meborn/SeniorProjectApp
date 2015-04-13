@@ -1,0 +1,21 @@
+
+<li class='list-group-item'>
+	<a href='/user/appointments/<%= e.id %>'>
+		<div class='row'>
+			<div class='col-xs-12'>
+				<% if e.profile.avatar.content_type %>
+					<%= image_tag e.profile.avatar.url(:thuumb), :class => "xs_profile_avatar" %>
+				<% end %>
+				<div class='small_profile_title'>
+					<p><%= e.profile.title %></p>
+				</div>
+			</div>
+			
+		</div>
+		<div class="row">
+			<div class='col-xs-6 col-xs-offset-6'>
+				<%= e.start.strftime('%I:%M')%> - <%= e.end.strftime('%I:%M %P') %>
+			</div>
+		</div>
+	</a>
+</li>

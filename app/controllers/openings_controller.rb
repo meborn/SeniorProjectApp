@@ -6,7 +6,7 @@ class OpeningsController < ApplicationController
 
 	def index
 		current_date = DateTime.now
-		@openings = Opening.where(:user => @owner).where("start >= ?", current_date).order(:start)
+		@openings = Opening.where(:profile => @profile).where("start >= ?", current_date).order(:start)
 	end
 
 	private

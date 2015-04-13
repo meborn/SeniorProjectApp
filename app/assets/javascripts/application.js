@@ -14,5 +14,8 @@
 //= require jquery_ujs
 //= require moment
 //= require bootstrap-datetimepicker
+//= require jquery.minicolors
+//= require sweet-alert
+//= require sweet-alert-confirm
 //= require turbolinks
 //= require_tree .

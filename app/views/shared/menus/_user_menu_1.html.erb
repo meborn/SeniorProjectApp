@@ -1,0 +1,15 @@
+<nav>
+	<div class="container">
+		<div class="row">
+			<div id="logo" class="col-xs-4">
+				<span class="glyphicon glyphicon-calendar" aria-hidden="true"></span>
+				<h1>BookMe</h1>
+			</div>
+			<div id="user_menu" class="col-xs-8">
+				<%= link_to "My Dashboard", authenticated_root_path %>
+				<%= link_to "Sign Out", destroy_user_session_path, method: :delete %>
+			</div>
+		</div>
+	</div>
+</nav>
+

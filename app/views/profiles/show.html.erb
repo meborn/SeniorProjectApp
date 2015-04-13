@@ -68,7 +68,21 @@
 						<% end %>
 					</div>
 					<div id="profile_openings_btn" class="col-xs-3">
-						<%= link_to "View Openings", profile_openings_path(@profile), :class =>'btn btn-default btn-lg btn-block my_btn_orange' %>
+						<% if @profile.user == @user %>
+							<%= link_to "Edit Profile", edit_user_profile_path(@profile), :class =>'btn btn-default btn-lg btn-block my_btn_orange' %>
+						<% elsif @is_client &&  %>
+							<%= link_to "View Openings", profile_openings_path(@profile), :class =>'btn btn-default btn-lg btn-block my_btn_orange' %>
+						<% else %>
+							<% if @client %>
+								<%= form_for [@profile, @client] do |f| %>
+									<%= f.submit "Client Request", :class => 'btn btn-default btn-lg btn-block my_btn_orange'%>
+								<% end %>
+							<% else %>
+								<a href="#" class="btn btn-default btn-lg btn-block my_btn_orange">Pending Client Approval</a>
+							<% end %>
+							
+						<% end %>
+						
 					</div>
 				</div>
 			</div>

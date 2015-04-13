@@ -1,4 +1,10 @@
-<h1><%= @appointment.profile.title %></h1>
-<p><strong>Appointment with: </strong> <%=@appointment.user.name %> <%= @appointment.user.email %></p>
-<p><strong>Date: </strong><%= @appointment.opening.start.strftime('%B %d, %Y') %></p>
-<p><strong>Time: </strong><%= @appointment.opening.start.strftime('%I:%M') %> - <%= @appointment.opening.end.strftime('%I:%M %p') %></p>
+<% if @appointment.owner == @user %>
+	<h1><%= @appointment.profile.title %></h1>
+	<p><strong>Date: </strong><%= @appointment.start.strftime('%B %d, %Y') %></p>
+	<p><strong>Time: </strong><%= @appointment.start.strftime('%I:%M') %> - <%= @appointment.end.strftime('%I:%M %p') %></p>
+	<%= link_to @appointment.client.name, users_path(@appointment.client) %>
+<% else %>
+
+<% end %>
+
+

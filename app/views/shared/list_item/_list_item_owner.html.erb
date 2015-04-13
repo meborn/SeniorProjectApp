@@ -1,0 +1,19 @@
+<li class='list-group-item'>
+	<a href='/user/openings/<%= e.id %>'>
+		<div class='row'>
+			<div class='col-xs-12 col-sm-6 col-md-6'>
+				<span class='glyphicon glyphicon-ok glyph_color profile_color_<%= e.profile.title.gsub(/\s+/,"")%>' aria-hidden='true'></span>
+				<div class='small_profile_title'>
+					<p><%= e.profile.title %></p>
+					<em class='text-success'><%= e.client.email %></em>
+				</div>
+			</div>
+			
+		</div>
+		<div class="row">
+			<div class='col-xs-6 col-xs-offset-6'>
+				<%= e.start.strftime('%I:%M')%> - <%= e.end.strftime('%I:%M %P') %>
+			</div>
+		</div>
+	</a>
+</li>

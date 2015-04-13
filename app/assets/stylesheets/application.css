@@ -12,6 +12,8 @@
  *
  *= require bootstrap
  *= require bootstrap-datetimepicker
+ *= require jquery.minicolors
+ *= require sweet-alert
  *= require_tree .
  *= require_self
  */

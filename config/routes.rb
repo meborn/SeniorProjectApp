@@ -3,26 +3,34 @@ Rails.application.routes.draw do
 
   devise_scope :user do
     authenticated :user do
-      root :to => 'users#show', as: :authenticated_root
+      root :to => 'user/users#show', as: :authenticated_root
     end
     unauthenticated :user do
       root :to => 'static#home', as: :unauthenticated_root
     end
   end
 
+  resources :users, only: [:show]
+
   resources :profiles, only: [:index, :show] do
     resources :openings, only: [:index] do
       resources :appointments, only: [:new, :create]
     end
-      
+    resources :clients, only: [:create]  
   end
 
   namespace :user do
-    resources :openings
+    resources :openings, except: [:index, :show] 
+    resources :openings, only: [:show] do
+      post :delete_recurring
+    end
     resources :profiles
-    resources :profile do
-      resources :appointments
-      resources :clients, only: [:index, :show]
+    resources :appointments, except: [:index, :new, :create]
+    resources :schedule, only: [:index]
+    resources :profiles
+    resources :clients, only: [:index, :show, :destroy] do
+      post :approve_client
+      resources :appointments, only: [:new, :create]
     end
   end
 

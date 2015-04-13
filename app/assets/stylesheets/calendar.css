@@ -1,0 +1,61 @@
+.my-calendar .table th {
+	text-align: center;
+}
+.my-calendar .table th, .my-calendar .table td {
+	width:14%;
+}
+
+.my-calendar .table td {
+	padding:0px;
+	padding-bottom: 5px;
+}
+
+.my-calendar .table td a {
+	display: block;
+	padding-left:5px;
+	padding-right:5px;
+	margin:0px;
+	color:#000;
+	text-decoration: none;
+}
+
+.date_num {
+	padding: 5px;
+}
+
+.profile_color {
+	display: inline-block;
+	width:10px;
+	height:10px;
+}
+
+.my-calendar .table td {
+	height: 50px;
+}
+
+@media (max-width: 768px) {
+	.my-calendar .table td {
+		height: 50px;
+	}
+	.my-calendar .table th, .my-calendar .table td {
+		width:13%;
+	}
+}
+
+@media (min-width: 769px) and (max-width: 992px) {
+	.my-calendar .table td {
+		height: 50px;
+	}
+}
+
+@media (min-width: 993px) and (max-width:1200px) {
+	.my-calendar .table td {
+		height: 50px;
+	}
+}
+
+@media (min-width: 1201px) {
+	.my-calendar .table td {
+		height: 100px;
+	}
+}

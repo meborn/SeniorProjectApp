@@ -4,9 +4,7 @@ class User::OpeningsController < ApplicationController
 	before_action :get_user
 	before_action :get_profiles
 
-	def index
-		@openings = Opening.where(:user => @user).order(:start)
-	end
+	respond_to :html, :js
 
 	def show
 		@opening = Opening.find(params[:id])
@@ -14,6 +12,13 @@ class User::OpeningsController < ApplicationController
 
 	def new
 		@opening = Opening.new
+		@openings = Opening.where(:user => @user)
+		@client_appointments = Appointment.where(:client => @user)
+		@owner_appointments = Appointment.where(:owner => @user)
+		@events = @openings + @client_appointments + @owner_appointments
+		@events.sort_by! do |item|
+			item[:start]
+		end
 	end
 
 	def create
@@ -23,13 +28,42 @@ class User::OpeningsController < ApplicationController
 			flash[:error] = "End DateTime must be after Start DateTime."
 			redirect_to new_user_opening_path
 		elsif future_date?
-			if !date_conflicts?
+			openings = Opening.where(:user => @user)
+			owner_appointments = Appointment.where(:owner => @user)
+			client_appointments = Appointment.where(:client => @user)
+
+			opening_conflict = date_conflict?(openings, start_datetime, end_datetime)
+			owner_conflict = date_conflict?(owner_appointments, start_datetime, end_datetime)
+			client_conflict = date_conflict?(client_appointments, start_datetime, end_datetime)
+			if !opening_conflict && !owner_conflict && !client_conflict
 				@opening = Opening.new
 				@opening.start = start_datetime
 				@opening.end = end_datetime
 				@opening.user = @user
 				@opening.profile_id = safe_params[:profile]
 				if @opening.save
+					if params[:sunday].present?
+						recurring_date(params[:sunday], params[:duration_num])
+					end
+					if params[:monday].present?
+						recurring_date(params[:monday], params[:duration_num])
+					end
+					if params[:tuesday].present?
+						recurring_date(params[:tuesday], params[:duration_num])
+					end
+					if params[:wednesday].present?
+						recurring_date(params[:wednesday], params[:duration_num])
+					end
+					if params[:thursday].present?
+						recurring_date(params[:thursday], params[:duration_num])
+					end
+					if params[:friday].present?
+						recurring_date(params[:friday], params[:duration_num])
+					end
+					if params[:saturday].present?
+						recurring_date(params[:saturday], params[:duration_num])
+					end
+
 					flash[:success] = "Opening Saved!"
 					redirect_to user_opening_path(@opening)
 				else
@@ -37,8 +71,12 @@ class User::OpeningsController < ApplicationController
 					render 'new'
 				end
 			else
-				flash[:error] = "You have openings that conflict with these dates and times."
-				redirect_to new_user_opening_path
+				if opening_conflict
+					flash[:error] = "Unable to save this opening. You have an opening that conflicts."
+				else
+					flash[:error] = "Unable to save this opening. You have an appointment that conflicts."
+				end
+				redirect_to new_user_opening_path	
 			end
 		else
 			flash[:error] = "You can't make openings in the past."
@@ -65,12 +103,39 @@ class User::OpeningsController < ApplicationController
 
 	def destroy
 		@opening = Opening.find(params[:id])
+		month = @opening.start.strftime('%m').to_i
+		day = @opening.start.strftime('%d').to_i
+		year = @opening.start.strftime('%Y').to_i
 		if @opening.destroy
 			flash[:success] = "Opening Deleted!"
-			redirect_to user_openings_path
 		else
 			flash[:error] = "Unable to delete opening!"
-			redirect_to user_openings_path
+		end
+		if request.xhr?
+			render js: "document.location = '#{user_schedule_index_path}?month=#{month}&day=#{day}&year=#{year}'"
+		else
+			redirect_to user_schedule_index_path
+		end
+	end
+
+	def delete_recurring
+		opening = Opening.find(params[:opening_id])
+		month = opening.start.strftime('%m').to_i
+		day = opening.start.strftime('%d').to_i
+		year = opening.start.strftime('%Y').to_i
+		openings = Opening.where(:user => @user).where("start >= ?", opening.start)
+		count = 0;
+		openings.each do |o|
+			if o.start.strftime('%A') == opening.start.strftime('%A') && o.start.strftime('%I:%M') == opening.start.strftime('%I:%M') && o.end.strftime('%I:%M') == opening.end.strftime('%I:%M')
+				o.destroy
+				count += 1;
+			end
+		end
+		flash[:success] = "There were #{count} openings deleted"
+		if request.xhr?
+			render js: "document.location = '#{user_schedule_index_path}?month=#{month}&day=#{day}&year=#{year}'"
+		else
+			redirect_to user_schedule_index_path
 		end
 	end
 
@@ -86,20 +151,60 @@ class User::OpeningsController < ApplicationController
 		end
 	end
 
-	def date_conflicts?
-		start_date = DateTime.strptime(safe_params[:start], '%Y/%m/%d %I:%M %p').to_i
-		end_date = DateTime.strptime(safe_params[:end], '%Y/%m/%d %I:%M %p').to_i
-		current_openings = Opening.where(:user => @user)
-		current_openings.each do |opening|
-			opening_start = opening.start.to_i
-			opening_end = opening.end.to_i
-			if start_date >= opening_start && start_date < opening_end
+	def date_conflict?(dates, start_date, end_date)
+		start_date = start_date.to_i
+		end_date = end_date.to_i
+		dates.each do |date|
+			start = date.start.to_i
+			ending = date.end.to_i
+			if start_date >= start && start_date < ending
 				return true
-			elsif end_date > opening_start && end_date <= opening_end
+			elsif end_date > start && end_date <= ending
 				return true
 			end
 		end
 		return false
+	end
+
+	def recurring_date(day_num, duration_num)
+		day_num = day_num.to_i
+		duration_num = duration_num.to_i
+		start_datetime = DateTime.strptime(safe_params[:start], '%Y/%m/%d %I:%M %p')
+		end_datetime = DateTime.strptime(safe_params[:end], '%Y/%m/%d %I:%M %p')
+		duration_num.times do |k|
+			starting = start_datetime + k.weeks
+			ending = end_datetime + k.weeks
+			#get the day of the week of the start date
+			start_datetime_wday = starting.wday
+			if day_num > start_datetime_wday
+				skip_num = day_num - start_datetime_wday
+				next_start_datetime = starting + skip_num.days
+				next_end_datetime = ending + skip_num.days
+			else
+				skip_num = 7 - start_datetime_wday
+				next_start_datetime = starting + skip_num.days + day_num.days
+				next_end_datetime = ending + skip_num.days + day_num.days
+			end
+			openings = Opening.where(:user => @user)
+			owner_appointments = Appointment.where(:owner => @user)
+			client_appointments = Appointment.where(:client => @user)
+
+			opening_conflict = date_conflict?(openings, next_start_datetime, next_end_datetime)
+			owner_conflict = date_conflict?(owner_appointments, next_start_datetime, next_end_datetime)
+			client_conflict = date_conflict?(client_appointments, next_start_datetime, next_end_datetime)
+			if !opening_conflict && !owner_conflict && !client_conflict
+				opening = Opening.new
+				opening.start = next_start_datetime
+				opening.end = next_end_datetime
+				opening.user = @user
+				opening.profile_id = safe_params[:profile]
+				opening.save
+			else
+				flash[:error] = "Some of your openings where not created because on conflicts."
+			end
+			
+		end
+		
 	end
 
 	def get_user

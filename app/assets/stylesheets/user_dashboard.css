@@ -5,3 +5,15 @@
 .dashboard_link {
 	float:right;
 }
+
+.date {
+	background-color:#f9f9f9;
+}
+
+.badge {
+	float: right;
+}
+
+.xs_profile_avatar {
+	width:50px;
+}

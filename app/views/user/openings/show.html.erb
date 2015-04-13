@@ -1,8 +1,96 @@
 <style>
-	#date {
-		margin-top: 20px;
+	.opening_links a {
+		
+		text-decoration: none;
+	}
+	.opening_links a:first-child {
+		vertical-align: top;
+	}
+	.opening_links a:last-child {
+		vertical-align: bottom;
 	}
 </style>
-<%= link_to "Back to Openings", user_openings_path %>
-<p id="date"><strong><%= @opening.start.strftime('%B %d, %Y') %></strong></p>
-<p><%= @opening.start.strftime('%I:%M') %> - <%= @opening.start.strftime('%I:%M %p') %></p>
+<div class="row">
+	<div class="col-xs-12">
+		<h2>Available</h2>
+	</div>
+</div>
+<div class="row">
+	<div class="col-xs-12">
+		<div class="panel panel-default">
+			<div class="panel-heading">
+				<div class="row">
+					<div class="col-xs-3 col-sm-2 col-md-1">
+						<% if @opening.profile.avatar.content_type %>
+							<%= image_tag @opening.profile.avatar.url(:thuumb), :class => "img-responsive img-rounded" %>
+						<% end %>
+					</div>
+					<div class="col-xs-9 col-sm-10 col-md-11">
+						<h3><%= @opening.profile.title %></h3>
+					</div>
+				</div>
+			</div>
+			<div class="panel-body">
+				<div class="row">
+					<div class="col-xs-12">
+						<h4><%= @opening.start.strftime('%A') %> <%= @opening.start.strftime('%m/%d/%Y') %></h4>
+						<h5><%= @opening.start.strftime('%I:%M') %> - <%= @opening.end.strftime('%I:%M %p') %></h5>
+						<button class="btn btn-default" id="swal_edit_opening">
+							Edit <span class="glyphicon glyphicon-pencil" aria-hidden="true"></span>
+						</button>
+						<button class="btn btn-default" id="swal_delete_opening">
+							Delete <span class="glyphicon glyphicon-remove" aria-hidden="true"></span>
+						</button>
+						<%= button_to "this is a test", user_opening_delete_recurring_path(@opening), :class => "btn btn-defaul" %>
+						
+					</div>
+				</div>
+			</div>
+		</div>
+	<div>
+
+</div>
+<script>
+	
+	$('#swal_delete_opening').click( function(event) {
+		event.preventDefault();
+		swal({
+				title: "Are you sure?",
+				text: "This will delete this opening",
+				type: "warning",
+				showCancelButton:true,
+				confirmButtonColor: "#DD6B55",
+				confirmButtonText: "Delete",
+				closeOnConfirm: false
+			},
+			function() {
+				// $.post("/user/openings/<%= @opening.id %>", {_method: 'delete'}, null, "script");
+				confirmDelete();
+			});
+	});
+
+	var confirmDelete = function() {
+		swal({
+			title: "Delete all occurrences?",
+			text: "Delete all future occurrences of openings for <%= @opening.profile.title %> on <%= @opening.start.strftime('%A') %> at <%= @opening.start.strftime('%I:%M') %> - <%= @opening.end.strftime('%I:%M %p') %>?",
+				type: "warning",
+				showCancelButton:true,
+				cancelButtonText: 'Just this opening',
+				confirmButtonColor: '#DD6B55',
+				confirmButtonText: 'Delete All',
+				closeOnConfirm: true
+		}, function(isConfirm) {
+			pickPath(isConfirm);
+		});
+	}
+	var pickPath = function(isConfirm) {
+		if(isConfirm) {
+			$.post("/user/openings/<%= @opening.id %>/delete_recurring");
+		} else {
+			$.post("/user/openings/<%= @opening.id %>", {_method: 'delete'}, null, "script");
+		}
+	}
+	// $('#swal_delete_opening').click(function() {
+
+	// });
+</script>

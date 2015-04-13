@@ -12,7 +12,6 @@ class User::ProfilesController < ApplicationController
 	def show
 		@rating = 4
 		@profile = Profile.find(params[:id])
-		@clients = @profile.clients
 	end
 
 	def new
@@ -80,6 +79,7 @@ class User::ProfilesController < ApplicationController
 			:avatar,
 			:wallpaper,
 			:zip,
+			:color,
 		]
 		params.require(:profile).permit(*safe_attributes)
 	end

@@ -1,5 +1,7 @@
 class ProfilesController < ApplicationController
 	before_action :get_user
+	before_action :get_profile, only: [:show]
+	before_action :is_client, only: [:show]
 	def index
 		if !params[:zip].blank?
 			response = JSON.parse(open('http://ziptasticapi.com/' + params[:zip]).read)
@@ -22,7 +24,7 @@ class ProfilesController < ApplicationController
 	end
 
 	def show
-		@profile = Profile.find(params[:id])
+		
 	end
 
 	private
@@ -30,6 +32,24 @@ class ProfilesController < ApplicationController
 	def get_user
 		if user_signed_in?
 			@user = current_user
+		else
+			@user = nil
 		end
+	end
+
+	def get_profile
+		@profile = Profile.find(params[:id])
+	end
+
+	def is_client()
+		client = Client.where("profile_id = ? AND client_id = ?", @profile, @user).first
+		if client
+			@client = nil
+			@is_client = client.approved?	
+		else
+			@client = Client.new
+			@is_client = false
+		end
+
 	end
 end

@@ -1,9 +1,76 @@
-<h2><%= @profile.title %> Client List</h2>
-<ul>
-	<% @clients.each do |client| %>
-		<li>
-			<p><%= client.name %></p>
-			<p><%= client.email %></p>
-		</li>
-	<% end %>
-</ul>
+<div class="row">
+	<div class="col-xs-12">
+		<h2>Clients</h2>
+		<div class="panel-group" id="accordion" role="tablist" aria-multiselectable="true">
+			<% @profiles.each_with_index do |profile, index| %>
+				<div class="panel panel-default">
+					<div class="panel-heading" role="tab" id="heading_<%= index %>">
+						<h4 class="panel-title">
+							<% if index == 0 %>
+								<a data-toggle="collapse" data-parent="#accordion" href="#collapse_<%= index %>" aria-expanded="true" aria-controls="collapse_<%= index %>">
+								<%= profile.title %>
+								</a>
+							<% else %>
+								<a data-toggle="collapse" data-parent="#accordion" href="#collapse_<%= index %>" aria-expanded="false" aria-controls="collapse_<%= index %>">
+								<%= profile.title %>
+								</a>
+							<% end %>
+							
+						</h4>
+					</div>
+					<% if index== 0 %>
+						<div id="collapse_<%= index %>" class="panel-collapse collapse in" role="tabpanel" aria-labelledby="heading_<%= index %>">
+					<% else %>
+						<div id="collapse_<%= index %>" class="panel-collapse collapse" role="tabpanel" aria-labelledby="heading_<%= index %>">
+					<% end %>
+					
+						<ul class="list-group">
+							<% client_count = 0 %>
+							<% @clients.each do |client| %>
+								<% if client.profile == profile %>
+									<% client_count += 1 %>
+									<%= link_to user_client_path(client) do %>
+										<li class="list-group-item">
+											<div class="row">
+												<div class="col-xs-3 col-md-1">
+													<%if client.client.avatar.content_type %>
+														<%= image_tag client.client.avatar.url(:thuumb), :class=>'img-responsive' %>
+													<% else %>
+														<span class="glyphicon glyphicon-user no_user_avatar" aria-hidden="true"></span>
+													<% end %>
+												</div>
+												<div class="col-xs-5 col-md-8">
+													<p><%= client.client.name %></p>
+													<p><%= client.client.email %></p>
+												</div>
+												<div class="col-xs-4 col-md-2">
+													<% if !client.approved? %>
+														<%= link_to user_client_approve_client_path(client), :class=> 'btn btn-default', method: :post do %>
+															<span class="glyphicon glyphicon-ok" aria-hidden="true"></span>
+														<% end %>
+													<% end %>
+													
+													<%= link_to user_client_path(client), :class=> 'btn btn-default', method: :delete do %>
+														<span class="glyphicon glyphicon-remove" aria-hidden="true"></span>
+													<% end %>
+												</div>
+											</div>
+										</li>
+									<% end %>
+								<% end %>
+							<% end %>
+							<% if client_count == 0 %>
+								<li class="list-group-item">
+									<div class="alert alert-danger">
+										This profile doesn't have any clients.
+									</div>
+								</li>
+							<% end %>
+						</ul>
+					</div>
+				</div>
+			<% end %>
+		</div>
+
+	</div>
+</div>

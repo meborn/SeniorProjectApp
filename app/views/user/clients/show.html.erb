@@ -1,0 +1,121 @@
+<h2><%= @client.profile.title %> Client</h2>
+<div class="row">
+	<div class="col-xs-12 col-sm-4">
+
+		<div class="panel panel-default">
+			<div class="panel-heading">
+				<h4 class="panel-title dashboard_header">
+					Client
+				</h4>
+				<%= link_to user_client_path, method: :delete, :class => "btn btn-default dashboard_link" do %>
+					<span class="glyphicon glyphicon-remove" aria-hidden="true"></span>
+				<% end %>
+			</div>
+			<div class="panel-body">
+				<div class="thumbnail">
+					<% if @client.client.avatar.content_type %>
+						<%= image_tag @client.client.avatar.url(:small), :class => "img-responsive" %>
+					<% else %>
+						<span class="glyphicon glyphicon-user no_user_avatar" aria-hidden="true"></span>
+					<% end %>
+					<div class="caption">
+						<h4 class="text-center"><%= @client.client.name %></h4>
+						<h5 class="text-center"><%= @client.client.email %></h5>
+					</div>
+				</div>
+			</div>
+		</div>
+		
+	</div>
+	<div class="col-xs-12 col-sm-8">
+		<div class="panel-group" id="accordion" role="tablist" aria-multiselectable="true">
+			<div class="panel panel-default">
+				<div class="panel-heading" role="tab" id="headingOne">
+					<h4 class="panel-title dashboard_header">
+						<a data-toggle="collapse" data-parent="#accordion" href="#collapseOne" aria-expanded="true" aria-controls="collapseOne">Upcoming Appointments</a>
+					</h4>
+					<%= link_to "&#43 New Appointment".html_safe, new_user_client_appointment_path(@client), :class => 'dashboard_link'%>
+				</div>
+				<div id="collapseOne" class="panel-collapse collapse in" role="tabpanel" aria-labelledby="headingOne">
+					<ul class="list-group">
+						<% if @appointments.count == 0 %>
+							<li class="list-group-item">
+								<div class="alert alert-danger">
+									You don't have any appointments with this clients.
+								</div>
+							</li>
+						<% end %>
+						<% @appointments.each do |appointment| %>
+							<li class="list-group-item">
+								<%= link_to(user_appointment_path(appointment)) do %>
+									<div class="row">
+										<div class="col-xs-12 col-sm-6 col-md-6">
+											<span class='glyphicon glyphicon-ok glyph_color profile_color_<%= appointment.profile.title.gsub(/\s+/,"")%>' aria-hidden="true"></span>
+											<div class="small_profile_title">
+												<h5><%= appointment.start.strftime('%A') %></h5>
+												<p><%= appointment.start.strftime('%m/%d/%Y') %></p>		
+											</div>
+										</div>
+										<div class="col-xs-12 col-sm-6 col-md-6">
+											<%= appointment.start.strftime('%I:%M')%> - <%= appointment.end.strftime('%I:%M %P') %>
+										</div>
+									</div>
+								<% end %>
+							</li>
+						<% end %>
+						
+					</ul>
+					<div class="panel-footer text-right">
+						<%= will_paginate @appointments, renderer: BootstrapPagination::Rails %>
+					</div>
+				</div>
+				<div class="panel panel-default">
+					<div class="panel-heading" role="tab" id="headingTwo">
+						<h4 class="panel-title">
+							<a class="collapsed" data-toggle="collapse" data-parent="#accordion" href="#collapseTwo" aria expanded="false" aria-controls="collapseTwo">History</a>
+						</h4>
+					</div>
+					<div id="collapseTwo" class="panel-collapse collapse" role="tabpanel" aria-labelledby="headingTwo">
+						<ul class="list-group">
+							<% if @history.count == 0 %>
+								<li class="list-group-item">
+									<div class="alert alert-danger">
+										You don't have any past appointments with this client.
+									</div>
+								</li>
+							<% end %>
+							<% @history.each do |h| %>
+								<li class="list-group-item">
+									<%= link_to(user_appointment_path(h)) do %>
+										<div class="row">
+											<div class="col-xs-12 col-sm-6 col-md-6">
+												<span class='glyphicon glyphicon-ok glyph_color profile_color_<%= h.profile.title.gsub(/\s+/,"")%>' aria-hidden="true"></span>
+												<div class="small_profile_title">
+													<h5><%= h.start.strftime('%A') %></h5>
+													<p><%= h.start.strftime('%m/%d/%Y') %></p>		
+												</div>
+											</div>
+											<div class="col-xs-12 col-sm-6 col-md-6">
+												<%= h.start.strftime('%I:%M')%> - <%= h.end.strftime('%I:%M %P') %>
+											</div>
+										</div>
+									<% end %>
+								</li>
+							<% end %>
+							
+						</ul>
+						<div class="panel-footer text-right">
+							<%= will_paginate @history, renderer: BootstrapPagination::Rails %>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+		
+	</div>
+</div>
+<script>
+	$(document).ready(function() {
+		$('span.glyph_color.profile_color_<%= @client.profile.title.gsub(/\s+/,"")%>').css('color', '<%= @client.profile.color %>');
+	});
+</script>

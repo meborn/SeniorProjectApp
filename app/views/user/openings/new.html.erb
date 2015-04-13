@@ -1,14 +1,97 @@
 <div id="user_opening_new_content" class="row">
-	<div class="col-xs-12">
-		<div class="row">
-			<div class="col-xs-8 col-xs-offset-2">
-				<h2>New Opening</h2>
+	<div class="col-xs-12 col-md-8">
+		<div class="panel panel-default">
+			<div class="panel-heading">
+				<h3>New Opening</h3>
 			</div>
-		</div>
-		<div class="row">
-			<div class="col-xs-8 col-xs-offset-2">
+			<div class="panel-body">
 				<%= render :partial => 'form' %>
 			</div>
 		</div>
 	</div>
+	<div class="col-xs-12 col-md-4">
+		<div class="panel panel-default">
+			<div class="panel-heading">
+				<h4>Scheduled Events For</h4>
+				<h5></h5>
+			</div>
+			<ul class="list-group" id="same_day_openings">
+
+			</ul>
+		</div>
+	</div>
 </div>
+
+<script>
+	$(document).ready(function() {
+		var days = ["Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"];
+		var getDate = function() {
+			var value = $('#datetimepicker_start input').val();
+
+    		var value_year = value.slice(0,4);
+    		var value_month = value.slice(6,7) - 1;
+    		var value_day = value.slice(8,10);
+    		if(value.slice(17,18) === 'P') {
+    			var value_hour = parseInt(value.slice(11,13)) + 12;
+    		}
+    		else {
+    			var value_hour = parseInt(value.slice(11, 13));
+    		}
+    		var value_min = parseInt(value.slice(14, 16));
+    		var new_value = new Date(value_year, value_month, value_day, value_hour, value_min);
+    		
+    		return new_value;
+		}
+		var loadEvents = function() {
+			var value = $('#datetimepicker_start input').val();
+			console.log(value);
+			var event_count = 0;
+			<% @events.each do |e| %>
+    			if(value.slice(0,4) === "<%= e.start.strftime('%Y') %>" && value.slice(5,7) === "<%= e.start.strftime('%m') %>" && value.slice(8,10) === "<%= e.start.strftime('%d') %>") {
+    				<% if @openings.include? e %>
+                        $('#same_day_openings').append("<%= escape_javascript("#{render :partial => 'shared/list_item/list_item_opening.html.erb', :locals => {:e => e}}").html_safe %>");
+    					$('.profile_color.profile_color_<%= e.profile.title.gsub(/\s+/,"")%>').css('border', '1px solid <%= e.profile.color %>');
+    					event_count += 1;
+                    <% elsif @client_appointments.include? e%>
+                        $('#same_day_openings').append("<%= escape_javascript("#{render :partial => 'shared/list_item/list_item_client.html.erb', :locals => {:e => e}}").html_safe %>");  
+                        event_count += 1; 
+    				<% else %>
+                        $('#same_day_openings').append("<%= escape_javascript("#{render :partial => 'shared/list_item/list_item_owner.html.erb', :locals => {:e => e}}").html_safe %>");
+    					$('span.glyph_color.profile_color_<%= e.profile.title.gsub(/\s+/,"")%>').css('color', '<%= e.profile.color %>');
+    					event_count += 1;
+    				<% end %>
+    				console.log('the year is a match');
+    				
+    			}
+    			
+    		<% end %>
+    		if(event_count === 0) {
+    			$('#same_day_openings').html("<div class='alert alert-success' role='alert'>There are no events scheduled for this day</div>");
+    		}
+    		var new_value = getDate();
+    		$('h5').text(days[new_value.getDay()]+' '+(new_value.getMonth()+1)+'/'+new_value.getDate()+'/'+new_value.getFullYear());
+    		
+		}
+		$('#datetimepicker_start').on('dp.change', function() {
+    		$('#same_day_openings').empty();
+    		loadEvents();
+    		var new_value = getDate();
+
+    		
+    		var today = new Date();
+    		if(new_value < today) {
+    			swal({
+    				title: "Warning!",
+    				text: "This date is in the past.",
+    				type: "warning",
+    				confirmButtonColor: "#DD6B55",
+    				confirmButtonText: "OK",
+    				closeOnConfirm: true
+    			});
+    		}
+    		
+    	});
+		loadEvents();
+	});
+
+</script>

@@ -1,0 +1,169 @@
+<div class="row">
+
+	<div class="col-xs-12 col-sm-12 col-md-8">
+		<div class="panel panel-default my-calendar">
+				<div class="panel-heading">
+					<form method="get" action="/user/schedule" class="calendar_month_form">
+						<% if @month == 1 %>
+							<% prev_month = 12 %>
+							<% prev_year = @year - 1 %>
+							<input type="hidden" name="year" value="<%= prev_year %>">	
+						<% else %>
+							<% prev_month = @month-1 %>
+							<input type="hidden" name="year" value="<%= @year %>">
+						<% end %>
+						<input type="hidden" name="month" value="<%= prev_month %>">
+						<input type="hidden" name="day" value="1">
+						<button type="submit" class="btn btn-default" id="prev_btn">
+							<span class="glyphicon glyphicon-chevron-left" aria-hidden="true"></span>
+						</button>		
+					</form>
+
+					<h3 class="panel_heading_text"><%= @date.strftime('%B %Y') %></h3>
+					
+					<form method="get" action="/user/schedule" class="calendar_month_form">
+						<% if @month == 12 %>
+							<% next_month = 1 %>
+							<% next_year = @year + 1 %>
+							<input type="hidden" name="year" value="<%= next_year %>">
+						<% else %>
+							<% next_month = @month+1 %>
+						<% end %>
+						<input type="hidden" name="month" value="<%= next_month %>">
+						<input type="hidden" name="day" value="1">
+						<button type="submit" class="btn btn-default" id="next_btn">
+							<span class="glyphicon glyphicon-chevron-right" aria-hidden="true"></span>
+						</button>		
+					</form>
+				</div>
+
+				<table class="table table-bordered">
+					<thead>
+						<tr class="hidden-xs">
+							<th>Sun</th><th>Mon</th><th>Tue</th><th>Wed</th><th>Thu</th><th>Fri</th><th>Sat</th>
+						</tr>
+						<tr class="hidden-sm hidden-md hidden-lg">
+							<th>S</th><th>M</th><th>T</th><th>W</th><th>T</th><th>F</th><th>S</th>
+						</tr>
+					</thead>
+					<tbody>
+						<!-- set variables to make calendar -->
+						<% day = @start_date %> <% last_calendar_day = @end_date %>
+						<% week_days = 0 %> <% week_count = 1 %>
+						<% while day <= last_calendar_day do %>
+							<tr>
+								<% while week_days < 7 do %>
+									<% if day.year == @year && day.month == @month && day.day == @day %>
+										<td class="selected_day">
+									<% else %>
+										<td>
+									<% end %>
+											<div class="date_num"><%= day.strftime('%d') %></div>
+											<form method='get' action='/user/schedule/' id="form_week_<%= week_count %>_day_<%= day.day%>">
+												<input type="hidden" name="day" value="<%= day.day %>">
+												<input type="hidden" name="month" value="<%= day.month %>">
+												<input type="hidden" name="year" value="<%= day.year %>">
+											</form>
+											<% @profiles.each do |profile| %>		
+												<% @month_events.each do |event|%>
+													<% if event.profile == profile && event.start.to_date == day.to_date %>
+														<% if @openings_month.include? event %>
+															<span class='b_profile_color profile_color_<%= profile.title.gsub(/\s+/,"")%>'></span>
+														<% else %>
+															<span class='a_profile_color profile_color_<%= profile.title.gsub(/\s+/,"")%>'></span>
+														<% end %>
+													<% end %>
+												<% end %>
+													<!-- <div class="spacer"></div> -->
+											<% end %>
+										</td>
+									<% week_days += 1 %> <% day = day + 1.day %>
+								<% end %>
+								<% week_count += 1 %>
+							</tr>
+								<% week_days = 0 %>
+						<% end %>
+					</tbody>
+				</table>
+				<div class="panel-footer">
+					<% @profiles.each do |profile| %>
+						<div class="profile_key">
+							<span class='profile_color profile_color_<%= profile.title.gsub(/\s+/,"")%>'></span>
+							<span class="small_profile_title"><%= profile.title %></span>
+						</div>
+					<% end %>
+				</div>
+		</div>
+	</div>
+	<div class="col-xs-12 col-md-4">
+		<div class="panel panel-default">
+				<div class="panel-heading">
+					<h3 class="panel_heading_text"><%= @date.strftime('%A') %></h3>
+					<span><%= @date.strftime('%m/%d/%Y') %></span>
+				</div>	
+				<% if @date_events.empty? %>
+					<div class="panel-body">
+						<div class="alert alert-danger" role="alert">
+							No events on this day.
+						</div>
+					</div>
+				<% else %>
+					<ul class="list-group">
+						<% @date_events.each do |event| %>
+							<li class="list-group-item">
+								<% if @openings_on_date.include? event %>
+
+									<%= link_to(user_opening_path(event)) do %>
+										<div class="row">
+											<div class="col-xs-12 col-sm-6 col-md-6">
+												<span class='profile_color profile_color_<%= event.profile.title.gsub(/\s+/,"")%>'></span>
+												<div class="small_profile_title">
+													<p><%= event.profile.title %></p>
+													<em class="text-success">Available</em>
+												</div>
+											</div>
+											<div class="col-xs-12 col-sm-6 col-md-6">
+												<%= event.start.strftime('%I:%M')%> - <%= event.end.strftime('%I:%M %P') %>
+											</div>
+										</div>
+									<% end %>
+
+								<% else %>
+
+									<%= link_to(user_appointment_path(event)) do %>
+										<div class="row">
+											<div class="col-xs-12 col-sm-6 col-md-6">
+												<span class='glyphicon glyphicon-ok glyph_color profile_color_<%= event.profile.title.gsub(/\s+/,"")%>' aria-hidden="true"></span>
+												<div class="small_profile_title">
+													<p><%= event.profile.title %></p>
+													<em class="text-warning"><%= event.client.email %></em>
+												</div>
+											</div>
+											<div class="col-xs-12 col-sm-6 col-md-6">
+												<%= event.start.strftime('%I:%M')%> - <%= event.end.strftime('%I:%M %P') %>
+											</div>
+										</div>
+									<% end %>
+								<% end %>				
+							</li>	
+						<% end %>
+					</ul>
+				<% end %>
+		</div>
+	</div>
+</div>
+		
+
+<% @profiles.each do |profile| %>
+	<script>
+		$('.<%= profile.title.gsub(/\s+/,"") %>').css('border', '2px solid <%= profile.color %>');
+		$('.profile_color.profile_color_<%= profile.title.gsub(/\s+/,"")%>').css('border', '1px solid <%= profile.color %>');
+		$('.a_profile_color.profile_color_<%= profile.title.gsub(/\s+/,"")%>').css('background-color', '<%= profile.color %>');
+		$('.b_profile_color.profile_color_<%= profile.title.gsub(/\s+/,"")%>').css('border', '1px solid <%= profile.color %>');
+		$('span.glyph_color.profile_color_<%= profile.title.gsub(/\s+/,"")%>').css('color', '<%= profile.color %>');
+
+		$('td').click(function() {
+			$(this).find('form').submit();
+		});
+	</script>
+<% end %>
