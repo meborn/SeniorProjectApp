@@ -1,19 +1,77 @@
+<section id="welcome_section">
+	<div class="container">
+		<div class="row">
+
+			<div class="col-xs-12 col-md-8">
+				<div class="row">
+					<div class="col-xs-4 col-sm-3 col-md-4 col-lg-3">
+						<div class="thumbnail">
+							<% if @user.avatar.content_type %>
+								<%= image_tag @user.avatar.url(:small), :class => 'user_avatar' %>
+							<% else %>
+								<%= image_tag 'user_avatar_thumb.png', :class => 'user_avatar' %>
+							<% end %>
+							<div class="caption text-center">
+								<a href="#" class="ninja_link">Edit</a>
+							</div>
+						</div>	
+					</div>
+					<div class="col-xs-8 col-sm-9 col-md-8 col-lg-9">
+						<h1 class="sans_serif_bold dark_text">Hello<span class="sans_serif_bold">
+							<%= @user.name %></span>!
+						</h1>
+						<h4><em><%= @user.email %></em></h4>
+					</div>
+				</div>
+			</div>
+
+			<div class="col-xs-12 col-md-4">
+				<div class="panel panel-default">
+					<div class="panel-heading">
+						<%= link_to user_notifications_path do %>
+							<h2 class="panel-title dashboard_header">Notifications</h2>
+						<% end %>
+					</div>
+					<ul class="list-group">
+						<li class="list-group-item">
+							<%= link_to user_notifications_new_appointments_path do %>
+								New Appointments <span class="badge"><%= @appointment_notifications.count %></span>
+							<% end %>
+						</li>
+						<li class="list-group-item">
+							<%= link_to user_clients_path do %>
+								New Clients <span class="badge"><%= @client_notifications.count %></span>
+							<% end %>
+						</li>
+						<li class="list-group-item">
+							<a href="#">
+								New Venders <span class="badge"><%= @vender_notifications.count %></span>
+							</a>
+						</li>
+						<li class="list-group-item">
+							<a href="#">
+								New Reviews <span class="badge">42</span>
+							</a>
+						</li>
+					</ul>
+				</div>
+			</div>
+
+		</div>
+	</div>
+
+</section>
+
 <div class="row">
 	<div class="col-xs-12 col-md-8">
 		<div class="panel panel-default">
 			<div class="panel-heading">
-				<h2 class="panel-title dashboard_header">Upcoming Events</h2>
+				<h2 class="panel-title dashboard_header"><%= @today_start.strftime('%A, %B %d, %Y') %></h2>
 				<%= link_to "&#43 Opening".html_safe, new_user_opening_path, :class=> 'dashboard_link'%>	
 			</div>
 			<ul class="list-group">
 				<% if !@schedule.empty? %>
-					<% date = @schedule.first.start.to_date %>
-					<li class="list-group-item date"><strong><%= date.strftime('%A, %B %d, %Y') %></strong></li>
 					<% @schedule.each do |s| %>
-						<% if s.start.to_date != date %>
-							<% date = s.start.to_date %>
-							<li class="list-group-item date"><strong><%= date.strftime('%A, %B %d, %Y') %></strong></li>
-						<% end %>
 						<li class="list-group-item">
 							<% if @openings.include? s %>
 								<%= link_to(user_opening_path(s)) do %>
@@ -69,7 +127,11 @@
 						</li>
 					<% end %>
 				<% else %>
-
+					<li class="list-group-item">
+						<div class="alert alert-danger">
+							No events scheduled for today.
+						</div>
+					</li>
 				<% end %>
 			</ul>
 		</div>
@@ -78,13 +140,15 @@
 		
 		<div class="panel panel-default">
 			<div class="panel-heading">
-				<h2 class="panel-title dashboard_header">Notifications</h2>
+				<%= link_to user_notifications_path do %>
+					<h2 class="panel-title dashboard_header">Notifications</h2>
+				<% end %>
 			</div>
 			<ul class="list-group">
 				<li class="list-group-item">
-					<a href="#">
+					<%= link_to user_notifications_new_appointments_path do %>
 						New Appointments <span class="badge"><%= @appointment_notifications.count %></span>
-					</a>
+					<% end %>
 				</li>
 				<li class="list-group-item">
 					<%= link_to user_clients_path do %>

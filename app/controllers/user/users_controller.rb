@@ -36,9 +36,11 @@ class User::UsersController < ApplicationController
 	end
 
 	def get_upcoming_events
-		@openings = Opening.where(user: @user).order(:start).take(5)
-		@owner_appointments = Appointment.where(:owner => @user).order(:start).take(5)
-		@client_appointments = Appointment.where(:client => @user).order(:start).take(5)
+		today_start = DateTime.now.beginning_of_day
+		today_end = DateTime.now.end_of_day
+		@openings = Opening.where("user_id =? AND start >= ? AND start <= ?", @user.id, today_start, today_end).order(:start)
+		@owner_appointments = Appointment.where("owner_id =? AND start >=? AND start <= ?", @user.id, today_start, today_end).order(:start)
+		@client_appointments = Appointment.where("client_id =? AND start >=? AND start <= ?", @user.id, today_start, today_end).order(:start)
 		# @appointments = owner_appointments + client_appointments
 		@schedule = Array.new
 		@schedule = @schedule + @openings + @owner_appointments + @client_appointments

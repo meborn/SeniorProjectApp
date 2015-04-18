@@ -1,0 +1,42 @@
+.navbar {
+	margin-bottom: 0px;
+}
+ .navbar-default {
+ 	background-color: #e6e6e6;
+ 	border-bottom: 2px solid #e9573f;
+ }
+
+ .navbar-brand {
+ 	padding:5px;
+ }
+ .navbar-brand img {
+ 	display: inline-block;
+ }
+
+ .logo_img {
+ 	display: inline-block;
+ 	width:40px;
+ }
+
+ .logo_text {
+ 	font-family: 'Lato', sans-serif;
+ 	font-weight: 100;
+ 	font-size: 22px;
+ }
+
+ .nav_link_text {
+ 	font-family: 'Lato', sans-serif;
+ 	font-weight: 100;
+ 	font-size: 18px;
+ }
+
+ .ninja_text {
+ 	font-family: 'Bad Script', cursive;
+ 	color:#e9573f;
+ 	font-size: 22px;
+ }
+
+ #myModalLabel {
+ 	display: inline-block;
+ 	vertical-align: middle;
+ }

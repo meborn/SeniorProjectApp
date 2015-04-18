@@ -13,11 +13,11 @@ class User::ScheduleController < ApplicationController
 	before_action :get_appointments, only: [:index]
 
 	def index
-		@month_events = @openings_month + @appointments_month
+		@month_events = @openings_month + @appointments_owner_month + @appointments_client_month
 		@month_events.sort_by! do |item|
 			item[:start]
 		end
-		@date_events = @openings_on_date + @appointments_on_date
+		@date_events = @openings_on_date + @appointments_owner_on_date + @appointments_client_on_date
 		@date_events.sort_by! do |item|
 			item[:start]
 		end
@@ -68,13 +68,15 @@ class User::ScheduleController < ApplicationController
 		@date = DateTime.new(@year, @month, @day)
 	end
 
-	def get_appointments
+	def get_openings
 		@openings_month = Opening.where(:user => @user).where("start >= ? AND start <= ?", @start_date.beginning_of_day, @end_date.end_of_day).order(:start)
 		@openings_on_date = Opening.where(:user => @user).where("start >= ? AND start <=?", @date.beginning_of_day, @date.end_of_day).order(:start)
 	end
 
-	def get_openings
-		@appointments_month = Appointment.where(:owner => @user).where("start >= ? AND start <=?", @start_date.beginning_of_day, @end_date.end_of_day).order(:start) + Appointment.where(:client => @user).where("start >= ? AND start <=?", @start_date.beginning_of_day, @end_date.end_of_day).order(:start)
-		@appointments_on_date = Appointment.where(:owner => @user).where("start >= ? AND start <=?", @date.beginning_of_day, @date.end_of_day).order(:start) + Appointment.where(:client => @user).where("start >= ? AND start <=?", @date.beginning_of_day, @date.end_of_day).order(:start)
+	def get_appointments
+		@appointments_owner_month = Appointment.where(:owner => @user).where("start >= ? AND start <=?", @start_date.beginning_of_day, @end_date.end_of_day).order(:start)
+		@appointments_client_month = Appointment.where(:client => @user).where("start >= ? AND start <=?", @start_date.beginning_of_day, @end_date.end_of_day).order(:start)
+		@appointments_owner_on_date = Appointment.where(:owner => @user).where("start >= ? AND start <=?", @date.beginning_of_day, @date.end_of_day).order(:start)
+		@appointments_client_on_date = Appointment.where(:client => @user).where("start >= ? AND start <=?", @date.beginning_of_day, @date.end_of_day).order(:start)
 	end
 end

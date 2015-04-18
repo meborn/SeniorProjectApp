@@ -1,6 +1,6 @@
 
 <li class='list-group-item'>
-	<a href='/user/appointments/<%= e.id %>'>
+	<%= link_to user_appointment_path(e) do %>
 		<div class='row'>
 			<div class='col-xs-12'>
 				<% if e.profile.avatar.content_type %>
@@ -17,5 +17,5 @@
 				<%= e.start.strftime('%I:%M')%> - <%= e.end.strftime('%I:%M %P') %>
 			</div>
 		</div>
-	</a>
+	<% end %>
 </li>

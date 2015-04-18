@@ -110,42 +110,13 @@
 				<% else %>
 					<ul class="list-group">
 						<% @date_events.each do |event| %>
-							<li class="list-group-item">
 								<% if @openings_on_date.include? event %>
-
-									<%= link_to(user_opening_path(event)) do %>
-										<div class="row">
-											<div class="col-xs-12 col-sm-6 col-md-6">
-												<span class='profile_color profile_color_<%= event.profile.title.gsub(/\s+/,"")%>'></span>
-												<div class="small_profile_title">
-													<p><%= event.profile.title %></p>
-													<em class="text-success">Available</em>
-												</div>
-											</div>
-											<div class="col-xs-12 col-sm-6 col-md-6">
-												<%= event.start.strftime('%I:%M')%> - <%= event.end.strftime('%I:%M %P') %>
-											</div>
-										</div>
-									<% end %>
-
+									<%= render :partial => 'shared/list_item/list_item_opening', :locals => {:e => event} %>
+								<% elsif @appointments_client_on_date.include? event %>
+									<%= render :partial => 'shared/list_item/list_item_client', :locals => {:e => event} %>
 								<% else %>
-
-									<%= link_to(user_appointment_path(event)) do %>
-										<div class="row">
-											<div class="col-xs-12 col-sm-6 col-md-6">
-												<span class='glyphicon glyphicon-ok glyph_color profile_color_<%= event.profile.title.gsub(/\s+/,"")%>' aria-hidden="true"></span>
-												<div class="small_profile_title">
-													<p><%= event.profile.title %></p>
-													<em class="text-warning"><%= event.client.email %></em>
-												</div>
-											</div>
-											<div class="col-xs-12 col-sm-6 col-md-6">
-												<%= event.start.strftime('%I:%M')%> - <%= event.end.strftime('%I:%M %P') %>
-											</div>
-										</div>
-									<% end %>
+									<%= render :partial => 'shared/list_item/list_item_owner', :locals => {:e => event} %>
 								<% end %>				
-							</li>	
 						<% end %>
 					</ul>
 				<% end %>

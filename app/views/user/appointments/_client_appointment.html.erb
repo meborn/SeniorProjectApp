@@ -1,0 +1,57 @@
+<div class="row">
+	<div class="col-xs-12">
+		<h2><%= @appointment.profile.title %> Appointment</h2>
+	</div>
+</div>
+<div class="row">
+	<div class="col-xs-12 col-sm-4">
+
+		<div class="panel panel-default">
+			<div class="panel-heading">
+				<h4 class="panel-title dashboard_header">
+					Vender
+				</h4>
+			</div>
+			<div class="panel-body">
+				<div class="thumbnail">
+					<% if @appointment.profile.avatar.content_type %>
+						<%= image_tag @appointment.profile.avatar.url(:small), :class => "img-responsive" %>
+					<% else %>
+						<span class="glyphicon glyphicon-user no_user_avatar" aria-hidden="true"></span>
+					<% end %>
+					<div class="caption text-center">
+						<h4 class="text-center"><%= @appointment.profile.title %></h4>
+						<h5 class="text-center"><%= @appointment.profile.user.name %>: <%= @appointment.profile.user.email %></h5>
+					</div>
+				</div>
+			</div>
+		</div>
+		
+	</div>
+	<div class="col-xs-12 col-sm-8">
+		<div class="panel panel-default">
+			<div class="panel-heading">
+				<h4 class="panel-title dashboard_header">
+					Appointment Details
+				</h4>
+				<% if @appointment.start.to_i > @today %>
+					<%= link_to "&#9747 Cancel".html_safe, user_appointment_path(@appointment), method: :delete, :class => 'dashboard_link'%>
+				<% end %>
+			</div>
+			<table class="table">
+				<thead>
+					<tr>
+						<th>Date</th>
+						<th>Time</th>
+					</tr>
+				</thead>
+				<tbody>
+					<tr>
+						<td><%= @appointment.start.strftime('%A') %>, <%= @appointment.start.strftime('%m/%d/%Y') %></td>
+						<td><%= @appointment.start.strftime('%l:%M')%> - <%= @appointment.end.strftime('%l:%M %P') %></td>
+					</tr>
+				</tbody>
+			</table>
+		</div>
+	</div>
+</div>

@@ -11,7 +11,9 @@ class User::ClientsController < ApplicationController
 	before_action :get_dates, only: [:show]
 
 	def index
-		@clients = Client.where(:owner => @user).order(:approved)
+		@new_client_count = Client.where("owner_id =? AND approved =?", @user.id, false).count
+		@clients = Client.includes(:client).where(:owner => @user).order("users.name ASC")
+
 	end
 
 	def show
@@ -61,7 +63,7 @@ class User::ClientsController < ApplicationController
 	end
 
 	def get_profiles
-		@profiles = Profile.where(:user => @user)
+		@profiles = Profile.where(:user => @user).order(:title)
 	end
 
 	def get_year

@@ -1,0 +1,29 @@
+.dashboard_header {
+	display: inline-block;
+}
+
+.dashboard_link {
+	float:right;
+}
+
+.date {
+	background-color:#f9f9f9;
+}
+
+.badge {
+	float: right;
+}
+
+.xs_profile_avatar {
+	width:50px;
+}
+
+#welcome_section {
+	background-image: url('../ninja-star.png');
+ 	background-position: left center;
+ 	background-repeat: no-repeat;
+}
+
+#welcome_section h1 {
+	font-size: 72px;
+}

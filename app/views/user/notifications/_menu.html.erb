@@ -1,0 +1,30 @@
+<div class="panel panel-default">
+	<div class="panel-heading">
+		<%= link_to user_notifications_path do %>
+			<span class="glyphicon glyphicon-bell" aria-hidden="true"></span>
+			<h2 class="panel-title dashboard_header">Notifications</h2>
+		<% end %>
+	</div>
+	<ul class="list-group">
+		<li class="list-group-item">
+			<%= link_to user_notifications_new_appointments_path do %>
+				New Appointments <span class="badge"><%= @appointment_notifications.count %></span>
+			<% end %>
+		</li>
+		<li class="list-group-item">
+			<%= link_to user_notifications_new_clients_path do %>
+				New Clients <span class="badge"><%= @client_notifications.count %></span>
+			<% end %>
+		</li>
+		<li class="list-group-item">
+			<%= link_to user_notifications_new_venders_path do %>
+				New Venders <span class="badge"><%= @vender_notifications.count %></span>
+			<% end %>
+		</li>
+		<li class="list-group-item">
+			<a href="#">
+				New Reviews <span class="badge">42</span>
+			</a>
+		</li>
+	</ul>
+</div>

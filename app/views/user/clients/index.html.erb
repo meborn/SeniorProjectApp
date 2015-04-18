@@ -1,6 +1,56 @@
 <div class="row">
 	<div class="col-xs-12">
 		<h2>Clients</h2>
+	</div>
+</div>
+<div class="row">
+	<div class="col-xs-12 col-sm-5">
+		<div class="panel panel-default">
+			<div class="panel-heading">
+				<h4 class="panel-title">New Clients</h4>
+			</div>
+			<ul class="list-group">
+				<% if @new_client_count == 0 %>
+					<li class="list-group-item">
+						<div class="alert alert-danger">
+							No new clients.
+						</div>
+					</li>
+				<% else %>
+					<% @clients.each do |client| %>
+						<% if !client.approved? %>
+							<li class="list-group-item">
+								<div class="row">
+									<div class="col-xs-3 col-md-1">
+										<%if client.client.avatar.content_type %>
+											<%= image_tag client.client.avatar.url(:thuumb), :class=>'img-responsive' %>
+										<% else %>
+											<span class="glyphicon glyphicon-user no_user_avatar" aria-hidden="true"></span>
+										<% end %>
+									</div>
+									<div class="col-xs-5 col-md-8">
+										<p><%= client.profile.title %></p>
+										<p><%= client.client.name %></p>
+										<p><%= client.client.email %></p>
+									</div>
+									<div class="col-xs-4 col-md-2">
+										<%= link_to user_client_approve_client_path(client), :class=> 'btn btn-default', method: :post do %>
+											<span class="glyphicon glyphicon-ok" aria-hidden="true"></span>
+										<% end %>
+										
+										<%= link_to user_client_path(client), :class=> 'btn btn-default', method: :delete do %>
+											<span class="glyphicon glyphicon-remove" aria-hidden="true"></span>
+										<% end %>
+									</div>
+								</div>
+							</li>
+						<% end %>
+					<% end %> 
+				<% end %>
+			</ul>
+		</div>
+	</div>
+	<div class="col-xs-12 col-sm-7">
 		<div class="panel-group" id="accordion" role="tablist" aria-multiselectable="true">
 			<% @profiles.each_with_index do |profile, index| %>
 				<div class="panel panel-default">
@@ -48,10 +98,9 @@
 														<%= link_to user_client_approve_client_path(client), :class=> 'btn btn-default', method: :post do %>
 															<span class="glyphicon glyphicon-ok" aria-hidden="true"></span>
 														<% end %>
-													<% end %>
-													
-													<%= link_to user_client_path(client), :class=> 'btn btn-default', method: :delete do %>
-														<span class="glyphicon glyphicon-remove" aria-hidden="true"></span>
+														<%= link_to user_client_path(client), :class=> 'btn btn-default', method: :delete do %>
+															<span class="glyphicon glyphicon-remove" aria-hidden="true"></span>
+														<% end %>
 													<% end %>
 												</div>
 											</div>

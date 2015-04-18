@@ -1,0 +1,26 @@
+<div class="row">
+	<div class="col-xs-12 col-md-8">
+		<div class="panel panel-default">
+			<div class="panel-heading">
+				<h4 class="panel-title">New Clients</h4>
+			</div>
+			<ul class="list-group">
+				<% if @clients.count == 0 %>
+					<li class="list-group-item">
+						<div class="alert alert-danger">
+							No New clients
+						</div>
+					</li>
+				<% else %>
+					<% @clients.each do |client| %>
+						
+					<% end %>
+				<% end %>
+				
+			</ul>
+		</div>
+	</div>
+	<div class="col-xs-12 col-md-4">
+		<%= render :partial => 'menu' %>
+	</div>
+</div>

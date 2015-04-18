@@ -25,13 +25,16 @@ Rails.application.routes.draw do
       post :delete_recurring
     end
     resources :profiles
-    resources :appointments, except: [:index, :new, :create]
+    resources :appointments, only: [:show, :destroy]
     resources :schedule, only: [:index]
     resources :profiles
     resources :clients, only: [:index, :show, :destroy] do
       post :approve_client
-      resources :appointments, only: [:new, :create]
     end
+    resources :notifications, only: [:index, :destroy]
+    get 'notifications/new_appointments', to: 'notifications#new_appointments'
+    get 'notifications/new_clients', to: 'notifications#new_clients'
+    get 'notifications/new_venders', to: 'notifications#new_venders'
   end
 
   

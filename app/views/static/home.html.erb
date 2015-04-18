@@ -1,22 +1,121 @@
-<div id="static_main_container">
-		<div id="static_header_container">
-			<%= render :partial => "shared/menus/public_menu.html.erb" %>
-			<div class="container">
-				<div id="form_container" class="row">
-					<div class="col-xs-6 col-xs-offset-3">
-						<form method="get" action="/profiles">
-							<input type="text" name="zip" class="form-control input-lg" placeholder="Enter Zip Code">
-							<i class="form-control-feedback glyphicon glyphicon-search"></i>
-							<div class="col-xs-6 col-xs-offset-3">
-								<button type="submit" class="btn btn-default btn-lg btn-block my_btn">Find Me!</button>
-							</div>
-							
-						</form>
+
+<section id="static_header_container">
+	<div class="container">
+		<div id="catch_phrase">
+			<h1 id="header" class="text-center sans_serif_text light_text">People Helping People</h1>
+			<div id="sub_header_container text-center">
+				<%= image_tag 'ninja.png', :id => 'sub_header_img' %>
+				<h5 id="sub_header" class="text-center script_text orange_text">ninja style</h5>
+			</div>
+		</div>	
+	</div>
+</section>
+
+<section id="static_section_3" class="content_section solid_section">
+	<div class="container">
+		<div class="row">
+			<div class="col-xs-10 col-xs-offset-1 col-md-3 col-md-offset-0 pad_top orange_border">
+				<div class="row">
+					<div class="col-xs-12 col-sm-4 col-md-12 text-center">
+						<span class="glyphicon glyphicon-search xl_glyph" aria-hidden="true"></span>
+					</div>
+					<div class="col-xs-12 col-sm-8 col-md-12 text-center">
+						<h1 class="script_text">Find</h1>
+						<h2 class="sans_serif_text">Talented People</h2>
+					</div>
+				</div>	
+			</div>
+			<div class="col-xs-10 col-xs-offset-1 col-md-3 col-md-offset-0 text-center pad_top orange_border">
+				<div class="row">
+					<div class="col-xs-12 col-sm-4 col-md-12 text-center">
+						<span class="glyphicon glyphicon-globe xl_glyph" aria-hidden="true"></span>
+					</div>
+					<div class="col-xs-12 col-sm-8 col-md-12 text-center">
+						<h1 class="script_text">Share</h1>
+						<h2 class="sans_serif_text">Your Talents</h2>
 					</div>
 				</div>
 			</div>
+			<div class="col-xs-10 col-xs-offset-1 col-md-3 col-md-offset-0 text-center pad_top orange_border">
+				<div class="row">
+					<div class="col-xs-12 col-sm-4 col-md-12 text-center">
+						<span class="glyphicon glyphicon-calendar xl_glyph" aria-hidden="true"></span>
+					</div>
+					<div class="col-xs-12 col-sm-8 col-md-12 text-center">
+						<h1 class="script_text">Manage</h1>
+						<h2 class="sans_serif_text">Your Schedule</h2>
+					</div>
+				</div>
+				
+			</div>
+			<div class="col-xs-10 col-xs-offset-1 col-md-3 col-md-offset-0 text-center pad_top orange_border">
+				<div class="row">
+					<div class="col-xs-12 col-sm-4 col-md-12 text-center">
+						<span class="glyphicon glyphicon-time xl_glyph" aria-hidden="true"></span>
+					</div>
+					<div class="col-xs-12 col-sm-8 col-md-12 text-center">
+						<h1 class="script_text">Save</h1>
+						<h2 class="sans_serif_text">Valuable Time</h2>
+					</div>
+				</div>
+				
+			</div>
 		</div>
-		<div id="static_content_container">
+	</div>
+</section>
 
+<section id="static_section_4" class="content_section">
+	<div class="container">
+		<div class="row">
+			<div class="col-xs-12 col-md-12">
+				<div id="about_img_container">
+					<%= image_tag 'ninja.png', :id => 'about_img' %>
+				</div>
+				<h1 class="sans_serif_text">About</h1>
+				<p>
+					length beer cask conditioning lagering mouthfeel. length wort lager brewpub malt extract imperial. dunkle conditioning tank becher filter hand pump abv. draft (draught), " caramel malt." krug bottom fermenting yeast hops; grainy keg, brewing amber. bottle conditioning malt adjunct wort kolsch: barley. grainy lambic alpha acid; cold filter, lauter lauter lager priming, all-malt pub!length beer cask conditioning lagering mouthfeel. length wort lager brewpub malt extract imperial. dunkle conditioning tank becher filter hand pump abv. draft (draught), " caramel malt." krug bottom fermenting yeast hops; grainy keg, brewing amber. bottle conditioning malt adjunct wort kolsch: barley. grainy lambic alpha acid; cold filter, lauter lauter lager priming, all-malt pub!
+				</p>
+			</div>
 		</div>
-</div>
+	</div>
+</section>
+
+<section id="static_section_5" class="content_section">
+	<div class="container">
+		<div class="row">
+			<div class="col-xs-12 col-md-6 col-md-offset-6" id="sign_up_container">
+				<%= image_tag 'sword_2.png', :id => 'sign_up_img' %>
+				<h1 class="script_text">Sign Up</h1>
+				<%= form_for(resource, as: resource_name, url: registration_path(resource_name)) do |f| %>
+					<%= devise_error_messages! %>
+					<div class="form-group">
+						<%= f.label :name %>
+    					<%= f.text_field :name, autofocus: true, :class => "form-control" %>
+					</div>
+					<div class="form-group">
+						<%= f.label :avatar %>
+    					<%= f.file_field :avatar %>
+					</div>
+					<div class="form-group">
+						<%= f.label :email %>
+    					<%= f.email_field :email, :class => "form-control" %>
+					</div>
+					<div class="form-group">
+						<%= f.label :password %>
+					    <% if @validatable %>
+					    <em>(<%= @minimum_password_length %> characters minimum)</em>
+					    <% end %><br />
+					    <%= f.password_field :password, autocomplete: "off", :class => "form-control" %>
+					</div>
+					<div class="form-group">
+						<%= f.label :password_confirmation %><br />
+    					<%= f.password_field :password_confirmation, autocomplete: "off", :class => "form-control" %>
+					</div>
+					<%= f.submit "Sign up", :class => "btn btn-default" %>
+					
+				<% end %>
+			</div>
+		</div>
+	</div>
+</section>
+

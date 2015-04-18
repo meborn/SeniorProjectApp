@@ -1,14 +1,59 @@
-<nav>
-	<div class="container">
-		<div class="row">
-			<div id="logo" class="col-xs-4">
-				<span class="glyphicon glyphicon-calendar" aria-hidden="true"></span>
-				<h1>BookMe</h1>
-			</div>
-			<div id="menu" class="col-xs-8">
-				<%= link_to "Sign In", new_user_session_path %>
-				<%= link_to "Sign Up", new_user_registration_path %>
-			</div>
-		</div>
-	</div>
+
+<nav class="navbar navbar-default navbar-static-top">
+  <div class="container">
+
+      <div class="navbar-header">
+          <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar" aria-expanded="false" aria-controls="navbar">
+            <span class="sr-only">Toggle navigation</span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+          </button>
+          <%= link_to unauthenticated_root_path, :class=>"navbar-brand" do %>
+          	<%= image_tag 'ninja.png', :class => 'logo_img' %>
+            <span class="logo_text">goBook </span><span class="ninja_text">.ninja</span>
+          <% end %>
+      </div>
+      <div id="navbar" class="collapse navbar-collapse">
+          <ul class="nav navbar-nav navbar-right">
+            <li><a href="#static_section_5" class="nav_link_text">Sign Up</a></li>
+            <li><a href="#" data-toggle="modal" data-target="#sign_in_modal" class='nav_link_text'>Sign In</a></li>
+          </ul>
+
+      </div><!--/.nav-collapse -->
+
+  </div>
 </nav>
+
+<div class="modal fade" id="sign_in_modal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+        <%= image_tag 'ninja.png', :class => 'logo_img' %>
+        <h2 class="modal-title script_text" id="myModalLabel">Sign In</h2>
+      </div>
+      <div class="modal-body">
+        <%= form_for(resource, as: resource_name, url: session_path(resource_name)) do |f| %>
+          <div class="form-group">
+            <%= f.label :email, :class => 'control-label'%>
+            <%= f.email_field :email, autofocus: true, :class => 'form-control' %>
+          </div>
+          <div class="form-group">
+            <%= f.label :password, :class => 'control-label' %>
+            <%= f.password_field :password, autocomplete: "off", :class => 'form-control' %>
+          </div>
+
+          <% if devise_mapping.rememberable? -%>
+            <div class="checkbox">
+              <label>
+                <%= f.check_box :remember_me %>Remeber Me
+              </label>
+            </div>
+          <% end -%>
+        <%= f.submit "Log in", :class => "btn btn-default" %>
+        <% end %>
+      </div>
+    </div>
+  </div>
+</div>
