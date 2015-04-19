@@ -1,0 +1,251 @@
+<section id="welcome_section">
+	<div class="container">
+		<div class="row">
+
+			<div class="col-xs-12 col-md-8">
+				<h1 class="sans_serif_bold dark_text">Hello<span class="sans_serif_bold">
+					<%= @user.name %></span>!
+				</h1>
+			</div>
+
+		</div>
+
+		<div class="row">
+
+			<div class="col-xs-12 col-md-8">
+				<div id="calendar" class="panel panel-default">
+					<div class="panel-heading">
+						<button id="prev_month" class="btn btn-default">Prev</button>
+						<h4 id="month" class="panel-title"></h4>
+						<button id="next_month" class="btn btn-default">Next</button>
+					</div>
+					<table class="table">
+						<thead>
+							<tr>
+								<th class="sans_serif_bod dark_text">Sun.</th>
+								<th class="sans_serif_bod dark_text">Mon.</th>
+								<th class="sans_serif_bod dark_text">Tue.</th>
+								<th class="sans_serif_bod dark_text">Wed.</th>
+								<th class="sans_serif_bod dark_text">Thu.</th>
+								<th class="sans_serif_bod dark_text">Fri.</th>
+								<th class="sans_serif_bod dark_text">Sat.</th>
+							</tr>
+						</thead>
+					</table>
+				</div>
+			</div>
+
+		</div>
+	</div>
+</section>
+
+<section id="dashboard_section_1">
+	<div class="container">
+		<div class="row">
+			<div class="col-xs-12 col-md-12">
+				<div class="panel panel-default">
+
+					<div class="panel-heading">
+						<h2 class="panel-title dashboard_header"><%= @today_start.strftime('%A, %B %d, %Y') %></h2>
+						<%= link_to "&#43 Opening".html_safe, new_user_opening_path, :class=> 'dashboard_link'%>
+					</div>
+					<ul class="list-group">
+						<% if !@schedule.empty? %>
+							<% @schedule.each do |s| %>
+								<li class="list-group-item">
+									<% if @openings.include? s %>
+										<%= link_to(user_opening_path(s)) do %>
+											<div class="row">
+												<div class="col-xs-12 col-sm-6 col-md-6">
+														<span class='profile_color profile_color_<%= s.profile.title.gsub(/\s+/,"")%>'></span>
+														<div class="small_profile_title">
+															<p><%= s.profile.title %></p>
+															<em class="text-success">Available</em>
+														</div>
+												</div>
+												<div class="col-xs-12 col-sm-6 col-md-6">
+														<%= s.start.strftime('%I:%M')%> - <%= s.end.strftime('%I:%M %P') %>
+												</div>
+											</div>
+										<% end %>
+									<% elsif @client_appointments.include? s %>
+										<%= link_to(user_appointment_path(s)) do %>
+											<div class="row">
+												<div class="col-xs-12 col-sm-6 col-md-6">
+														<% if s.profile.avatar.content_type %>
+															<%= image_tag s.profile.avatar.url(:thuumb), :class => "xs_profile_avatar" %>
+														<% end %>
+														<div class="small_profile_title">
+															<p><%= s.profile.title %></p>
+															<em class="text-success"><%= s.profile.user.email %></em>
+														</div>
+												</div>
+												<div class="col-xs-12 col-sm-6 col-md-6">
+														<%= s.start.strftime('%I:%M')%> - <%= s.end.strftime('%I:%M %P') %>
+												</div>
+											</div>
+										<% end %>
+									<% else %>
+										<%= link_to(user_appointment_path(s)) do %>
+												<div class="row">
+													<div class="col-xs-12 col-sm-6 col-md-6">
+														<span class='glyphicon glyphicon-ok glyph_color profile_color_<%= s.profile.title.gsub(/\s+/,"")%>' aria-hidden="true"></span>
+														<div class="small_profile_title">
+															<p><%= s.profile.title %></p>
+															<% if s.client != @user %>
+																<em class="text-warning"><%= s.client.email %></em>
+															<% end %>
+															
+														</div>
+													</div>
+													<div class="col-xs-12 col-sm-6 col-md-6">
+														<%= s.start.strftime('%I:%M')%> - <%= s.end.strftime('%I:%M %P') %>
+													</div>
+												</div>
+										<% end %>
+									<% end %>
+								</li>
+							<% end %>
+						<% else %>
+							<li class="list-group-item">
+								<div class="alert alert-danger">
+									No events scheduled for today.
+								</div>
+							</li>
+						<% end %>
+					</ul>
+
+				</div>
+			</div>
+		</div>
+	</div>
+</section>
+
+<!-- <section class="test_section">
+	1
+</section>
+
+<section class="test_section">
+	2
+</section>
+
+<section class="test_section">
+	3
+</section> -->
+
+<script>
+	$(document).ready(function() {
+		
+
+	var calendarStart = function(year, month) {
+		var month_start = new Date(year, month, 1);
+		var day = month_start.getDay();
+		var start;
+		if(day != 0) {
+			start = new Date(year, month, -1*(day-1));
+		}
+		else {
+			start = month_start;
+		}
+		console.log("Calendar start " + months[start.getMonth()] + " " + start.getDate()+ " " + start.getFullYear());
+		return start;
+	}
+
+	var calendarEnd = function(year, month) {
+		var month_end = new Date(year, month + 1, 0);
+		var day = month_end.getDay();
+		var ending;
+		if(day != 6) {
+			ending = new Date(year, month, month_end.getDate() + (6-day));
+		}
+		else {
+			ending = month_end;
+		}
+		console.log("Calendar end " + months[ending.getMonth()] + " " + ending.getDate()+ " " + ending.getFullYear());
+		return ending;
+	}
+
+	var retrieveEvents = function(t, s, e) {
+		var t_year = t.getFullYear();
+		var t_month = t.getMonth()+1;
+		var t_date = t.getDate();
+
+		var s_year = s.getFullYear();
+		var s_month = s.getMonth()+1;
+		var s_date = s.getDate();
+
+		var e_year = e.getFullYear();
+		var e_month = e.getMonth()+1;
+		var e_date = e.getDate();
+
+		jQuery.ajax({url: '<%= retrieve_events_user_user_path(@user) %>',
+			data: 'today='+t_year+'-'+t_month+'-'+t_date+'&starting='+s_year+'-'+s_month+'-'+s_date+'&ending='+e_year+'-'+e_month+'-'+e_date,
+			dataType: 'script'});
+	}
+
+	var setPrevClick = function(y,m,d) {
+		$('#prev_month').click(function() {
+			if(m === 0) {
+				m = 11;
+				y--;
+			}
+			else {
+				m--;
+			}
+			init(new Date(y, m, d));
+		});
+	}
+
+	var setNextClick = function(y,m,d) {
+		$('#next_month').click(function() {
+			if(m === 11) {
+				m = 0;
+				y++;
+			}
+			else {
+				m++;
+			}
+			init(new Date(y, m, d));
+		});
+	}
+
+	var init = function(date) {
+		var current_date = date;
+
+		var year = current_date.getFullYear();
+		var month = current_date.getMonth();
+		var date = current_date.getDate();
+
+		var calendar_start = calendarStart(year, month);
+		var calendar_end = calendarEnd(year, month);
+		retrieveEvents(current_date, calendar_start, calendar_end);
+
+		setPrevClick(year, month, date);
+		setNextClick(year, month, date);
+		console.log("Today is " + months[month] + ' ' + date + ' ' + year);
+	}
+
+
+
+	var months = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"];
+
+	// var year;
+	// var month;
+	// var date;
+
+	// var calendar_start;
+	// var calendar_end;
+
+	var calendar = [];
+
+	init(new Date());
+	
+	
+
+
+		
+	});
+</script>
+	
+
+

@@ -1,8 +1,11 @@
 class User::ScheduleController < ApplicationController
 	layout 'user'
 	before_filter :authenticate_user!
-	before_action :get_user
-	before_action :get_profiles
+	# before_action :get_user
+	# before_action :get_profiles
+	before_action :get_user_profiles
+	before_action :get_notifications
+	before_action :get_vendors
 
 	before_action :get_year, only: [:index]
 	before_action :get_month, only: [:index]

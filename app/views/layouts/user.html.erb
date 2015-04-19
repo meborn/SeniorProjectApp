@@ -10,6 +10,7 @@
   <%= stylesheet_link_tag    'application', media: 'all', 'data-turbolinks-track' => true %>
   <%= stylesheet_link_tag    'application-user', media: 'all', 'data-turbolinks-track' => true %>
   <%= javascript_include_tag 'application', 'data-turbolinks-track' => true %>
+
   
   <link href='http://fonts.googleapis.com/css?family=Lato:100,300' rel='stylesheet' type='text/css'>
   <link href='http://fonts.googleapis.com/css?family=Bad+Script' rel='stylesheet' type='text/css'>
@@ -17,6 +18,14 @@
 </head>
 <body>
 	<%= render :partial => 'shared/menus/user_menu.html' %>
+	<!-- control panel -->
+	<div id="control_panel_close_tab" class="control_panel_tab">
+		<%= image_tag 'ninja_star_small_dark.png', :class => 'img-responsive center-block'%>
+	</div>
+	<div id="control_panel_container">
+		<%= render :partial => 'shared/control_panel.html.erb' %>
+	</div>
+	<!-- control panel -->
 	<div class="container">
 		<div class="row">
 			<div class="col-xs-12">
@@ -33,6 +42,18 @@
 			</div>
 		</div>
 	</div>
-	<%= yield %>
+	<div id="user_layout_main_container">
+		<%= yield %>
+	</div>
+	
 </body>
+
+<%= javascript_include_tag 'application-user', 'data-turbolinks-track' => true %>
+<%= javascript_tag do %>
+	getProfileColors(<%= raw @profiles.to_json %>)
+	<% if current_page?(controller: 'users', action: 'show') %>
+
+	<% end %>
+<% end %>
+
 </html>

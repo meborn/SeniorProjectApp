@@ -20,6 +20,11 @@ Rails.application.routes.draw do
   end
 
   namespace :user do
+    resources :users, only: [:show] do
+      member do
+        get 'retrieve_events'
+      end
+    end
     resources :openings, except: [:index, :show] 
     resources :openings, only: [:show] do
       post :delete_recurring

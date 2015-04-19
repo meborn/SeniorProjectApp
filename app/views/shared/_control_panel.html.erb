@@ -1,0 +1,137 @@
+
+
+<div id="control_panel">
+	<div id="control_panel_open_tab" class="control_panel_tab">
+		<%= image_tag 'ninja_star_small_dark.png', :class => 'img-responsive center-block'%>
+		<!-- <span class="glyphicon glyphicon-menu-right" aria-hidden="true"></span> -->
+	</div>
+	<div class="container-fluid">
+		<div id="avatar_row" class="row">
+			<div class="col-xs-4 col-xs-offset-4 text-center">
+				<% if @user.avatar.content_type %>
+					<%= image_tag @user.avatar.url(:small), :class => 'img-circle img-responsive center-block' %>
+				<% else %>
+					<%= image_tag 'user_avatar_thumb.png', :class => 'img-circle img-responsive cneter-block' %>
+				<% end %>
+				<a href="#" class="ninja_link">
+					edit
+				</a>
+			</div>
+		</div>
+		<div class="row">
+			<div id="accordion_menu_col" class="col-xs-12">
+				<div class="panel-group" id="accordion_menu" role="tablist" aria-multiselectable="false">
+					<!-- start notifications menu -->
+					<div class="panel panel-default">
+						<a data-toggle="collapse" data-parent="#accordion_menu" href="#notifications_ul" aria-expanded="false" aria-controls="notifications_ul" >
+							<div class="panel-heading" role="tab" id="notifications">
+								<h4 class="panel-title sans_serif_text light_text">
+									Notifications
+									<span class="caret light_text"></span>
+								</h4>
+							</div>
+						</a>
+						<div id="notifications_ul" class="panel-collapse collapse" role="tabpanel" aria-labelledby="notifications">
+							<ul class="list-group">
+								<li class="list-group-item">
+									<%= link_to user_notifications_new_appointments_path do %>
+										<span class="sans_serif_text light_text">New Appointments</span>
+										<span class="badge"><%= @appointment_notifications.count %></span> 
+									<% end %>
+								</li>
+								<li class="list-group-item">
+									<%= link_to user_clients_path do %>
+										<span class="sans_serif_text light_text">New Clients</span> 
+										<span class="badge"><%= @client_notifications.count %></span>
+									<% end %>
+								</li>
+								<li class="list-group-item">
+									<a href="#">
+										<span class="sans_serif_text light_text">New Vendors</span>
+										<span class="badge"><%= @vender_notifications.count %></span>
+									</a>
+								</li>
+								<li class="list-group-item">
+									<a href="#">
+										<span class="sans_serif_text light_text">New Reviews</span>
+										<span class="badge">42</span>
+									</a>
+								</li>
+							</ul>
+						</div>
+					</div>
+					<!-- end notifications menu -->
+					<!-- start my profiles menu -->
+					<div class="panel panel-default">
+						<a data-toggle="collapse" data-parent="#accordion_menu" href="#my_profiles_ul" aria-expanded="false" aria-controls="my_profiles_ul" >
+							<div class="panel-heading" role="tab" id="my_profiles">
+								<h4 class="panel-title sans_serif_text light_text">
+									My Profiles
+									<span class="caret light_text"></span>
+								</h4>
+							</div>
+						</a>
+						<div id="my_profiles_ul" class="panel-collapse collapse" role="tabpanel" aria-labelledby="my_profiles">
+							<ul class="list-group">
+								<%= link_to new_user_profile_path do %>
+										<li class="list-group-item">
+											<span class="glyphicon glyphicon-plus-sign" aria-hidden="true"></span>
+											<span class="sans_serif_text light_text">New Profile</span>
+										</li>
+								<% end %>
+								<% @profiles.each do |profile| %>
+									<%= link_to user_profile_path(profile) do %>
+										<li class="list-group-item">
+											<% if profile.avatar.content_type %>
+												<%= image_tag profile.avatar.url(:thuumb), :class => 'img-circle' %>
+											<% else %>
+												<div class="no_profile_avatar a_profile_color profile_color_<%= profile.title.gsub(/\s+/,"")%>"></div>
+											<% end %>
+											<span class="sans_serif_text light_text"><%= profile.title %></span>
+										</li>
+									<% end %>
+								<% end %>
+							</ul>
+						</div>
+					</div>
+					<!-- end my profiles menu -->
+					<!-- start vendor profiles menu -->
+					<div class="panel panel-default">
+						<a data-toggle="collapse" data-parent="#accordion_menu" href="#vendor_profiles_ul" aria-expanded="false" aria-controls="vendor_profiles_ul" >
+							<div class="panel-heading" role="tab" id="vendor_profiles">
+								<h4 class="panel-title sans_serif_text light_text">
+									Vendor Profiles
+									<span class="caret light_text"></span>
+								</h4>
+							</div>
+						</a>
+						<div id="vendor_profiles_ul" class="panel-collapse collapse" role="tabpanel" aria-labelledby="vendor_profiles">
+							<ul class="list-group">
+								<%= link_to profiles_path do %>
+									<li class="list-group-item">
+										<span class="glyphicon glyphicon-search" aria-hidden="true"></span>
+										<span class="sans_serif_text light_text">Find Me!</span>
+									</li>
+								<% end %>
+								<% @user_is_client.each do |p| %>
+									<%= link_to profile_path(p.profile) do %>
+										<li class="list-group-item">
+											<% if p.profile.avatar.content_type %>
+												<%= image_tag p.profile.avatar.url(:thuumb), :class => 'img-circle' %>
+											<% else %>
+												<div class="no_profile_avatar a_profile_color profile_color_<%= p.profile.title.gsub(/\s+/,"")%>"></div>
+											<% end %>
+											<span class="sans_serif_text light_text"><%= p.profile.title %></span>
+										</li>
+									<% end %>
+								<% end %>
+							</ul>
+						</div>
+					</div>
+					<!-- end vendor profiles menu -->
+				</div>
+				
+			</div>
+		</div>
+	</div>
+</div>
