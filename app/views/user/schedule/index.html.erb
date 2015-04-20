@@ -74,6 +74,7 @@
 				today.setMonth(today.getMonth() - 1);
 			}
 			init(today, events);
+			getProfileColors(<%= raw @colors.to_json %>);
 		});
 		$('#next_month').click(function() {
 			if(today.getMonth() === 11) {
@@ -84,16 +85,9 @@
 				today.setMonth(today.getMonth() +1);
 			}
 			init(today, events);
+			getProfileColors(<%= raw @colors.to_json %>);
 		});
-		$('td').each(function(index) {
-			var td_id = $(this).attr('id');
-			$(this).click(function() {
-				$.ajax({url: '<%= user_schedule_retrieve_events_path %>',
-					data: 'date='+td_id,
-					dataType: 'script'});
-			});
-			
-		});
+		
 		getProfileColors(<%= raw @colors.to_json %>);
 	});	
 	

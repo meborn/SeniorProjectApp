@@ -1,0 +1,16 @@
+
+        <div class="row pad_col">
+            <div class="col-xs-12">
+                <% if flash[:success] %>
+                    <div class="alert alert-success" role="alert">
+                        <%= flash[:success].html_safe %>
+                    </div>
+                <% end %>
+                <% if flash[:error] %>
+                    <div class="alert alert-danger" role="alert">
+                        <%= flash[:error].html_safe %>
+                    </div>
+                <% end %>
+            </div>
+        </div>
+	

@@ -1,34 +1,47 @@
 class User::OpeningsController < ApplicationController
 	layout 'user'
+
+	respond_to :html, :js
+
+
 	before_filter :authenticate_user!
 	
 	before_action :get_user
 	before_action :get_user_profiles
 	before_action :get_notifications
 	before_action :get_vendors
+	before_action :get_events
+	before_action :get_profile_colors
 
-	respond_to :html, :js
-
+	
 	def show
 		@opening = Opening.find(params[:id])
 	end
 
 	def new
 		@opening = Opening.new
-		@openings = Opening.where(:user => @user)
-		@client_appointments = Appointment.where(:client => @user)
-		@owner_appointments = Appointment.where(:owner => @user)
-		@events = @openings + @client_appointments + @owner_appointments
-		@events.sort_by! do |item|
-			item[:start]
-		end
+
+		today_start = DateTime.now.beginning_of_day
+		today_end = today_start.end_of_day
+		@day = today_start
+
+		@schedule= [];
+		
+		@day_openings = Opening.where(:user => @user).where("start >= ? AND start <= ?",today_start, today_end).order(:start)
+    	@day_client_appointments = Appointment.where(:client => @user).where("start >= ? AND start <= ?",today_start, today_end).order(:start)
+    	@day_owner_appointments = Appointment.where(:owner => @user).where("start >= ? AND start <= ?",today_start, today_end).order(:start)
+		@schedule = @schedule + @day_openings + @day_client_appointments + @day_owner_appointments
+
+		@schedule.sort_by! do |item|
+	      item[:start]
+	    end
 	end
 
 	def create
 		start_datetime = DateTime.strptime(safe_params[:start], '%Y/%m/%d %I:%M %p')
 		end_datetime = DateTime.strptime(safe_params[:end], '%Y/%m/%d %I:%M %p')
 		if end_datetime.to_i <= start_datetime.to_i
-			flash[:error] = "End DateTime must be after Start DateTime."
+			flash[:error] = "End Date must be after Start Date."
 			redirect_to new_user_opening_path
 		else
 			openings = Opening.where(:user => @user)
@@ -70,14 +83,14 @@ class User::OpeningsController < ApplicationController
 					flash[:success] = "Opening Saved!"
 					redirect_to user_opening_path(@opening)
 				else
-					flash[:error] = "Unable to Save Opening!"
-					render 'new'
+					flash[:error] = "Pick a profile for this opening!"
+					redirect_to new_user_opening_path
 				end
 			else
 				if opening_conflict
-					flash[:error] = "Unable to save this opening. You have an opening that conflicts."
+					flash[:error] = "You have another opening that conflicts!"
 				else
-					flash[:error] = "Unable to save this opening. You have an appointment that conflicts."
+					flash[:error] = "You have an appointment that conflicts!"
 				end
 				redirect_to new_user_opening_path	
 			end
@@ -137,6 +150,30 @@ class User::OpeningsController < ApplicationController
 		else
 			redirect_to user_schedule_index_path
 		end
+	end
+
+	def retrieve_events
+		date = params[:date]
+		date_list = date.split("_")
+		y = date_list[0].to_i
+		m = date_list[1].to_i + 1
+		d = date_list[2].to_i
+
+		date_start = DateTime.new(y, m, d).beginning_of_day
+		date_end = date_start.end_of_day
+		@day = date_start
+
+		@schedule= [];
+		
+		@day_openings = Opening.where(:user => @user).where("start >= ? AND start <= ?",date_start, date_end).order(:start)
+    	@day_client_appointments = Appointment.where(:client => @user).where("start >= ? AND start <= ?",date_start, date_end).order(:start)
+    	@day_owner_appointments = Appointment.where(:owner => @user).where("start >= ? AND start <= ?",date_start, date_end).order(:start)
+		@schedule = @schedule + @day_openings + @day_client_appointments + @day_owner_appointments
+
+		@schedule.sort_by! do |item|
+	      item[:start]
+	    end
+	    respond_with(@schedule, :layout => !request.xhr?)
 	end
 
 	private
@@ -238,6 +275,14 @@ class User::OpeningsController < ApplicationController
 	    @events.sort_by! do |item|
 	      item[:start]
 	    end
+	  end
+
+	  def get_profile_colors
+	  	@colors = []
+	  	@user_is_client.each do |vendor|
+	  		@colors.push(vendor.profile)
+	  	end
+	  	@colors = @colors + @profiles
 	  end
 
 	def safe_params

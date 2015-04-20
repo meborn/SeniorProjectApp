@@ -21,10 +21,12 @@ Rails.application.routes.draw do
 
   namespace :user do
     resources :users, only: [:show]
+    get 'openings/retrieve_events', to: 'openings#retrieve_events'
     resources :openings, except: [:index, :show] 
     resources :openings, only: [:show] do
       post :delete_recurring
     end
+
     resources :profiles
     resources :appointments, only: [:show, :destroy]
     resources :schedule, only: [:index] 

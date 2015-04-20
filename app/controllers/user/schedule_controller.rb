@@ -6,7 +6,7 @@ class User::ScheduleController < ApplicationController
 	before_filter :authenticate_user!
 	
 	before_action :get_user
-	before_action :get_events
+	before_action :get_events, :only => [:index]
 	before_action :get_user_profiles
 	before_action :get_notifications
 	before_action :get_vendors
@@ -32,25 +32,27 @@ class User::ScheduleController < ApplicationController
 	end
 
 	def retrieve_events
-		@date = params[:date].split("_")
-		y = @date[0].to_i
-		m = @date[1].to_i + 1
-		d = @date[2].to_i
+		date = params[:date]
+		date_list = date.split("_")
+		y = date_list[0].to_i
+		m = date_list[1].to_i + 1
+		d = date_list[2].to_i
 
-		today_start = DateTime.new(y, m, d)
-		today_end = today_start.end_of_day
-		@day = today_start
+		date_start = DateTime.new(y, m, d).beginning_of_day
+		date_end = date_start.end_of_day
+		@day = date_start
 
 		@schedule= [];
 		
-		@day_openings = Opening.where(:user => @user).where("start >= ? AND start <= ?",today_start, today_end).order(:start)
-    	@day_client_appointments = Appointment.where(:client => @user).where("start >= ? AND start <= ?",today_start, today_end).order(:start)
-    	@day_owner_appointments = Appointment.where(:owner => @user).where("start >= ? AND start <= ?",today_start, today_end).order(:start)
+		@day_openings = Opening.where(:user => @user).where("start >= ? AND start <= ?",date_start, date_end).order(:start)
+    	@day_client_appointments = Appointment.where(:client => @user).where("start >= ? AND start <= ?",date_start, date_end).order(:start)
+    	@day_owner_appointments = Appointment.where(:owner => @user).where("start >= ? AND start <= ?",date_start, date_end).order(:start)
 		@schedule = @schedule + @day_openings + @day_client_appointments + @day_owner_appointments
 
 		@schedule.sort_by! do |item|
 	      item[:start]
 	    end
+	    respond_with(@schedule, :layout => !request.xhr?)
 	end
 
 	private
@@ -78,7 +80,8 @@ class User::ScheduleController < ApplicationController
 	  def get_events
 	    today_start = DateTime.now.beginning_of_day
 
-	    @openings = Opening.where(:user => @user).where("start >= ?",today_start).order(:start)
+	    # @openings = Opening.where(:user => @user).where("start >= ?",today_start).order(:start)
+	    @openings = Opening.where(:user => @user).order(:start)
 	    @client_appointments = Appointment.where(:client => @user).order(:start)
 	    @owner_appointments = Appointment.where(:owner => @user).order(:start)
 

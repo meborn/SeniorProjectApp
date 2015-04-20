@@ -5,7 +5,7 @@ class User::UsersController < ApplicationController
 
 	before_filter :authenticate_user!
 
-	
+	before_action :get_user
 	before_action :get_user_profiles
 	before_action :get_notifications
 	before_action :get_vendors

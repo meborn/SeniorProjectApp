@@ -15,6 +15,10 @@ body {
 	height:100%;
 }
 
+#error_section{
+	padding-bottom: 0px;
+}
+
 #ninja_star_decor {
 	position: fixed;
 	top:0;
