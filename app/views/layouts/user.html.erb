@@ -22,26 +22,14 @@
 	<div id="control_panel_close_tab" class="control_panel_tab">
 		<%= image_tag 'ninja_star_small_dark.png', :class => 'img-responsive center-block'%>
 	</div>
+	<div id="control_panel_helper" class="script_text dark_text">
+		<p>open menu &#8594;</p>
+	</div>
 	<div id="control_panel_container">
 		<%= render :partial => 'shared/control_panel.html.erb' %>
 	</div>
 	<!-- control panel -->
-	<div class="container">
-		<div class="row">
-			<div class="col-xs-12">
-				<% if flash[:success] %>
-					<div class="alert alert-success" role="alert">
-						<%= flash[:success].html_safe %>
-					</div>
-				<% end %>
-				<% if flash[:error] %>
-					<div class="alert alert-danger" role="alert">
-						<%= flash[:error].html_safe %>
-					</div>
-				<% end %>
-			</div>
-		</div>
-	</div>
+	
 	<div id="user_layout_main_container">
 		<%= yield %>
 	</div>
@@ -50,10 +38,8 @@
 
 <%= javascript_include_tag 'application-user', 'data-turbolinks-track' => true %>
 <%= javascript_tag do %>
-	getProfileColors(<%= raw @profiles.to_json %>)
-	<% if current_page?(controller: 'users', action: 'show') %>
-
-	<% end %>
+	getProfileColors(<%= raw @colors.to_json %>);
+	
 <% end %>
 
 </html>

@@ -4,19 +4,142 @@
 
 .dashboard_link {
 	float:right;
+	color:#1f1f1f;
+	font-family: 'Lato', sans-serif;
+	font-weight: 300;
+	text-decoration: none;
+	font-size: 14px
 }
 
-.date {
-	background-color:#f9f9f9;
+.dashboard_link:hover {
+	color:#e9573f;
+	font-family: 'Lato', sans-serif;
+	font-weight: 300;
+	font-size: 15px;
+	text-decoration: none;
 }
 
-/*.badge {
-	float: right;
-}*/
-
-.xs_profile_avatar {
-	width:50px;
+#welcome_section {
+	padding-top: 120px;
+	background-image: url('../ninja-star.png');
+ 	background-position: left top;
+ 	background-repeat: no-repeat;
 }
 
+#welcome_section h1 {
+	font-size: 72px;
+}
+
+#welcome_section h2 {
+	margin-bottom: 30px;
+	font-size: 28px;
+}
+
+
+#welcome_row {
+	padding-bottom: 70px;
+	border-bottom: 1px solid #1f1f1f;
+}
+
+#find_me_form{
+	margin:0px auto;
+	width: 100%;
+	max-width: 400px;
+}
+.quick_action_link {
+	color:#1f1f1f;
+	text-decoration: none;
+}
+.quick_action_link:hover {
+	color: #e9573f;
+	text-decoration: none;
+}
+.quick_action {
+	width:100%;
+	max-width: 400px;
+	margin:0px auto;
+	position: relative;
+	padding:50px 0px;
+	background-color: rgba(242,242,242, 0.5);
+	border-radius: 4px;
+}
+.quick_action .glyphicon {
+	font-size: 52px;
+}
+.quick_action .not, .quick_action_small .not {
+	position: absolute;
+	top:10px;
+	right:10px;
+	width:20px;
+	height:20px;
+	border-radius: 10px;
+	background-color: #e9573f;
+	z-index: 2;
+	text-align: center;
+}
+
+.quick_action_small {
+	width:100%;
+	position: relative;
+	padding:20px 10px;
+	background-color: rgba(242,242,242, 0.5);
+	border-radius: 4px;
+}
+
+.quick_action_small .glyphicon {
+	font-size: 32px;
+	vertical-align: middle;
+}
+
+.quick_action_small h4 {
+	display: inline-block;
+	margin: 0px;
+	vertical-align: middle;
+}
+
+
+#quick_look_today.panel {
+	background-color: rgba(242,242,242, 0.5);
+}
+
+#quick_look_today.panel-default .panel-heading {
+	background-color: rgba(242,242,242, 0.5);
+	border-color:#1f1f1f;
+}
+#quick_look_today h2.panel-title {
+	margin-bottom: 0px;
+}
+#quick_look_today .panel-title span.panel_sub_title {
+	font-size: 16px;
+}
+
+#quick_look_today ul li.list-group-item {
+	background-color: rgba(242,242,242, 1);
+} 
+
+@media (max-width: 525px) {
+	#welcome_section h1 {
+		font-size: 32px;
+	}
+	#welcome_section h2 {
+		font-size: 22px;
+	}
+}
+
+@media (min-width: 526px) and (max-width: 768px) {
+
+}
+
+@media (min-width: 769px) and (max-width: 992px) {
+
+}
+
+@media (min-width: 993px) and (max-width: 1200px) {
+
+}
+
+@media (min-width: 1200px) {
+
+}
 
 

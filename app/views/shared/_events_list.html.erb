@@ -1,0 +1,32 @@
+<div id="quick_look_today" class="panel panel-default">
+
+		<div class="panel-heading">
+			<h2 class="panel-title sans_serif_bold dark_text dashboard_header">
+				<%= @day.strftime('%A') %><br/>
+				<span class="panel_sub_title">
+					<%= @day.strftime('%B %d, %Y') %>
+				</span>
+			</h2>
+			<%= link_to "&#43 Opening".html_safe, new_user_opening_path, :class=> 'dashboard_link'%>
+		</div>
+		<ul class="list-group">
+			<% if !@schedule.empty? %>
+				<% @schedule.each do |s| %>
+					<% if @day_openings.include? s %>
+						<%= render :partial => 'shared/list_item/list_item_opening.html.erb', :locals => {:e => s} %>
+					<% elsif @day_client_appointments.include? s %>
+						<%= render :partial => 'shared/list_item/list_item_client.html.erb', :locals => {:e => s} %>
+					<% else %>
+						<%= render :partial => 'shared/list_item/list_item_owner.html.erb', :locals => {:e => s} %>
+					<% end %>
+					
+				<% end %>
+			<% else %>
+				<li class="list-group-item">
+					<div class="alert alert-danger">
+						No events scheduled for today.
+					</div>
+				</li>
+			<% end %>
+		</ul>
+</div>

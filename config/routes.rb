@@ -20,18 +20,15 @@ Rails.application.routes.draw do
   end
 
   namespace :user do
-    resources :users, only: [:show] do
-      member do
-        get 'retrieve_events'
-      end
-    end
+    resources :users, only: [:show]
     resources :openings, except: [:index, :show] 
     resources :openings, only: [:show] do
       post :delete_recurring
     end
     resources :profiles
     resources :appointments, only: [:show, :destroy]
-    resources :schedule, only: [:index]
+    resources :schedule, only: [:index] 
+    get 'schedule/retrieve_events', to: 'schedule#retrieve_events'
     resources :profiles
     resources :clients, only: [:index, :show, :destroy] do
       post :approve_client

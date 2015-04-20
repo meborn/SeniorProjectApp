@@ -5,7 +5,7 @@ class OpeningsController < ApplicationController
 	before_action :get_user
 
 	def index
-		current_date = DateTime.now
+		current_date = DateTime.now.beginning_of_day
 		@openings = Opening.where(:profile => @profile).where("start >= ?", current_date).order(:start)
 	end
 

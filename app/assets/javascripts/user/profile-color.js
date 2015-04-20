@@ -8,6 +8,7 @@ var getProfileColors = function(profiles) {
 		$('.a_profile_color.profile_color_'+value.title.replace(/\s+/g,'')).css('background-color', value.color);
 		$('.b_profile_color.profile_color_'+value.title.replace(/\s+/g,'')).css('border', '1px solid '+value.color);
 		$('span.glyph_color.profile_color_'+value.title.replace(/\s+/g,'')).css('color', value.color);
+		$('.event_profile_'+value.id).css('background-color', value.color);
 	});
 }
 
