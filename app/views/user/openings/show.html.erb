@@ -1,55 +1,49 @@
-<style>
-	.opening_links a {
-		
-		text-decoration: none;
-	}
-	.opening_links a:first-child {
-		vertical-align: top;
-	}
-	.opening_links a:last-child {
-		vertical-align: bottom;
-	}
-</style>
-<div class="row">
-	<div class="col-xs-12">
-		<h2>Available</h2>
-	</div>
-</div>
-<div class="row">
-	<div class="col-xs-12">
-		<div class="panel panel-default">
-			<div class="panel-heading">
-				<div class="row">
-					<div class="col-xs-3 col-sm-2 col-md-1">
-						<% if @opening.profile.avatar.content_type %>
-							<%= image_tag @opening.profile.avatar.url(:thuumb), :class => "img-responsive img-rounded" %>
-						<% end %>
-					</div>
-					<div class="col-xs-9 col-sm-10 col-md-11">
-						<h3><%= @opening.profile.title %></h3>
-					</div>
-				</div>
+<section id="show_opening_section_1">
+	<div class="container">
+		<div class="row">
+			<div class="col-xs-12 col-md-8">
+				<%= render :partial => 'shared/errors.html.erb' %>
 			</div>
-			<div class="panel-body">
-				<div class="row">
-					<div class="col-xs-12">
-						<h4><%= @opening.start.strftime('%A') %> <%= @opening.start.strftime('%m/%d/%Y') %></h4>
-						<h5><%= @opening.start.strftime('%I:%M') %> - <%= @opening.end.strftime('%I:%M %p') %></h5>
-						<button class="btn btn-default" id="swal_edit_opening">
-							Edit <span class="glyphicon glyphicon-pencil" aria-hidden="true"></span>
+		</div>
+		
+		<div class="row">
+			<div class="col-xs-12 col-md-8">
+				<div class="ninja_panel panel panel-default">
+					<div class="panel-heading">
+						<% if @opening.profile.avatar.content_type %>
+							<%= image_tag @opening.profile.avatar.url(:thuumb), :class => 'img-circle avatar_big' %>
+						<% else %>
+							<div class="no_profile_avatar a_profile_color profile_color_<%= @opening.profile.title.gsub(/\s+/,"")%>"></div>
+						<% end %>
+						<h1 class="panel-title sans_serif_bold dark_text inline_heading"><%= @opening.profile.title %></h1>
+						<button class="btn btn-default dashboard_link" id="swal_delete_opening">
+							Delete
 						</button>
-						<button class="btn btn-default" id="swal_delete_opening">
-							Delete <span class="glyphicon glyphicon-remove" aria-hidden="true"></span>
-						</button>
-						<%= button_to "this is a test", user_opening_delete_recurring_path(@opening), :class => "btn btn-defaul" %>
+					</div>
+					<ul class="list-group">
+						<li class="list-group-item">
+							<h3 class="sans_serif_bold text-success text-center">Available</h3>
+							<h3 class="sans_serif_bold dark_text text-center"><%= @opening.start.strftime('%A') %></h3>
+							<h5 class="sans_serif_bold dark_text text-center"><%= @opening.start.strftime('%m/%d/%Y') %></h5>
+							<p class="sans_serif_bold orange_text text-center"><%= @opening.start.strftime('%I:%M') %> - <%= @opening.end.strftime('%I:%M %p') %></p>
+						</li>
+					</ul>
+					<div class="panel-body">
+						
+						<h4 class="sans_serif_bold dark_text">Edit Opening</h4>
+						<%= render :partial => 'form' %>
 						
 					</div>
 				</div>
 			</div>
+			<div class="col-xs-12 col-md-4">
+                
+                <%= render :partial => "shared/events_list.html.erb" %>
+            </div>
 		</div>
-	<div>
+	</div>
+</section>
 
-</div>
 <script>
 	
 	$('#swal_delete_opening').click( function(event) {
@@ -94,3 +88,58 @@
 
 	// });
 </script>
+<%= javascript_tag do %>
+    $('document').ready(function() {
+
+        var getDate = function() {
+            var value = $('#datetimepicker_start input').val();
+
+            var value_year = value.slice(0,4);
+            var value_month = value.slice(6,7) - 1;
+            var value_day = value.slice(8,10);
+            if(value.slice(17,18) === 'P') {
+                var value_hour = parseInt(value.slice(11,13)) + 12;
+            }
+            else {
+                var value_hour = parseInt(value.slice(11, 13));
+            }
+            var value_min = parseInt(value.slice(14, 16));
+            var new_value = new Date(value_year, value_month, value_day, value_hour, value_min);
+            
+            return new_value;
+        }
+
+
+        $('#datetimepicker_start').on('dp.change', function() {
+            var value = $('#datetimepicker_start input').val();
+
+            var value_year = value.slice(0,4);
+            var value_month = value.slice(6,7) - 1;
+            var value_day = value.slice(8,10);
+            var td_id = value_year + "_" + value_month + "_" + value_day;
+            console.log(td_id);
+            $.ajax({url: '<%= user_openings_retrieve_events_path %>',
+                    data: 'date='+td_id,
+                    dataType: 'script'});
+
+            var new_value = getDate();
+
+            
+            var today = new Date();
+            if(new_value < today) {
+                swal({
+                    title: "Warning!",
+                    text: "This date is in the past.",
+                    type: "warning",
+                    confirmButtonColor: "#DD6B55",
+                    confirmButtonText: "OK",
+                    closeOnConfirm: true
+                });
+            }
+            
+        });
+        
+        
+    }); 
+    
+<% end %>

@@ -4,4 +4,25 @@
 	<%= render :partial => 'client_appointment' %>
 <% end %>
 
+<script>
+$('document').ready(function() {
+	$('#swal_delete_appointment').click( function(event) {
+		event.preventDefault();
+		swal({
+				title: "Are you sure?",
+				text: "Are you sure you want to cancel this appointment?",
+				type: "warning",
+				showCancelButton:true,
+				cancelButtonText: "Nevermind",
+				confirmButtonColor: "#DD6B55",
+				confirmButtonText: "Cancel Appointment",
+				closeOnConfirm: true
+			},
+			function() {
+				$.post("/user/appointments/<%= @appointment.id %>", {_method: 'delete'}, null, "script");
+				
+			});
+	});
+});
 
+</script>

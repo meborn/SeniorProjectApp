@@ -23,5 +23,32 @@ class ApplicationController < ActionController::Base
     end
   end
 
+  def get_user
+      @user = current_user
+  end
+
+  def get_user_profiles
+      @profiles = Profile.where(user: @user)
+  end
+
+  def get_notifications
+      @appointment_notifications = Notification.appointment.where("user_id = ? AND seen = ?", @user.id, false)
+      @client_notifications = Notification.client.where("user_id = ? AND seen = ?", @user.id, false)
+      @vender_notifications = Notification.vender.where("user_id = ? AND seen = ?", @user.id, false)
+      @cancellation_notifications = Notification.cancellation.where("user_id = ? AND seen = ?", @user.id, false)
+  end
+
+  def get_vendors
+      @user_is_client = Client.where("client_id = ? AND approved = ?", @user.id, true)
+  end
+
+  def get_profile_colors
+    @colors = []
+    @user_is_client.each do |vendor|
+      @colors.push(vendor.profile)
+    end
+    @colors = @colors + @profiles
+  end
+
   
 end

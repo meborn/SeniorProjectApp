@@ -19,10 +19,12 @@
 					Find someone near you
 				</h2>
 				<div id="find_me_form" class="form-inline text-center">
-					<div class="form-group text-center">
-						<input type="text" class="form-control" placeholder="Zip Code">
-					</div>
-					<button type="submit" class="btn btn-default">Find Me!</button>
+					<form class="form-inline" method="get" action="/profiles">
+						<div class="form-group text-center">
+							<input type="text" name="zip" class="form-control" placeholder="Zip Code">
+						</div>
+						<button type="submit" class="btn btn-default">Find Me!</button>
+					</form>
 				</div>
 			</div>
 		</div>
@@ -33,7 +35,7 @@
 						<div class="col-xs-12 col-sm-6 col-md-6 col-lg-12 text-center pad_top">
 							<%= link_to user_schedule_index_path, :class => 'quick_action_link' do %>
 							<div class="quick_action">
-								<span class="not light_text"><%= @appointment_notifications.count %></span>
+								<span class="not light_text"><%= @appointment_notifications.count + @cancellation_notifications.count %></span>
 								<span class="glyphicon glyphicon-calendar" aria-hidden="true"></span>
 								<h4 class="text-center sans_serif_bold dark_text">My Calendar</h4>
 							</div>

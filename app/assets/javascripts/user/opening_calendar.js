@@ -1,29 +1,17 @@
+var openingBuildCalendarView = function(profile_id, calendar) {
+	
+	// $('#calendar_body').empty();
+	// $.each(calendar, function(w, week) {
+	// 	console.log('week index' + w);
+	// 	$('#calendar_body').append("<tr id='week_"+w+"'></tr>");
+	// 	$.each(week,function(d, day) {
+	// 		$('#week_'+w).append("<td id='"+day.year+"_"+day.month+"_"+day.date+"'><p class='"+day.status+"'>"+day.date+"</p></td>");
+	// 		$.each(day.events, function(i, e) {
+	// 			$("#"+day.year+"_"+day.month+"_"+day.date).append("<div class='event_marker event_profile_"+e.profile_id+"'></div>");
 
-
-var addMonths = function(yearObj) {
-	for(var i = 0; i < 12; i++) {
-		var month = {
-			days: []
-		}
-		yearObj.months.push(month);
-	}
-}
-
-var addDays = function(yearObj) {
-	var year = parseInt(yearObj.year);
-	for(var i = 0; i < 12; i++) {
-		var date = new Date(year, i, 1);
-		while(date.getMonth() === i) {
-			var day = {
-				events: []
-			}
-			yearObj.months[i].days.push(day);
-			date.setDate(date.getDate() + 1);
-		}
-	}
-}
-
-var buildCalendarView = function(calendar) {
+	// 		});
+	// 	});
+	// });
 	var months = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"];
 	var days = ["Sunday", "Monday", "Tuesday","Wednesday","Thursday","Friday","Saturday"];
 	
@@ -42,22 +30,12 @@ var buildCalendarView = function(calendar) {
 			});
 		});
 		$('#week_'+w+'_heading h2').append('<span class="badge">'+week_event_count+'</span>');
-		//$.each(calendar, function(w, week) {
-		// $('#calendar_body').append("<tr id='week_"+w+"'></tr>");
-		// $.each(week,function(d, day) {
-		// 	$('#week_'+w).append("<td id='"+day.year+"_"+day.month+"_"+day.date+"'><p class='"+day.status+"'>"+day.date+"</p></td>");
-		// 	$.each(day.events, function(i, e) {
-		// 		$("#"+day.year+"_"+day.month+"_"+day.date).append("<div class='event_marker event_profile_"+e.profile_id+"'></div>");
-
-		// 	});
-		// });
-		//});
 	});
 	$('.c-item').each(function(index) {
 			var td_id = $(this).attr('id');
 			$(this).click(function() {
 				
-				$.ajax({url: '/user/schedule/retrieve_events',
+				$.ajax({url: '/profiles/'+profile_id+'/openings/retrieve_events',
 					data: 'date='+td_id,
 					dataType: 'script'});
 				
@@ -67,35 +45,8 @@ var buildCalendarView = function(calendar) {
 
 }
 
-var calendarStart = function(year, month) {
-		var month_start = new Date(year, month, 1);
-		var day = month_start.getDay();
-		var start;
-		if(day != 0) {
-			start = new Date(year, month, -1*(day-1));
-		}
-		else {
-			start = month_start;
-		}
-		
-		return start;
-	}
 
-	var calendarEnd = function(year, month) {
-		var month_end = new Date(year, month + 1, 0);
-		var day = month_end.getDay();
-		var ending;
-		if(day != 6) {
-			ending = new Date(year, month, month_end.getDate() + (6-day));
-		}
-		else {
-			ending = month_end;
-		}
-		
-		return ending;
-	}
-
-var upadateView = function(date, calendarEvents) {
+var openingUpadateView = function(profile_id, date, calendarEvents) {
 	var months = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"];
 	var y = date.getFullYear();
 	var m = date.getMonth();
@@ -137,77 +88,10 @@ var upadateView = function(date, calendarEvents) {
 
 		calendar.push(week);
 	}
-	buildCalendarView(calendar);
+	openingBuildCalendarView(profile_id, calendar);
 	
 	
 }
-
-
-
-
-
-var init = function(date, calendarEvents) {
-	
-	upadateView(date, calendarEvents);
-	var y = date.getFullYear();
-	var m = date.getMonth();
-	var d = date.getDate();
-
+var openingInit = function(profile_id, date, calendarEvents) {
+	openingUpadateView(profile_id, date, calendarEvents);
 }
-
-
-var createEventsObj = function(events) {
-
-	
-
-	var all_events = events;
-	var calendarEvents = [];
-	
-	if(all_events.length > 0) {
-		console.log(events);
-
-		
-
-		var start_year = parseInt(all_events[0].start.slice(0,10).split('-')[0]);
-		
-		var first_y = {
-			year: start_year,
-			months: []
-		}
-		addMonths(first_y);
-		addDays(first_y);
-
-		calendarEvents.push(first_y);
-		var year_index = 0;
-
-		$.each(all_events, function(index, e) {
-			var new_year = parseInt(e.start.slice(0,10).split('-')[0]);
-
-			if(new_year !== start_year) {
-				var y = {
-					year: new_year,
-					months: []
-				}
-				addMonths(y);
-				addDays(y);
-				start_year = new_year;
-				calendarEvents.push(y);
-				year_index++;
-			}
-			var month = e.start.slice(0,10).split('-')[1] -1;
-			var day =	e.start.slice(0,10).split('-')[2] -1;
-			calendarEvents[year_index].months[month].days[day].events.push(e);
-
-
-		});
-		
-		console.log(calendarEvents);
-	}
-	
-
-	return calendarEvents;
-
-
-
-}
-

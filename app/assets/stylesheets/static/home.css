@@ -86,6 +86,10 @@ body {
  	background-repeat: no-repeat;
  }
 
+ #static_section_4 p {
+ 	font-size: 18px;
+ }
+
  #about_img_container {
  	display: inline-block;
  	padding:5px;

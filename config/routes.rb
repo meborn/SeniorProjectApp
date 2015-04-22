@@ -11,18 +11,20 @@ Rails.application.routes.draw do
   end
 
   resources :users, only: [:show]
-
+  #get 'profile/retrieve_events', to: 'profiles#retrieve_events'
   resources :profiles, only: [:index, :show] do
+    get 'openings/retrieve_events', to: 'openings#retrieve_events'
     resources :openings, only: [:index] do
       resources :appointments, only: [:new, :create]
     end
     resources :clients, only: [:create]  
   end
 
+
   namespace :user do
     resources :users, only: [:show]
     get 'openings/retrieve_events', to: 'openings#retrieve_events'
-    resources :openings, except: [:index, :show] 
+    resources :openings, except: [:index, :show, :edit] 
     resources :openings, only: [:show] do
       post :delete_recurring
     end
@@ -37,8 +39,10 @@ Rails.application.routes.draw do
     end
     resources :notifications, only: [:index, :destroy]
     get 'notifications/new_appointments', to: 'notifications#new_appointments'
-    get 'notifications/new_clients', to: 'notifications#new_clients'
+    get 'notifications/cancellations', to: 'notifications#cancellations'
+    # get 'notifications/new_clients', to: 'notifications#new_clients'
     get 'notifications/new_venders', to: 'notifications#new_venders'
+    resources :cancellations, only: [:show]
   end
 
   

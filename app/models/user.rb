@@ -12,6 +12,7 @@ class User < ActiveRecord::Base
   has_many :profiles
   has_many :openings
   has_many :appointments
+  has_many :cancellations
   has_many :clients
   has_many :notifications
 end

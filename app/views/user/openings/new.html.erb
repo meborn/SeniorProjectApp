@@ -4,9 +4,9 @@
         <%= render :partial => 'shared/errors.html.erb' %>
         <div class="row">
             <div class="col-xs-12 col-md-8">
-                <div class="panel panel-default">
+                <div class="ninja_panel panel panel-default">
                     <div class="panel-heading">
-                        <h3>New Opening</h3>
+                        <h2 class="panel-title sans_serif_bold dark_text">New Opening</h2>
                     </div>
                     <div class="panel-body">
                         <%= render :partial => 'form' %>
@@ -14,15 +14,7 @@
                 </div>
             </div>
             <div class="col-xs-12 col-md-4">
-                <!-- <div class="panel panel-default">
-                    <div class="panel-heading">
-                        <h4>Scheduled Events For</h4>
-                        <h5></h5>
-                    </div>
-                    <ul class="list-group" id="same_day_openings">
-
-                    </ul>
-                </div> -->
+                
                 <%= render :partial => "shared/events_list.html.erb" %>
             </div>
         </div>

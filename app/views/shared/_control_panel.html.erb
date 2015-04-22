@@ -41,6 +41,12 @@
 									<% end %>
 								</li>
 								<li class="list-group-item">
+									<%= link_to user_notifications_cancellations_path do %>
+										<span class="sans_serif_text light_text">Cancellations</span>
+										<span class="badge"><%= @cancellation_notifications.count %></span> 
+									<% end %>
+								</li>
+								<li class="list-group-item">
 									<%= link_to user_clients_path do %>
 										<span class="sans_serif_text light_text">New Clients</span> 
 										<span class="badge"><%= @client_notifications.count %></span>

@@ -1,141 +1,129 @@
 class User::AppointmentsController < ApplicationController
 	layout 'user'
+
+	respond_to :html, :js
+
 	before_filter :authenticate_user!
 	
+	#application controller
 	before_action :get_user
 	before_action :get_user_profiles
 	before_action :get_notifications
 	before_action :get_vendors
-	before_action :get_events
 	before_action :get_profile_colors
+	#application controller
+	# before_action :get_events
 
 	def show
-		@today = DateTime.now.to_i
+		#@today = DateTime.now.to_i
 		@appointment = Appointment.find(params[:id])
 		@client = Client.where(:client => @appointment.client).where(:profile => @appointment.profile).first
+
+		today_start = @appointment.start
+		today_end = today_start.end_of_day
+		@day = today_start
+
+		@schedule= [];
+		
+		@day_openings = Opening.where(:user => @user).where("start >= ? AND start <= ?",today_start, today_end).order(:start)
+    	@day_client_appointments = Appointment.where(:client => @user).where("start >= ? AND start <= ?",today_start, today_end).order(:start)
+    	@day_owner_appointments = Appointment.where(:owner => @user).where("start >= ? AND start <= ?",today_start, today_end).order(:start)
+		@schedule = @day_openings + @day_client_appointments + @day_owner_appointments
+
+		@schedule.sort_by! do |item|
+	      item[:start]
+	    end
 	end
 
 	def destroy
+		@appointment = Appointment.find(params[:id])
+
+		nots = Notification.appointment.where(:event => @appointment.id).destroy_all
+
+		cancellation = Cancellation.new
+		cancellation.start = @appointment.start
+		cancellation.end = @appointment.end
+		cancellation.profile = @appointment.profile
+		cancellation.client = @appointment.client
+		cancellation.owner = @appointment.owner
+		cancellation.save
+		
+		if @appointment.owner == @user
+			n = Notification.new
+			n.user = @appointment.client
+			n.event = cancellation.id
+			n.cancellation!
+			n.seen = false
+		else
+			n = Notification.new
+			n.user = @appointment.owner
+			n.event = cancellation.id
+			n.cancellation!
+			n.seen = false
+		end
+		if @appointment.destroy
+			
+			n.save
+			flash[:success] = "Appointment has been cancelled."
+			if request.xhr?
+				render js: "document.location = '#{user_schedule_index_path}'"
+			else
+				redirect_to user_schedule_index_path
+			end
+		else
+			cancellation.destroy
+			flash[:error] = "Unable to cancel this appointment at this time."
+			if request.xhr?
+				render js: "document.location = '#{user_appointment_path(@appointment)}'"
+			else
+				redirect_to user_appointment_path(@appointment)
+			end
+			
+		end
 		
 	end
 
-	# def new
-	# 	@appointment = Appointment.new
-	# 	@openings = Opening.where(:user => @user)
-	# 	@client_appointments = Appointment.where(:client => @user)
-	# 	@owner_appointments = Appointment.where(:owner => @user)
-	# 	@events = @openings + @client_appointments + @owner_appointments
-	# 	@events.sort_by! do |item|
-	# 		item[:start]
-	# 	end
-	# end
-
-	# def create
-	# 	start_datetime = DateTime.strptime(safe_params[:start], '%Y/%m/%d %I:%M %p')
-	# 	end_datetime = DateTime.strptime(safe_params[:end], '%Y/%m/%d %I:%M %p')
-	# 	client = @client
-	# 	if end_datetime.to_i <= start_datetime.to_i
-	# 		flash[:error] = "End DateTime must be after Start DateTime."
-	# 		redirect_to new_user_appointment_path
-	# 	elsif future_date?
-	# 		openings = Opening.where(:user => @user)
-	# 		owner_appointments = Appointment.where(:owner => @user)
-	# 		client_appointments = Appointment.where(:client => @user)
-
-	# 		opening_conflict = date_conflict?(openings, start_datetime, end_datetime)
-	# 		owner_conflict = date_conflict?(owner_appointments, start_datetime, end_datetime)
-	# 		client_conflict = date_conflict?(client_appointments, start_datetime, end_datetime)
-	# 		if !opening_conflict && !owner_conflict && !client_conflict
-	# 			@appointment = Appointment.new
-	# 			@appointment.start = start_datetime
-	# 			@appointment.end = end_datetime
-	# 			@appointment.owner = @user
-	# 			@appointment.client = client.client
-	# 			@appointment.profile = client.profile
-	# 			if @appointment.save
-	# 				if params[:sunday].present?
-	# 					recurring_date(params[:sunday], params[:duration_num])
-	# 				end
-	# 				if params[:monday].present?
-	# 					recurring_date(params[:monday], params[:duration_num])
-	# 				end
-	# 				if params[:tuesday].present?
-	# 					recurring_date(params[:tuesday], params[:duration_num])
-	# 				end
-	# 				if params[:wednesday].present?
-	# 					recurring_date(params[:wednesday], params[:duration_num])
-	# 				end
-	# 				if params[:thursday].present?
-	# 					recurring_date(params[:thursday], params[:duration_num])
-	# 				end
-	# 				if params[:friday].present?
-	# 					recurring_date(params[:friday], params[:duration_num])
-	# 				end
-	# 				if params[:saturday].present?
-	# 					recurring_date(params[:saturday], params[:duration_num])
-	# 				end
-	# 				flash[:success] = "Appointment Saved!"
-	# 				redirect_to user_client_path(client)
-	# 			else
-	# 				flash[:error] = "Unable to Save Opening!"
-	# 				render 'new'
-	# 			end
-	# 		else
-	# 			if opening_conflict
-	# 				flash[:error] = "Unable to save appointment. You have an opening that conflicts."
-	# 			else
-	# 				flash[:error] = "Unable to save appointment. You have another appointment that conflicts."
-	# 			end
-	# 			redirect_to new_user_client_appointment_path	
-	# 		end
-	# 	else
-	# 		flash[:error] = "You can't make appointments in the past."
-	# 		redirect_to new_user_client_appointment_path
-	# 	end
-	# end
-
 	private
 
-	def get_user
-	    @user = current_user
-	  end
+	# def get_user
+	#     @user = current_user
+	#   end
 
-	  def get_notifications
-	    @appointment_notifications = Notification.appointment.where("user_id = ? AND seen = ?", @user.id, false)
-	    @client_notifications = Notification.client.where("user_id = ? AND seen = ?", @user.id, false)
-	    @vender_notifications = Notification.vender.where("user_id = ? AND seen = ?", @user.id, false)
-	  end
+	#   def get_notifications
+	#     @appointment_notifications = Notification.appointment.where("user_id = ? AND seen = ?", @user.id, false)
+	#     @client_notifications = Notification.client.where("user_id = ? AND seen = ?", @user.id, false)
+	#     @vender_notifications = Notification.vender.where("user_id = ? AND seen = ?", @user.id, false)
+	#   end
 
-	  def get_user_profiles
-	    @user = current_user
-	    @profiles = Profile.where(user: @user)
-	  end
+	#   def get_user_profiles
+	#     @user = current_user
+	#     @profiles = Profile.where(user: @user)
+	#   end
 
-	  def get_vendors
-	    # get profiles that a user is a client of
-	    @user_is_client = Client.where("client_id = ? AND approved = ?", @user.id, true)
-	  end
+	#   def get_vendors
+	#     @user_is_client = Client.where("client_id = ? AND approved = ?", @user.id, true)
+	#   end
 
-	  def get_events
-	    today_start = DateTime.now.beginning_of_day
+	#   def get_events
+	#     today_start = DateTime.now.beginning_of_day
 
-	    @openings = Opening.where(:user => @user).where("start >= ?",today_start).order(:start)
-	    @client_appointments = Appointment.where(:client => @user).order(:start)
-	    @owner_appointments = Appointment.where(:owner => @user).order(:start)
+	#     @openings = Opening.where(:user => @user).where("start >= ?",today_start).order(:start)
+	#     @client_appointments = Appointment.where(:client => @user).order(:start)
+	#     @owner_appointments = Appointment.where(:owner => @user).order(:start)
 
-	    @events = @openings + @client_appointments + @owner_appointments
-	    @events.sort_by! do |item|
-	      item[:start]
-	    end
-	  end
+	#     @events = @openings + @client_appointments + @owner_appointments
+	#     @events.sort_by! do |item|
+	#       item[:start]
+	#     end
+	#   end
 
-	  def get_profile_colors
-	  	@colors = []
-	  	@user_is_client.each do |vendor|
-	  		@colors.push(vendor.profile)
-	  	end
-	  	@colors = @colors + @profiles
-	  end
+	#   def get_profile_colors
+	#   	@colors = []
+	#   	@user_is_client.each do |vendor|
+	#   		@colors.push(vendor.profile)
+	#   	end
+	#   	@colors = @colors + @profiles
+	#   end
 
 	# def get_client
 	# 	@client = Client.find(params[:client_id])

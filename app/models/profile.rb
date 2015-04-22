@@ -12,6 +12,7 @@ class Profile < ActiveRecord::Base
   validates_attachment_content_type :wallpaper, :content_type => /\Aimage\/.*\Z/
 
   has_many :appointments
+  has_many :cancellations
   has_many :openings
   has_many :clients
 end

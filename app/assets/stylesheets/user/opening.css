@@ -1,3 +1,38 @@
 #new_opening_section_1 {
 	padding-top: 120px;
 }
+
+#show_opening_section_1 {
+	padding-top: 120px;
+	background-image: url('../ninja-star.png');
+ 	background-position: right bottom;
+ 	background-repeat: no-repeat;
+}
+
+#appointment_show_section_1 {
+	padding-top: 120px;
+	background-image: url('../ninja-star.png');
+ 	background-position: right bottom;
+ 	background-repeat: no-repeat;
+}
+
+.inline_heading {
+	display: inline-block;
+}
+
+.avatar_container {
+	width:70px;
+	height:70px;
+	border-radius: 35px;
+	background-color: #e9573f;
+	margin:0px auto;
+	padding-top: 5px;
+	text-align: center;
+}
+.avatar_container img {
+	margin:0px;
+}
+
+.header_padding {
+	margin-bottom: 20px;
+}

@@ -1,6 +1,6 @@
-
-	<li class='list-group-item event_list_item'>
-		<%= link_to user_opening_path(e), :class => 'event_list_link' do %>	
+<li class='list-group-item event_list_item'>
+		<%= link_to user_cancellation_path(e), :class => 'event_list_link' do %>
+			
 			<% if e.profile.avatar.content_type %>
 				<%= image_tag e.profile.avatar.url(:thuumb), :class => 'img-circle' %>
 			<% else %>
@@ -9,12 +9,9 @@
 			<span class="sans_serif_bold">
 				<%= e.profile.title %>
 			</span>
-			<p class="text-right text-success">Available</p>
+			<p class="text-right orange_text">Client: <%= e.client.name %></p>
 			<span class="sans_serif_bold dark_text event_list_time">
 				<%= e.start.strftime('%I:%M')%> - <%= e.end.strftime('%I:%M %P') %>
 			</span>
 		<% end %>
 	</li>
-
-
-

@@ -13,7 +13,11 @@
 	<div class="form-group">
 		<%= f.label :start %>
 		<div class="input-group date" id="datetimepicker_start">
-			<%= f.text_field :start, :class => "form-control", :value => DateTime.now, data: {date_format: 'YYYY-MM-DD hh:mm A'} %>
+			<% if controller.action_name == 'new' %>
+				<%= f.text_field :start, :class => "form-control", :value => DateTime.now, data: {date_format: 'YYYY-MM-DD hh:mm A'} %>
+			<% else %>
+				<%= f.text_field :start, :class => "form-control", :value => @opening.start, data: {date_format: 'YYYY-MM-DD hh:mm A'} %>
+			<% end %>
 			<span class="input-group-addon">
 				<span class="glyphicon glyphicon-calendar"></span>
             </span>
@@ -23,18 +27,23 @@
 	<div class="form-group">
 		<%= f.label :end %>
 		<div class="input-group date" id="datetimepicker_end">
-			<%= f.text_field :end, :class => "form-control", :value => DateTime.now, data: {date_format: 'YYYY-MM-DD hh:mm A'} %>
+			<% if controller.action_name == 'new' %>
+				<%= f.text_field :end, :class => "form-control", :value => DateTime.now, data: {date_format: 'YYYY-MM-DD hh:mm A'} %>
+			<% else %>
+				<%= f.text_field :end, :class => "form-control", :value => @opening.end, data: {date_format: 'YYYY-MM-DD hh:mm A'} %>
+			<% end %>
 			<span class="input-group-addon">
 				<span class="glyphicon glyphicon-calendar"></span>
             </span>
 		</div>
 		
 	</div>
-	<div class="form-group">
-		<%= f.label :profile %>
-		<%= f.collection_select(:profile, @profiles, :id, :title, {:prompt => 'Please select profile'}, {:class => "form-control"}) %>
-	</div>
+	
 	<% if controller.action_name == 'new' %>
+		<div class="form-group">
+			<%= f.label :profile %>
+			<%= f.collection_select(:profile, @profiles, :id, :title, {:prompt => 'Please select profile'}, {:class => "form-control"}) %>
+		</div>
 		<label>
 			<%= check_box_tag :recurring %> Repeat?
 		</label>
@@ -76,7 +85,11 @@
 		</div>
 	<% end %>
 	<div class="col-xs-12">
-		<%= f.submit "Save Opening", :class => 'btn btn-default', :id => 'submit' %>
+		<% if controller.action_name == 'new' %>
+			<%= f.submit "Save Opening", :class => 'btn btn-default', :id => 'submit' %>
+		<% else %>
+			<%= f.submit "Update Opening", :class => 'btn btn-default', :id => 'submit' %>
+		<% end %>
 	</div>
 	
 <% end %>

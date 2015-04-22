@@ -1,0 +1,32 @@
+<li class='list-group-item event_list_item new_client_list_item'>
+		
+			
+	<% if client.client.avatar.content_type %>
+		<div class="client_avatar_container event_profile_<%= client.profile.id %> text-center">
+			<%= image_tag client.client.avatar.url(:thuumb), :class => 'img-circle' %>
+			<p class="sans_serif_bold"><%= client.client.name %></p>
+		</div>
+	<% else %>
+		<div class="client_avatar_container event_profile_<%= client.profile.id %> text-center">
+			<%= image_tag 'user_avatar_thumb.png', :class => 'img-circle' %>
+			<p class="sans_serif_bold"><%= client.client.name %></p>
+		</div>
+		
+	<% end %>
+	
+	<span class="sans_serif_bold new_client_title"><%= client.profile.title %></span>
+	
+	<% if !client.approved? %>
+		<%= link_to user_client_approve_client_path(client), :class=> "btn btn-default dashboard_link new_client_approve", :id => "#{client.id}", method: :post do %>
+			<span class="glyphicon glyphicon-ok" aria-hidden="true"></span>
+		<% end %>
+	<% end %>
+	<!-- <button id="new_client_approve" class="btn btn-default dashboard_link">
+		  
+	</button> -->
+	
+	<button id="<%= client.id %>" class="btn btn-default dashboard_link new_client_remove">
+		  <span class="glyphicon glyphicon-remove" aria-hidden="true"></span>
+	</button>
+	
+</li>

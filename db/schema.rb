@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20150411193928) do
+ActiveRecord::Schema.define(version: 20150421034416) do
 
   create_table "appointments", force: true do |t|
     t.datetime "start"
@@ -24,6 +24,18 @@ ActiveRecord::Schema.define(version: 20150411193928) do
   add_index "appointments", ["client_id"], name: "index_appointments_on_client_id"
   add_index "appointments", ["owner_id"], name: "index_appointments_on_owner_id"
   add_index "appointments", ["profile_id"], name: "index_appointments_on_profile_id"
+
+  create_table "cancellations", force: true do |t|
+    t.datetime "start"
+    t.datetime "end"
+    t.integer  "profile_id"
+    t.integer  "owner_id"
+    t.integer  "client_id"
+  end
+
+  add_index "cancellations", ["client_id"], name: "index_cancellations_on_client_id"
+  add_index "cancellations", ["owner_id"], name: "index_cancellations_on_owner_id"
+  add_index "cancellations", ["profile_id"], name: "index_cancellations_on_profile_id"
 
   create_table "clients", force: true do |t|
     t.integer "client_id"

@@ -1,122 +1,112 @@
-<style>
-	#wallpaper_container {
-		position: relative;
-	}
-	#wallpaper img {
-		width:100%;
-	}
-	#avatar_container {
-		height:170px;
-		padding-top:10px;
-		background-color: rgba(51, 51, 51, 0.7);
-		position: absolute;
-		bottom:0px;
-		left:15px;
-		right:15px;
-	}
-	#avatar img{
-		margin-left: 10px;
-	}
-
-	#profile_info {
-		color:#f2f2f2;
-	}
-	#profile_openings_btn {
-		margin-top: 40px;
-	}
-	#profile_content {
-		margin-top: 20px;
-	}
-</style>
+<section id="profile_calendar_section">
 <div class="container">
-	<div id="alert_container" class="row">
-		<div class="col-xs-12">
-			<% if flash[:success] %>
-				<div class="alert alert-success" role="alert">
-					<%= flash[:success] %>
-				</div>
-			<% end %>
-			<% if flash[:error] %>
-				<div class="alert alert-danger" role="alert">
-					<%= flash[:error] %>
-				</div>
-			<% end %>
-		</div>
-	</div>
+	<%= render :partial => 'shared/errors.html.erb' %>
 	<div class="row">
-		<div id="wallpaper_container" class="col-xs-12">
-			<div id="wallpaper">
-				<% if @profile.wallpaper.content_type %>
-					<%= image_tag @profile.wallpaper.url(:large) %>
-				<% end %> 
-			</div>
-			<div id="avatar_container">
-				<div class="row">
-					<div id="avatar" class="col-xs-2">
-						<% if @profile.avatar.content_type %>
-							<%= image_tag @profile.avatar.url(:small), :class => "img-responsive"%>
-						<% else %>
-							<%= image_tag "default-profile-avatar.png" %>
-						<% end %>
-					</div>
-					<div id="profile_info" class="col-xs-6">
-						<h1><%= @profile.title %></h1>
-						<% if @profile.city && @profile.state %>
-							<p class="avatar_row_color"><%= @profile.city %>, <%= @profile.state %></p>
-						<% else %>
-							<p class="avatar_row_color">No location data.</p>
-						<% end %>
-					</div>
-					<div id="profile_openings_btn" class="col-xs-3">
-						<%= link_to "View Openings", profile_openings_path(@profile), :class =>'btn btn-default btn-lg btn-block my_btn_orange' %>
-					</div>
-				</div>
-			</div>
-		</div>
-	</div>
-	<div class="row">
-		<div class="col-xs-12">
-			<div class="panel panel-default">
-				<div class="panel-heading">
-					<h3 class="panel-title">Openings</h3>
-				</div>
-				<table class="table">
-					<thead>
-						<tr>
-							<th>Date</th>
-							<th>Time</th>
-							<th></th>
-						</tr>
-					</thead>
-					<tbody>
-						<% counter = 0 %>
-						<% @openings.each do |opening| %>
-							
-								<tr>
-									<td><%= opening.start.strftime('%B %d, %Y') %></td>
-									<td>
-										<%= opening.start.strftime('%I:%M') %> - <%= opening.end.strftime('%I:%M %p') %>
-									</td>
-									<td>
-										<% if @user == @profile.user %>
-											<%= link_to "Edit Opening", edit_user_opening_path(opening) %>
-										<% else %>
-											<%= link_to "Schedule Appointment", new_profile_opening_appointment_path(@profile, opening) %>
-										<% end %>
-										
-									</td>
-								</tr>
-								<% counter += 1 %>
-						<% end %>
-					</tbody>
-				</table>
-				<% if @openings.count == 0 || counter == 0 %>
-					<div class="alert alert-danger">
-						<p class="text-center">This Profile has no openings available at this time.</p>
-					</div>
+		<div class="row">
+			<div class="col-xs-12">
+				<% if @profile.avatar.content_type %>
+					<%= image_tag @profile.avatar.url(:small), :class => 'img-circle avatar_big' %>
+				<% else %>
+					<div class="no_profile_avatar a_profile_color profile_color_<%= @profile.title.gsub(/\s+/,"")%>"></div>
 				<% end %>
+				<h1 class="sans_serif_bold inline_heading"><%= @profile.title %></h1>
 			</div>
 		</div>
 	</div>
+	<div class="row pad_top">
+			<div class="col-xs-12 col-md-8">
+				<div class="row">
+					<div class="col-xs-12">
+						<div class="quick_action_small text-center">
+						<button id="prev_month" class="btn btn-default cal_nav">
+							 <span class="glyphicon glyphicon-triangle-left" aria-hidden="true"></span>
+						</button>
+						<h4 id="month" class="panel-title sans_serif_bold dark_text"></h4>
+						<button id="next_month" class="btn btn-default cal_nav">
+							<span class="glyphicon glyphicon-triangle-right" aria-hidden="true"></span>
+						</button>
+					</div>
+					<div class="panel-group" id="calendar_body" role="tablist" aria-multiselectable="true">
+
+					</div>
+						<!-- <div id="calendar" class="panel panel-default">
+							<div class="panel-heading">
+								<button id="prev_month" class="btn btn-default cal_nav">
+									 <span class="glyphicon glyphicon-triangle-left" aria-hidden="true"></span>
+								</button>
+								<h4 id="month" class="panel-title sans_serif_bold dark_text"></h4>
+								<button id="next_month" class="btn btn-default cal_nav">
+									<span class="glyphicon glyphicon-triangle-right" aria-hidden="true"></span>
+								</button>
+							</div>
+							<div class="table-responsive">
+								<table class="table table-bordered">
+									<thead>
+										<tr>
+											<th class="sans_serif_bod dark_text">Sun.</th>
+											<th class="sans_serif_bod dark_text">Mon.</th>
+											<th class="sans_serif_bod dark_text">Tue.</th>
+											<th class="sans_serif_bod dark_text">Wed.</th>
+											<th class="sans_serif_bod dark_text">Thu.</th>
+											<th class="sans_serif_bod dark_text">Fri.</th>
+											<th class="sans_serif_bod dark_text">Sat.</th>
+										</tr>
+									</thead>
+									<tbody id="calendar_body">
+
+									</tbody>
+								</table>
+							</div>
+						</div> -->
+					</div>
+				</div>
+				
+			</div>
+		<div class="col-xs-12 col-md-4">
+			<div class="row">
+				<div class="col-xs-12">
+					<%= render :partial => "shared/events_list_public.html.erb" %>
+				</div>
+			</div>
+			
+		</div>
+	</div>
+	
+	
 </div>
+</section>
+<%= javascript_tag do %>
+	$('document').ready(function() {
+		var events = createEventsObj(<%= raw @events.to_json %>);
+		var today = new Date();
+		var profile_id = <%= @profile.id %>
+		openingInit(profile_id,today, events);
+		$('#prev_month').click(function() {
+			if(today.getMonth() === 0) {
+				today.setMonth(11);
+				today.setYear(today.getFullYear() - 1);
+			}
+			else {
+				today.setMonth(today.getMonth() - 1);
+			}
+			var profile_id = <%= @profile.id %>
+			openingInit(profile_id, today, events);
+			getProfileColors(<%= raw @colors.to_json %>);
+		});
+		$('#next_month').click(function() {
+			if(today.getMonth() === 11) {
+				today.setMonth(0);
+				today.setYear(today.getFullYear() + 1)
+			}
+			else {
+				today.setMonth(today.getMonth() +1);
+			}
+			openingInit(profile_id, today, events);
+			getProfileColors(<%= raw @colors.to_json %>);
+		});
+		
+		getProfileColors(<%= raw @colors.to_json %>);
+	});	
+	
+<% end %>
 

@@ -12,13 +12,8 @@
 		<ul class="list-group">
 			<% if !@schedule.empty? %>
 				<% @schedule.each do |s| %>
-					<% if @day_openings.include?(s) %>
-						<%= render :partial => 'shared/list_item/list_item_opening.html.erb', :locals => {:e => s} %>
-					<% elsif @day_client_appointments.include?(s) %>
-						<%= render :partial => 'shared/list_item/list_item_client.html.erb', :locals => {:e => s} %>
-					<% elsif @day_owner_appointments.include?(s) %>
-						<%= render :partial => 'shared/list_item/list_item_owner.html.erb', :locals => {:e => s} %>
-					<% end %>
+					
+						<%= render :partial => 'shared/list_item/list_item_opening_public.html.erb', :locals => {:e => s} %>
 					
 				<% end %>
 			<% else %>

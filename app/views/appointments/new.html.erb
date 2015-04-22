@@ -1,3 +1,31 @@
-<h2>New Appointment</h2>
+<section id="appointment_show_section_1">
+	<div class="container">
+		<div class="row pad_top">
+			<div class="col-xs-12 col-md-8">
+				<div class="ninja_panel panel panel-default">
+					<div class="panel-heading">
+						<h1 class="panel-title sans_serif_bold dark_text inline_heading header_padding">Make Appointment</h1>
+						
+					</div>
+					<div class="panel-body text-center">
+						<% if @profile.avatar.content_type %>
+							<%= image_tag @profile.avatar.url(:thuumb), :class => 'img-circle avatar_big' %>
+						<% else %>
+							<div class="no_profile_avatar a_profile_color profile_color_<%= @profile.title.gsub(/\s+/,"")%>"></div>
+						<% end %>
+						<p class= "text-center sans_serif_bold dark_text"><%= link_to @profile.title, profile_path(@profile), :class => "sans_serif_bold dark_text ninja_link"%></p>
+						<h3 class="sans_serif_bold dark_text text-center"><%= @opening.start.strftime('%A') %></h3>
+						<h5 class="sans_serif_bold dark_text text-center"><%= @opening.start.strftime('%m/%d/%Y') %></h5>
+						<p class="sans_serif_bold orange_text text-center"><%= @opening.start.strftime('%I:%M') %> - <%= @opening.end.strftime('%I:%M %p') %></p>
+						<%= render partial: "form" %>
+					</div>
+				</div>
+			</div>
+			<div class="col-xs-12 col-md-4">
+				<%= render :partial => "shared/events_list.html.erb" %>
+			</div>
+		</div>
+	</div>
+</section>
 
-<%= render partial: "form" %>
+

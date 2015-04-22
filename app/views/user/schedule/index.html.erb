@@ -1,54 +1,60 @@
 <section id="calendar_section">
 <div class="container">
+	<%= render :partial => 'shared/errors.html.erb' %>
 	<div class="row pad_top">
-		<div class="col-xs-12 col-md-8 pad_top">
+			<div class="col-xs-12 col-md-8 pad_top">
+				<!-- <div class="row pad_top"> -->
+					<div class="quick_action_small text-center">
+						<button id="prev_month" class="btn btn-default cal_nav">
+							 <span class="glyphicon glyphicon-triangle-left" aria-hidden="true"></span>
+						</button>
+						<h4 id="month" class="panel-title sans_serif_bold dark_text"></h4>
+						<button id="next_month" class="btn btn-default cal_nav">
+							<span class="glyphicon glyphicon-triangle-right" aria-hidden="true"></span>
+						</button>
+					</div>
+					<div class="panel-group" id="calendar_body" role="tablist" aria-multiselectable="true">
 
-			<div id="calendar" class="panel panel-default">
-				<div class="panel-heading">
-					<button id="prev_month" class="btn btn-default cal_nav">
-						 <span class="glyphicon glyphicon-triangle-left" aria-hidden="true"></span>
-					</button>
-					<h4 id="month" class="panel-title sans_serif_bold dark_text"></h4>
-					<button id="next_month" class="btn btn-default cal_nav">
-						<span class="glyphicon glyphicon-triangle-right" aria-hidden="true"></span>
-					</button>
-				</div>
-				<div class="table-responsive">
-					<table class="table table-bordered">
-						<thead>
-							<tr>
-								<th class="sans_serif_bod dark_text">Sun.</th>
-								<th class="sans_serif_bod dark_text">Mon.</th>
-								<th class="sans_serif_bod dark_text">Tue.</th>
-								<th class="sans_serif_bod dark_text">Wed.</th>
-								<th class="sans_serif_bod dark_text">Thu.</th>
-								<th class="sans_serif_bod dark_text">Fri.</th>
-								<th class="sans_serif_bod dark_text">Sat.</th>
-							</tr>
-						</thead>
-						<tbody id="calendar_body">
+					</div>
+					<!-- <div class="col-xs-12">
+						<div id="calendar" class="panel panel-default">
+							<div class="panel-heading">
+								<button id="prev_month" class="btn btn-default cal_nav">
+									 <span class="glyphicon glyphicon-triangle-left" aria-hidden="true"></span>
+								</button>
+								<h4 id="month" class="panel-title sans_serif_bold dark_text"></h4>
+								<button id="next_month" class="btn btn-default cal_nav">
+									<span class="glyphicon glyphicon-triangle-right" aria-hidden="true"></span>
+								</button>
+							</div>
+							<div class="table-responsive">
+								<table class="table table-bordered">
+									<thead>
+										<tr>
+											<th class="sans_serif_bod dark_text">Sun.</th>
+											<th class="sans_serif_bod dark_text">Mon.</th>
+											<th class="sans_serif_bod dark_text">Tue.</th>
+											<th class="sans_serif_bod dark_text">Wed.</th>
+											<th class="sans_serif_bod dark_text">Thu.</th>
+											<th class="sans_serif_bod dark_text">Fri.</th>
+											<th class="sans_serif_bod dark_text">Sat.</th>
+										</tr>
+									</thead>
+									<tbody id="calendar_body">
 
-						</tbody>
-					</table>
-				</div>
-			</div>
-
-
-		</div>
-		<div class="col-xs-12 col-md-4 pad_top">
-			<div class="row">
-				<div class="col-xs-12">
-					<%= link_to user_notifications_new_appointments_path, :class => 'quick_action_link' do %>
-						<div class="quick_action_small">
-							<span class="not light_text"><%= @appointment_notifications.count %></span>
-							<span class="glyphicon glyphicon-exclamation-sign" aria-hidden="true"></span>
-							<h4 class="sans_serif_bold dark_text">New Appointments</h4>
+									</tbody>
+								</table>
+							</div>
 						</div>
-					<% end %>
-				</div>
-
+					</div> -->
+				<!-- </div> -->
+				
 			</div>
-			<div class="row pad_top">
+		<div class="col-xs-12 col-md-4 pad_top">
+			<% if flash[:success_list] %>
+				<%= render :partial => "shared/success_opening.html.erb" %>
+			<% end %>
+			<div class="row">
 				<div class="col-xs-12">
 					<%= render :partial => "shared/events_list.html.erb" %>
 				</div>

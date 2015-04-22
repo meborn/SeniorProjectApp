@@ -11,9 +11,9 @@ $('#quick_look_today h2').append("<span class='panel_sub_title'><%=escape_javasc
 
 <% @schedule.each do |s| %>
 
-	<% if @day_openings %>
+	<% if @day_openings.include?(s) %>
 		$('#quick_look_today ul').append('<%= escape_javascript(render :partial => "shared/list_item/list_item_opening.html.erb", :locals => {:e => s}) %>')
-	<% elsif @day_client_appointments %>
+	<% elsif @day_client_appointments.include?(s) %>
 		$('#quick_look_today ul').append('<%= escape_javascript(render :partial => "shared/list_item/list_item_client.html.erb", :locals => {:e => s}) %>')
 	<% else %>
 		$('#quick_look_today ul').append('<%= escape_javascript(render :partial => "shared/list_item/list_item_owner.html.erb", :locals => {:e => s}) %>')

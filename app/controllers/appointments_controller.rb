@@ -1,11 +1,36 @@
 class AppointmentsController < ApplicationController
+	layout 'user'
 	before_filter :authenticate_user!
+	
 	before_action :get_client
 	before_action :get_profile
 	before_action :get_opening
 
+	#application controller
+	before_action :get_user
+	before_action :get_user_profiles
+	before_action :get_notifications
+	before_action :get_vendors
+	before_action :get_profile_colors
+	#application controller
+
 	def new
 		@appointment = Appointment.new
+
+		today_start = @opening.start
+		today_end = today_start.end_of_day
+		@day = today_start
+
+		@schedule= [];
+		
+		@day_openings = Opening.where(:user => @user).where("start >= ? AND start <= ?",today_start, today_end).order(:start)
+    	@day_client_appointments = Appointment.where(:client => @user).where("start >= ? AND start <= ?",today_start, today_end).order(:start)
+    	@day_owner_appointments = Appointment.where(:owner => @user).where("start >= ? AND start <= ?",today_start, today_end).order(:start)
+		@schedule = @day_openings + @day_client_appointments + @day_owner_appointments
+
+		@schedule.sort_by! do |item|
+	      item[:start]
+	    end
 	end
 
 	def create

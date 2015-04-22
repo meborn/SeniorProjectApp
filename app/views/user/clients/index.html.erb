@@ -1,125 +1,132 @@
-<div class="row">
-	<div class="col-xs-12">
-		<h2>Clients</h2>
-	</div>
-</div>
-<div class="row">
-	<div class="col-xs-12 col-sm-5">
-		<div class="panel panel-default">
-			<div class="panel-heading">
-				<h4 class="panel-title">New Clients</h4>
-			</div>
-			<ul class="list-group">
-				<% if @new_client_count == 0 %>
-					<li class="list-group-item">
-						<div class="alert alert-danger">
-							No new clients.
-						</div>
-					</li>
-				<% else %>
-					<% @clients.each do |client| %>
-						<% if !client.approved? %>
+<section id="client_index_section_1">
+	<div class="container">
+		<%= render :partial => 'shared/errors.html.erb' %>
+		<div class="row pad_top">
+			<div class="col-xs-12 col-md-4">
+				<div class="ninja_panel panel panel-default">
+					<div class="panel-heading">
+						<h2 class="panel-title sans_serif_bold dark_text">New Clients</h4>
+					</div>
+					<ul class="list-group">
+						<% if @new_client_count == 0 %>
 							<li class="list-group-item">
-								<div class="row">
-									<div class="col-xs-3 col-md-1">
-										<%if client.client.avatar.content_type %>
-											<%= image_tag client.client.avatar.url(:thuumb), :class=>'img-responsive' %>
-										<% else %>
-											<span class="glyphicon glyphicon-user no_user_avatar" aria-hidden="true"></span>
-										<% end %>
-									</div>
-									<div class="col-xs-5 col-md-8">
-										<p><%= client.profile.title %></p>
-										<p><%= client.client.name %></p>
-										<p><%= client.client.email %></p>
-									</div>
-									<div class="col-xs-4 col-md-2">
-										<%= link_to user_client_approve_client_path(client), :class=> 'btn btn-default', method: :post do %>
-											<span class="glyphicon glyphicon-ok" aria-hidden="true"></span>
-										<% end %>
-										
-										<%= link_to user_client_path(client), :class=> 'btn btn-default', method: :delete do %>
-											<span class="glyphicon glyphicon-remove" aria-hidden="true"></span>
-										<% end %>
-									</div>
+								<div class="alert alert-danger">
+									No new clients.
 								</div>
 							</li>
+						<% else %>
+							<% @new_clients.each do |client| %>
+								<% if !client.approved? %>
+									<%= render :partial => "/shared/list_item/list_item_new_client.html.erb", :locals => {client: client} %>
+								<% end %>
+							<% end %> 
 						<% end %>
-					<% end %> 
-				<% end %>
-			</ul>
-		</div>
-	</div>
-	<div class="col-xs-12 col-sm-7">
-		<div class="panel-group" id="accordion" role="tablist" aria-multiselectable="true">
-			<% @profiles.each_with_index do |profile, index| %>
-				<div class="panel panel-default">
-					<div class="panel-heading" role="tab" id="heading_<%= index %>">
-						<h4 class="panel-title">
-							<% if index == 0 %>
-								<a data-toggle="collapse" data-parent="#accordion" href="#collapse_<%= index %>" aria-expanded="true" aria-controls="collapse_<%= index %>">
-								<%= profile.title %>
-								</a>
+					</ul>
+				</div>
+			</div>
+			<div class="col-xs-12 col-md-8">
+				<div class="panel-group" id="accordion" role="tablist" aria-multiselectable="true">
+					<% @profiles.each_with_index do |profile, index| %>
+						<div class="ninja_panel panel panel-default">
+							<div class="panel-heading" role="tab" id="heading_<%= index %>">
+								<% if @profiles[index].avatar.content_type %>
+									<%= image_tag @profiles[index].avatar.url(:thuumb), :class => 'img-circle avatar_big' %>
+								<% else %>
+									<div class="no_profile_avatar a_profile_color profile_color_<%= @profiles[index].title.gsub(/\s+/,"")%>"></div>
+								<% end %>
+								<h4 class="sans_serif_bold panel-title inline_heading">
+									<% if index == 0 %>
+										<a class="ninja_link" data-toggle="collapse" data-parent="#accordion" href="#collapse_<%= index %>" aria-expanded="true" aria-controls="collapse_<%= index %>">
+										<%= profile.title %>
+										</a>
+									<% else %>
+										<a class="ninja_link" data-toggle="collapse" data-parent="#accordion" href="#collapse_<%= index %>" aria-expanded="false" aria-controls="collapse_<%= index %>">
+										<%= profile.title %>
+										</a>
+									<% end %>
+									
+								</h4>
+							</div>
+							<% if index== 0 %>
+								<div id="collapse_<%= index %>" class="panel-collapse collapse in" role="tabpanel" aria-labelledby="heading_<%= index %>">
 							<% else %>
-								<a data-toggle="collapse" data-parent="#accordion" href="#collapse_<%= index %>" aria-expanded="false" aria-controls="collapse_<%= index %>">
-								<%= profile.title %>
-								</a>
+								<div id="collapse_<%= index %>" class="panel-collapse collapse" role="tabpanel" aria-labelledby="heading_<%= index %>">
 							<% end %>
 							
-						</h4>
-					</div>
-					<% if index== 0 %>
-						<div id="collapse_<%= index %>" class="panel-collapse collapse in" role="tabpanel" aria-labelledby="heading_<%= index %>">
-					<% else %>
-						<div id="collapse_<%= index %>" class="panel-collapse collapse" role="tabpanel" aria-labelledby="heading_<%= index %>">
-					<% end %>
-					
-						<ul class="list-group">
-							<% client_count = 0 %>
-							<% @clients.each do |client| %>
-								<% if client.profile == profile %>
-									<% client_count += 1 %>
-									<%= link_to user_client_path(client) do %>
-										<li class="list-group-item">
-											<div class="row">
-												<div class="col-xs-3 col-md-1">
-													<%if client.client.avatar.content_type %>
-														<%= image_tag client.client.avatar.url(:thuumb), :class=>'img-responsive' %>
+								<ul class="list-group">
+									<% client_count = 0 %>
+									<% @clients.each do |client| %>
+										<% if client.profile == profile %>
+											<% client_count += 1 %>
+											<li class='list-group-item event_list_item'>
+												<%= link_to user_client_path(client), :class => 'event_list_link' do %>
+													
+													<% if client.client.avatar.content_type %>
+														<div class="client_avatar_container event_profile_<%= client.profile.id %> text-center">
+															<%= image_tag client.client.avatar.url(:thuumb), :class => 'img-circle' %>
+															
+														</div>
 													<% else %>
-														<span class="glyphicon glyphicon-user no_user_avatar" aria-hidden="true"></span>
+														<div class="client_avatar_container event_profile_<%= client.profile.id %> text-center">
+															<%= image_tag 'user_avatar_thumb.png', :class => 'img-circle' %>
+															
+														</div>
 													<% end %>
-												</div>
-												<div class="col-xs-5 col-md-8">
-													<p><%= client.client.name %></p>
-													<p><%= client.client.email %></p>
-												</div>
-												<div class="col-xs-4 col-md-2">
-													<% if !client.approved? %>
-														<%= link_to user_client_approve_client_path(client), :class=> 'btn btn-default', method: :post do %>
-															<span class="glyphicon glyphicon-ok" aria-hidden="true"></span>
-														<% end %>
-														<%= link_to user_client_path(client), :class=> 'btn btn-default', method: :delete do %>
-															<span class="glyphicon glyphicon-remove" aria-hidden="true"></span>
-														<% end %>
-													<% end %>
-												</div>
+													<span class="sans_serif_bold">
+														<%= client.client.name %>
+													</span>
+												<% end %>
+											</li>
+										<% end %>
+									<% end %>
+									<% if client_count == 0 %>
+										<li class="list-group-item">
+											<div class="alert alert-danger">
+												This profile doesn't have any clients.
 											</div>
 										</li>
 									<% end %>
-								<% end %>
-							<% end %>
-							<% if client_count == 0 %>
-								<li class="list-group-item">
-									<div class="alert alert-danger">
-										This profile doesn't have any clients.
-									</div>
-								</li>
-							<% end %>
-						</ul>
-					</div>
+								</ul>
+							</div>
+						</div>
+					<% end %>
 				</div>
-			<% end %>
+			</div>
 		</div>
-
 	</div>
+</section>
+
+
+<div class="row">
+	<div class="col-xs-12 col-sm-5">
+		
+	</div>
+	<div class="col-xs-12 col-sm-7">
+		
 </div>
+<%= javascript_tag do %>
+	$('document').ready(function() {
+		$('.new_client_remove').each(function(index) {
+			$(this).click(function() {
+				var id = $(this).attr('id');
+				swal({
+					title: "Are you sure?",
+					text: "If you delete this client they can't make appointments with you.",
+					type: "warning",
+					showCancelButton:true,
+					cancelButtonText: "Cancel",
+					confirmButtonColor: "#DD6B55",
+					confirmButtonText: "Delete Client",
+					closeOnConfirm: true
+				},
+				function() {
+					$.post("/user/clients/"+id, {_method: 'delete'}, null, "script");
+					
+				});
+			});
+		});
+		
+		getProfileColors(<%= raw @colors.to_json %>);
+	});	
+	
+<% end %>

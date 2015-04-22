@@ -1,14 +1,22 @@
-<div id="user_profile_edit_content" class="row">
-	<div class="col-xs-12">
+<section id="edit_profile_section_1">
+	<div class="container">
 		<div class="row">
-			<div class="col-xs-8 col-xs-offset-2">
-				<h2>Edit Profile</h2>
+			<div class="col-xs-12">
+				<% if @profile.avatar.content_type %>
+					<%= image_tag @profile.avatar.url(:small), :class => 'img-circle avatar_big' %>
+				<% else %>
+					<div class="no_profile_avatar a_profile_color profile_color_<%= @profile.title.gsub(/\s+/,"")%>"></div>
+				<% end %>
+				<h1 class="sans_serif_bold inline_heading">Edit <%= @profile.title %></h1>
 			</div>
 		</div>
-		<div class="row">
-			<div class="col-xs-8 col-xs-offset-2">
+		<div class="row pad_top">
+			<div class="col-xs-12 col-md-8">
 				<%= render :partial => 'form' %>
 			</div>
 		</div>
 	</div>
-</div>
+</section>
+
+
+

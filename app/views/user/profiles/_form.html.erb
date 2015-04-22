@@ -1,3 +1,6 @@
+<% if flash[:error] %>
+	<%= render :partial => 'shared/errors.html.erb' %>
+<% end %>
 <%= form_for [:user, @profile] do |f| %>
 	<% if @profile.errors[:title].present? %>
 		<div class="form-group has-error">

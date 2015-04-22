@@ -5,12 +5,16 @@ class User::UsersController < ApplicationController
 
 	before_filter :authenticate_user!
 
+	#in application controller
 	before_action :get_user
 	before_action :get_user_profiles
 	before_action :get_notifications
 	before_action :get_vendors
-	before_action :get_events
 	before_action :get_profile_colors
+	#in application controller
+	
+	# before_action :get_events
+	
 	
 
 	require 'net/http'
@@ -35,25 +39,24 @@ class User::UsersController < ApplicationController
 
 	private
 
-	def get_user
-	    @user = current_user
-	  end
+	# def get_user
+	#     @user = current_user
+	# end
 
-	  def get_notifications
-	    @appointment_notifications = Notification.appointment.where("user_id = ? AND seen = ?", @user.id, false)
-	    @client_notifications = Notification.client.where("user_id = ? AND seen = ?", @user.id, false)
-	    @vender_notifications = Notification.vender.where("user_id = ? AND seen = ?", @user.id, false)
-	  end
+	  # def get_notifications
+	  #   @appointment_notifications = Notification.appointment.where("user_id = ? AND seen = ?", @user.id, false)
+	  #   @client_notifications = Notification.client.where("user_id = ? AND seen = ?", @user.id, false)
+	  #   @vender_notifications = Notification.vender.where("user_id = ? AND seen = ?", @user.id, false)
+	  # end
 
-	  def get_user_profiles
-	    @user = current_user
-	    @profiles = Profile.where(user: @user)
-	  end
+	  # def get_user_profiles
+	  #   @user = current_user
+	  #   @profiles = Profile.where(user: @user)
+	  # end
 
-	  def get_vendors
-	    # get profiles that a user is a client of
-	    @user_is_client = Client.where("client_id = ? AND approved = ?", @user.id, true)
-	  end
+	  # def get_vendors
+	  #   @user_is_client = Client.where("client_id = ? AND approved = ?", @user.id, true)
+	  # end
 
 	  def get_events
 	    today_start = DateTime.now.beginning_of_day
@@ -68,12 +71,6 @@ class User::UsersController < ApplicationController
 	    end
 	  end
 
-	  def get_profile_colors
-	  	@colors = []
-	  	@user_is_client.each do |vendor|
-	  		@colors.push(vendor.profile)
-	  	end
-	  	@colors = @colors + @profiles
-	  end
+	  
 
 end

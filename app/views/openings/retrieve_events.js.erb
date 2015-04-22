@@ -1,0 +1,18 @@
+$('#quick_look_today ul').empty();
+
+$('#quick_look_today h2').empty();
+$('#quick_look_today h2').append("<%=escape_javascript(@day.strftime('%A'))%><br/>");
+$('#quick_look_today h2').append("<span class='panel_sub_title'><%=escape_javascript(@day.strftime('%B %d, %Y')) %></span>");
+
+<% if @schedule.count == 0 %>
+	$('#quick_look_today ul').append('<%= escape_javascript(render :partial => "shared/list_item/list_item_none.html.erb")%>');
+<% end %>
+
+<% @schedule.each do |s| %>
+
+	
+	$('#quick_look_today ul').append('<%= escape_javascript(render :partial => "shared/list_item/list_item_opening_public.html.erb", :locals => {:e => s}) %>')
+
+
+<% end %>
+getProfileColors(<%= raw @colors.to_json %>);
