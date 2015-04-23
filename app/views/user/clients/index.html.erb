@@ -32,7 +32,7 @@
 								<% if @profiles[index].avatar.content_type %>
 									<%= image_tag @profiles[index].avatar.url(:thuumb), :class => 'img-circle avatar_big' %>
 								<% else %>
-									<div class="no_profile_avatar a_profile_color profile_color_<%= @profiles[index].title.gsub(/\s+/,"")%>"></div>
+									<div class="no_profile_avatar a_profile_color profile_color_<%= @profiles[index].id %>"></div>
 								<% end %>
 								<h4 class="sans_serif_bold panel-title inline_heading">
 									<% if index == 0 %>

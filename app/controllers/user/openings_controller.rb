@@ -223,16 +223,6 @@ class User::OpeningsController < ApplicationController
 
 	private
 
-	# def future_date?
-	# 	current_date = DateTime.now.to_i
-	# 	start = DateTime.strptime(safe_params[:start], '%Y/%m/%d %I:%M %p').to_i
-	# 	if start > current_date
-	# 		return true
-	# 	else
-	# 		return false
-	# 	end
-	# end
-
 	def date_conflict?(dates, start_date, end_date)
 		start_date = start_date.to_i
 		end_date = end_date.to_i
@@ -300,26 +290,6 @@ class User::OpeningsController < ApplicationController
 		
 	end
 
-	# def get_user
-	#     @user = current_user
-	#   end
-
-	#   def get_notifications
-	#     @appointment_notifications = Notification.appointment.where("user_id = ? AND seen = ?", @user.id, false)
-	#     @client_notifications = Notification.client.where("user_id = ? AND seen = ?", @user.id, false)
-	#     @vender_notifications = Notification.vender.where("user_id = ? AND seen = ?", @user.id, false)
-	#   end
-
-	#   def get_user_profiles
-	#     @user = current_user
-	#     @profiles = Profile.where(user: @user)
-	#   end
-
-	#   def get_vendors
-	    
-	#     @user_is_client = Client.where("client_id = ? AND approved = ?", @user.id, true)
-	#   end
-
 	  def get_events
 	    @today_start = DateTime.now.beginning_of_day
 
@@ -333,13 +303,6 @@ class User::OpeningsController < ApplicationController
 	    end
 	  end
 
-	  # def get_profile_colors
-	  # 	@colors = []
-	  # 	@user_is_client.each do |vendor|
-	  # 		@colors.push(vendor.profile)
-	  # 	end
-	  # 	@colors = @colors + @profiles
-	  # end
 
 	def safe_params
 		safe_attributes = [

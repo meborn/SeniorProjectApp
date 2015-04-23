@@ -8,10 +8,6 @@ class User::ProfilesController < ApplicationController
 	before_action :get_vendors
 	before_action :get_profile_colors
 
-	# before_action :get_events
-
-
-
 	require 'open-uri'
 	require 'json'
 
@@ -67,6 +63,14 @@ class User::ProfilesController < ApplicationController
 
 	def destroy
 		@profile = Profile.find(params[:id])
+		@vendor_notifications = Notification.vender.where(:profile => @profile).destroy_all
+		@cancellations = Cancellation.where(:profile => @profile)
+		@cancellations.each do |c|
+			n = Notification.cancellation.find(c.id).destroy
+		end
+		@appointments= Appointment.where(:profile => @profile).destroy_all
+		@openings= Opening.where(:profile => @profile).destroy_all
+		@clients = Client.where(:profile => @profile).destroy_all
 		if @profile.destroy
 			flash[:success] = "Profile Deleted"
 			redirect_to user_profiles_path
@@ -77,47 +81,6 @@ class User::ProfilesController < ApplicationController
 	end
 
 	private
-
-	# def get_user
-	#     @user = current_user
-	#   end
-
-	#   def get_notifications
-	#     @appointment_notifications = Notification.appointment.where("user_id = ? AND seen = ?", @user.id, false)
-	#     @client_notifications = Notification.client.where("user_id = ? AND seen = ?", @user.id, false)
-	#     @vender_notifications = Notification.vender.where("user_id = ? AND seen = ?", @user.id, false)
-	#   end
-
-	#   def get_user_profiles
-	#     @user = current_user
-	#     @profiles = Profile.where(user: @user)
-	#   end
-
-	#   def get_vendors
-	#     
-	#     @user_is_client = Client.where("client_id = ? AND approved = ?", @user.id, true)
-	#   end
-
-	  def get_events
-	    today_start = DateTime.now.beginning_of_day
-
-	    @openings = Opening.where(:user => @user).where("start >= ?",today_start).order(:start)
-	    @client_appointments = Appointment.where(:client => @user).order(:start)
-	    @owner_appointments = Appointment.where(:owner => @user).order(:start)
-
-	    @events = @openings + @client_appointments + @owner_appointments
-	    @events.sort_by! do |item|
-	      item[:start]
-	    end
-	  end
-
-	#   def get_profile_colors
-	#   	@colors = []
-	#   	@user_is_client.each do |vendor|
-	#   		@colors.push(vendor.profile)
-	#   	end
-	#   	@colors = @colors + @profiles
-	#   end
 
 
 	def safe_params

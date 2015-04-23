@@ -3,11 +3,16 @@ var getProfileColors = function(profiles) {
 		console.log('index: ' + index);
 		console.log('title: ' + value.title);
 		console.log('color: ' + value.color);
-		$('.'+value.title.replace(/\s+/g,'')).css('border', '2px solid '+value.color);
-		$('.profile_color.profile_color_'+value.title.replace(/\s+/g,'')).css('border', '1px solid '+value.color);
-		$('.a_profile_color.profile_color_'+value.title.replace(/\s+/g,'')).css('background-color', value.color);
-		$('.b_profile_color.profile_color_'+value.title.replace(/\s+/g,'')).css('border', '1px solid '+value.color);
-		$('span.glyph_color.profile_color_'+value.title.replace(/\s+/g,'')).css('color', value.color);
+		$('.'+value.id).css('border', '2px solid '+value.color);
+		$('.profile_color.profile_color_'+value.id).css('border', '1px solid '+value.color);
+		$('.a_profile_color.profile_color_'+value.id).css('background-color', value.color);
+		$('.b_profile_color.profile_color_'+value.id).css('border', '1px solid '+value.color);
+		$('span.glyph_color.profile_color_'+value.id).css('color', value.color);
+		$('a.glyph_color.profile_color_'+value.id).mouseover(function() {
+			$(this).css('color', value.color);
+		}).mouseout(function() {
+			$(this).css('color', '#1f1f1f');
+		});
 		$('.event_profile_'+value.id).css('background-color', value.color);
 	});
 }

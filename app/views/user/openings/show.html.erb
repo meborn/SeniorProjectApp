@@ -13,7 +13,7 @@
 						<% if @opening.profile.avatar.content_type %>
 							<%= image_tag @opening.profile.avatar.url(:thuumb), :class => 'img-circle avatar_big' %>
 						<% else %>
-							<div class="no_profile_avatar a_profile_color profile_color_<%= @opening.profile.title.gsub(/\s+/,"")%>"></div>
+							<div class="no_profile_avatar a_profile_color profile_color_<%= @opening.profile.id %>"></div>
 						<% end %>
 						<h1 class="panel-title sans_serif_bold dark_text inline_heading"><%= @opening.profile.title %></h1>
 						<button class="btn btn-default dashboard_link" id="swal_delete_opening">

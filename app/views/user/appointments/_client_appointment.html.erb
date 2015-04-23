@@ -13,7 +13,7 @@
 						<% if @appointment.profile.avatar.content_type %>
 							<%= image_tag @appointment.profile.avatar.url(:thuumb), :class => 'img-circle avatar_big' %>
 						<% else %>
-							<div class="no_profile_avatar a_profile_color profile_color_<%= @appointment.profile.title.gsub(/\s+/,"")%>"></div>
+							<div class="no_profile_avatar a_profile_color profile_color_<%= @appointment.profile.id %>"></div>
 						<% end %>
 						<p class= "text-center sans_serif_bold dark_text"><%= link_to @appointment.profile.title, profile_path(@appointment.profile), :class => "sans_serif_bold dark_text ninja_link"%></p>
 						<h3 class="sans_serif_bold dark_text text-center"><%= @appointment.start.strftime('%A') %></h3>

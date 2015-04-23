@@ -4,14 +4,14 @@
 			<% if e.profile.avatar.content_type %>
 				<%= image_tag e.profile.avatar.url(:thuumb), :class => 'img-circle' %>
 			<% else %>
-				<div class="no_profile_avatar a_profile_color profile_color_<%= e.profile.title.gsub(/\s+/,"")%>"></div>
+				<div class="no_profile_avatar a_profile_color profile_color_<%= e.profile.id %>"></div>
 			<% end %>
 			<span class="sans_serif_bold">
 				<%= e.profile.title %>
 			</span>
 			<p class="text-right text-success">Available</p>
 			<span class="sans_serif_bold dark_text event_list_time">
-				<%= e.start.strftime('%I:%M')%> - <%= e.end.strftime('%I:%M %P') %>
+				<%= e.start.strftime('%m/%d/%y') %>: <%= e.start.strftime('%I:%M')%> - <%= e.end.strftime('%I:%M %P') %>
 			</span>
 		<% end %>
 	</li>

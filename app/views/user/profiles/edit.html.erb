@@ -5,7 +5,7 @@
 				<% if @profile.avatar.content_type %>
 					<%= image_tag @profile.avatar.url(:small), :class => 'img-circle avatar_big' %>
 				<% else %>
-					<div class="no_profile_avatar a_profile_color profile_color_<%= @profile.title.gsub(/\s+/,"")%>"></div>
+					<div class="no_profile_avatar a_profile_color profile_color_<%= @profile.id %>"></div>
 				<% end %>
 				<h1 class="sans_serif_bold inline_heading">Edit <%= @profile.title %></h1>
 			</div>

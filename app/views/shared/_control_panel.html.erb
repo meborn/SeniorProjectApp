@@ -92,7 +92,7 @@
 											<% if profile.avatar.content_type %>
 												<%= image_tag profile.avatar.url(:thuumb), :class => 'img-circle' %>
 											<% else %>
-												<div class="no_profile_avatar a_profile_color profile_color_<%= profile.title.gsub(/\s+/,"")%>"></div>
+												<div class="no_profile_avatar a_profile_color profile_color_<%= profile.id %>"></div>
 											<% end %>
 											<span class="sans_serif_text light_text"><%= profile.title %></span>
 										</li>
@@ -126,7 +126,7 @@
 											<% if p.profile.avatar.content_type %>
 												<%= image_tag p.profile.avatar.url(:thuumb), :class => 'img-circle' %>
 											<% else %>
-												<div class="no_profile_avatar a_profile_color profile_color_<%= p.profile.title.gsub(/\s+/,"")%>"></div>
+												<div class="no_profile_avatar a_profile_color profile_color_<%= p.profile.id%>"></div>
 											<% end %>
 											<span class="sans_serif_text light_text"><%= p.profile.title %></span>
 										</li>

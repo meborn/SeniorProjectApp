@@ -18,3 +18,15 @@
 	text-decoration: none;
 }
 
+#profile_index_section_1 {
+	padding-top: 120px;
+}
+
+a.glyph_color {
+	color:#1f1f1f;
+}
+
+/*.public_profile_link:hover {
+	color: #e9573f;
+}*/
+
