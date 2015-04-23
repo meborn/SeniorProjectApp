@@ -2,6 +2,8 @@ class ProfilesController < ApplicationController
 
 	layout 'user'
 	respond_to :html, :js
+
+	before_filter :authenticate_user!
 	#application controller
 	before_action :get_user
 	before_action :get_user_profiles

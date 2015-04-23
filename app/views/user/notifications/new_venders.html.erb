@@ -1,26 +1,44 @@
-<div class="row">
-	<div class="col-xs-12 col-md-8">
-		<div class="panel panel-default">
-			<div class="panel-heading">
-				<h4 class="panel-title">New Venders</h4>
-			</div>
-			<ul class="list-group">
-				<% if @venders.count == 0 %>
-					<li class="list-group-item">
-						<div class="alert alert-danger">
-							No New Venders
-						</div>
-					</li>
-				<% else %>
-					<% @venders.each do |vender| %>
+<section class="not_section_1" id="new_vendor_section">
+	<div class="container">
+		<div class="row">
+			<div class="col-xs-12 col-md-8">
+				<div class="panel panel-default">
+					<div class="panel-heading">
+						<h4 class="panel-title">New Vendors</h4>
+					</div>
+					<ul class="list-group">
+						<% if @venders.count == 0 %>
+							<li class="list-group-item">
+								<div class="alert alert-danger">
+									No New Venders
+								</div>
+							</li>
+						<% else %>
+							<% @venders.each do |vender| %>
+								<%= link_to profile_path(vender) do %>
+									<li class='list-group-item event_list_item new_client_list_item'>
+										<% if vender.avatar.content_type %>
+											<div class="client_avatar_container event_profile_<%= vender.id %> text-center">
+												<%= image_tag vender.avatar.url(:thuumb), :class => 'img-circle' %>
+											</div>
+										<% else %>
+											<div class="client_avatar_container event_profile_<%= vender.id %> text-center">
+												<div class="no_profile_avatar a_profile_color profile_color_<%= vender.id%>"></div>
+											</div>
+											
+										<% end %>
+										<span class="sans_serif_bold new_client_title"><%= vender.title %></span>
+									</li>
+								<% end %>
+							<% end %>
+						<% end %>
 						
-					<% end %>
-				<% end %>
-				
-			</ul>
+					</ul>
+				</div>
+			</div>
+			<div class="col-xs-12 col-md-4">
+				<%= render :partial => 'menu' %>
+			</div>
 		</div>
 	</div>
-	<div class="col-xs-12 col-md-4">
-		<%= render :partial => 'menu' %>
-	</div>
-</div>
+</section>

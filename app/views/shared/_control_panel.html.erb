@@ -53,10 +53,10 @@
 									<% end %>
 								</li>
 								<li class="list-group-item">
-									<a href="#">
+									<%= link_to user_notifications_new_venders_path do %>
 										<span class="sans_serif_text light_text">New Vendors</span>
 										<span class="badge"><%= @vendor_notifications.count %></span>
-									</a>
+									<% end %>
 								</li>
 								<li class="list-group-item">
 									<a href="#">

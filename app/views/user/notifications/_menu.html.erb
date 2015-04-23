@@ -12,13 +12,18 @@
 			<% end %>
 		</li>
 		<li class="list-group-item">
+			<%= link_to user_notifications_cancellations_path do %>
+				Cancellations <span class="badge"><%= @cancellation_notifications.count %></span>
+			<% end %>
+		</li>
+		<li class="list-group-item">
 			<%= link_to user_clients_path do %>
 				New Clients <span class="badge"><%= @client_notifications.count %></span>
 			<% end %>
 		</li>
 		<li class="list-group-item">
 			<%= link_to user_notifications_new_venders_path do %>
-				New Venders <span class="badge"><%= @vendor_notifications.count %></span>
+				New Vendors <span class="badge"><%= @vendor_notifications.count %></span>
 			<% end %>
 		</li>
 		<li class="list-group-item">
