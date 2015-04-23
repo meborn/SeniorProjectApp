@@ -16,7 +16,8 @@
       </div>
       <div id="navbar" class="collapse navbar-collapse">
           <ul class="nav navbar-nav navbar-right">
-            <li><a href="#static_section_5" class="nav_link_text">Sign Up</a></li>
+            <li><%= link_to "Sign Up", new_user_registration_path, :class => 'nav_link_text' %></li>
+            <!-- <li><a href="#static_section_5" class="nav_link_text">Sign Up</a></li> -->
             <li><a href="#" data-toggle="modal" data-target="#sign_in_modal" class='nav_link_text'>Sign In</a></li>
           </ul>
 
@@ -53,6 +54,7 @@
           <% end -%>
         <%= f.submit "Log in", :class => "btn btn-default" %>
         <% end %>
+        <%= link_to "Forgot your Password?", new_password_path(resource_name) %>
       </div>
     </div>
   </div>

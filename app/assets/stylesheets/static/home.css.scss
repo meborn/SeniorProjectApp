@@ -32,13 +32,29 @@ body {
  }
 
  #header {
- 	margin-top:150px;
+ 	margin-top:130px;
  }
 
  #sub_header_container {
  	width:50%;
  	margin: 0px auto;
  	margin-bottom:150px;
+ }
+
+ .clear_btn {
+	 display:block;
+	 margin:30px auto;
+	 max-width: 200px;
+ }
+
+ .clear_btn.btn {
+ 	border:2px solid transparent;
+ }
+
+ .clear_btn.btn-default {
+ 	 color:#f2f2f2;
+	 background-color:transparent;
+	 border-color:#f2f2f2;
  }
 
  #sub_header {
@@ -155,8 +171,11 @@ body {
  @media (max-width: 525px) {
  	#header {
 	 	font-size: 30px;
-	 	margin-top: 100px;
+	 	margin-top: 50px;
 	 }
+	 #sign_up_header {
+	 	font-size: 30px;
+	}
 	  #sub_header {
 		font-size: 30px;
 	}
@@ -169,11 +188,20 @@ body {
   @media (min-width: 526px) and (max-width: 768px) {
  	#header {
 	 	font-size: 50px;
-	 	margin-top: 100px;
+	 	margin-top: 80px;
 	 }
+	 #sign_up_header {
+	 	font-size: 50px;
+	}
 	  #sub_header {
 		font-size: 30px;
 	}
+	#sub_header_img {
+	 	display: block;
+	 	margin:20px auto;
+	 	width:80px;
+	 	
+	 }
 	.orange_border {
 	 	border-bottom: 1px solid #e9573f;
 	 }
@@ -184,6 +212,9 @@ body {
  	#header {
 	 	font-size: 50px;
 	 }
+	 #sign_up_header {
+	 	font-size: 50px;
+	}
 	 #sub_header {
 		font-size: 40px;
 	}
@@ -197,6 +228,9 @@ body {
  	#header {
 	 	font-size: 70px;
 	 }
+	 #sign_up_header {
+	 	font-size: 70px;
+	}
 	 #sub_header {
 		font-size: 50px;
 	}
@@ -209,6 +243,9 @@ body {
 
  @media (min-width: 1200px) {
  	#header {
+	 	font-size: 70px;
+	}
+	#sign_up_header {
 	 	font-size: 70px;
 	}
 	#sub_header {

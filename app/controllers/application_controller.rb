@@ -34,7 +34,7 @@ class ApplicationController < ActionController::Base
   def get_notifications
       @appointment_notifications = Notification.appointment.where("user_id = ? AND seen = ?", @user.id, false)
       @client_notifications = Notification.client.where("user_id = ? AND seen = ?", @user.id, false)
-      @vender_notifications = Notification.vender.where("user_id = ? AND seen = ?", @user.id, false)
+      @vendor_notifications = Notification.vender.where("user_id = ? AND seen = ?", @user.id, false)
       @cancellation_notifications = Notification.cancellation.where("user_id = ? AND seen = ?", @user.id, false)
   end
 
